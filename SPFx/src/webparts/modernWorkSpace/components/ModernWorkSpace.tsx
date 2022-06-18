@@ -921,11 +921,11 @@ const StaffBirthdays: JSX.Element[] = this.state.staffBirthdays.length>0 ? this.
     <div className={`${styles.col4Event} ${todayIsBirthday ? styles.Birtdaybg: ""}`} style={{height:"30%"}}>
       <div className='row' style={{height:"100%"}}>
         <div className='col-md-3'>
-        <div className={`${styles.col4EvtbDate}`}>
+        {/* <div className={`${styles.col4EvtbDate}`}>
           <p className={`${styles.col4EvtDay}`}  style={{display: todayIsBirthday ? "block" : "none",color: todayIsBirthday ? "white" : "none"}}>{birthday.Birthday.getDate()}</p>
           <p className={`${styles.col4EvtMnth}`}  style={{display: todayIsBirthday ? "block" : "none",color: todayIsBirthday ? "white" : "none"}}>{this.utilityMethods.monthOfTheYear[birthday["Date_of_Birth"].getMonth()]}</p>
     
-      </div>
+      </div> */}
         </div>
      
 
@@ -935,7 +935,7 @@ const StaffBirthdays: JSX.Element[] = this.state.staffBirthdays.length>0 ? this.
           style={{display: todayIsBirthday ? "block" : "none",color: todayIsBirthday ? "Orange" : "none"}}
         >Happy Birthday To You!</p>
         <p className={`${styles.col4EvtTitle}`}  style={{display: todayIsBirthday ? "block" : "none",color: todayIsBirthday ? "white" : "none"}} >{birthday["FullName"]}</p>
-        <p className={`${styles.col4EvtbLocatn}`}  style={{display: todayIsBirthday ? "block" : "none",color: todayIsBirthday ? "white" : "none"}}>{birthday["Designation"]}</p>
+        {/* <p className={`${styles.col4EvtbLocatn}`}  style={{display: todayIsBirthday ? "block" : "none",color: todayIsBirthday ? "white" : "none"}}>{birthday["Designation"]}</p> */}
         <p className={`nextBirthdayTitle`}
           style={{display: showNextBd ? "display" : "none"}}
         >Next Birthday</p>
