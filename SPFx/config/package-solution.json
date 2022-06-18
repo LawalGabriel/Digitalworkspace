@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "modern-work-space-client-side-solution",
+    "id": "93a63dd9-8e7d-4b05-bc8f-3f8831808212",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.14.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "ModernWorkSpace description"
+      },
+      "longDescription": {
+        "default": "ModernWorkSpace description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "modern-work-space Feature",
+        "description": "The feature that activates elements of the modern-work-space solution.",
+        "id": "c418a689-fc24-417e-84c1-1c55ae902d21",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/modern-work-space.sppkg"
+  }
+}

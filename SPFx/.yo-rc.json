@@ -1,0 +1,19 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "whichFolder": "subdir",
+    "solutionName": "ModernWorkSpace",
+    "environment": "spo",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart",
+    "template": "react",
+    "componentName": "ModernWorkSpace",
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "version": "1.14.0",
+    "libraryName": "modern-work-space",
+    "libraryId": "93a63dd9-8e7d-4b05-bc8f-3f8831808212",
+    "packageManager": "npm",
+    "solutionShortDescription": "ModernWorkSpace description"
+  }
+}
