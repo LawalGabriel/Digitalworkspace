@@ -18,7 +18,7 @@ import ListSearchProductCard from './InlineSearchResults/ListSearchProductCard';
 import SPSearchService from './model/SPSearchService';
 import { LineGraphInData, Activity, GroupedActivity, AggregatedActivity, LineGraphData, PieGraphData, PieData,CollaborationActivity} from "./interfaces/Objects";
 
-//import { Carousel, CarouselButtonsDisplay, CarouselButtonsLocation } from "@pnp/spfx-controls-react/lib/Carousel";
+import { Carousel, CarouselButtonsDisplay, CarouselButtonsLocation } from "@pnp/spfx-controls-react/lib/Carousel";
 // import { IoMdAttach } from 'react-icons/io';
 import { SPEvents, ISPEventItem} from './interfaces/ISPEventBirthday';
 import * as  moment from 'moment';
@@ -48,13 +48,13 @@ import { IGraphMyTeam, IGraphMyTeamItems, GraphMyTeam, IGraphTeamMessage, IGraph
 import { IGraphUserProfile, IGraphUserProfileItems, GraphUserProfile, ISPUsers, SPUsers } from './interfaces/IGraphUserProfile';
 import { IGraphDriveFile, IGraphDriveFileItems, GraphDriveFile } from './interfaces/IGraphDriveFile';
 import { ISPEvent, ISPEventItems, SPEvent, myOutlookEvent } from './interfaces/ISPEvent';
-//import { CarouselImageService } from './model/CarouselImageService';
+import { CarouselImageService } from './model/CarouselImageService';
 import { IDataService } from './model/IDataService';
 import { ISPAnnouncement, ISPAnnouncementItems, SPAnnouncement } from './interfaces/ISPAnnouncement';
 import { ILeaveRequestItems, LeaveRequest, ILoanRequestItems, LoanRequest, IPettyCashItems, PettyCash, ISalaryAdvItems, SalaryAdv, completedProcess, ICompletedProcess, aggProcess } from './interfaces/IProcessStage';
 import { IEngageProgressItem, EngageProgress } from './interfaces/IEngageProgress';
 import { ITimeSheetItem,  TimeSheet } from './interfaces/ITimeSheet';
-//import { ICarouselImage,ICarouselImageFile,ICarouselImageRLink } from './interfaces/IGraphDriveFile'; 
+import { ICarouselImage,ICarouselImageFile,ICarouselImageRLink } from './interfaces/IGraphDriveFile'; 
 import { faWindowRestore } from '@fortawesome/free-solid-svg-icons';
 import { useRef } from 'react';
 
@@ -200,7 +200,7 @@ export default class ModernWorkSpace extends React.Component<IModernWorkSpacePro
 
     let serviceScope: ServiceScope = this.props.serviceScope;
   
-    //this.dataCenterServiceInstance = serviceScope.consume(CarouselImageService.serviceKey);
+    // this.dataCenterServiceInstance = serviceScope.consume(CarouselImageService.serviceKey);
     // this.dataCenterServiceInstance.getImages('Gallery Slide').then((carouselItems: ICarouselImage[]) => {
     //   console.log(carouselItems);
     //   this.setState({
@@ -829,7 +829,7 @@ export default class ModernWorkSpace extends React.Component<IModernWorkSpacePro
       <div className='col-md-4'>
 
      
-        <div className={`${styles.msGridCol} ${styles.msSm8} ${styles.msMd8} ${styles.msLg12} ${styles.lobApps}`}>
+        <div className={`${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4} ${styles.lobApps}`}>
           <a href={link.url} target="_blank" title={link.title} style={{backgroundImage: `url('${link.attachImage}')`}} ></a>
         </div>
         </div>
@@ -918,32 +918,23 @@ const StaffBirthdays: JSX.Element[] = this.state.staffBirthdays.length>0 ? this.
   // console.log(`${myBirthday} - ${todayIsBirthday} - ${showNextBd}`);
 
   return(
-    <div className={`${styles.col4Event} ${todayIsBirthday ? styles.Birtdaybg: ""}`} style={{height:"30%"}}>
-      <div className='row' style={{height:"100%"}}>
-        <div className='col-md-3'>
-        {/* <div className={`${styles.col4EvtbDate}`}>
-          <p className={`${styles.col4EvtDay}`}  style={{display: todayIsBirthday ? "block" : "none",color: todayIsBirthday ? "white" : "none"}}>{birthday.Birthday.getDate()}</p>
-          <p className={`${styles.col4EvtMnth}`}  style={{display: todayIsBirthday ? "block" : "none",color: todayIsBirthday ? "white" : "none"}}>{this.utilityMethods.monthOfTheYear[birthday["Date_of_Birth"].getMonth()]}</p>
+    <div className={`${styles.col4Event} ${todayIsBirthday ? styles.Birtdaybg: ""}`} style={{height:"64px"}}>
+      
+      <div className={`${styles.col4EvtDate}`}>
+          <p className={`${styles.col4EvtDay}`}>{birthday.Birthday.getDate()}</p>
+          <p className={`${styles.col4EvtMnth}`}>{this.utilityMethods.monthOfTheYear[birthday["Date_of_Birth"].getMonth()]}</p>
     
-      </div> */}
-        </div>
-     
-
-      <div className='col-md-9'>
+      </div>
       <div className={`${styles.col4EvtDetails}`}>
         <p className={styles.BirthdayTitle}
-          style={{display: todayIsBirthday ? "block" : "none",color: todayIsBirthday ? "Orange" : "none"}}
+          style={{display: todayIsBirthday ? "block" : "none"}}
         >Happy Birthday To You!</p>
-        <p className={`${styles.col4EvtTitle}`}  style={{display: todayIsBirthday ? "block" : "none",color: todayIsBirthday ? "white" : "none"}} >{birthday["FullName"]}</p>
-        {/* <p className={`${styles.col4EvtbLocatn}`}  style={{display: todayIsBirthday ? "block" : "none",color: todayIsBirthday ? "white" : "none"}}>{birthday["Designation"]}</p> */}
+        <p className={`${styles.col4EvtTitle}`}>{birthday["FullName"]}</p>
+        <p className={`${styles.col4EvtLocatn}`}>{birthday["Designation"]}</p>
         <p className={`nextBirthdayTitle`}
           style={{display: showNextBd ? "display" : "none"}}
         >Next Birthday</p>
       </div>
-      </div>
-      </div>
-     
-    
     </div>
     
   );
@@ -966,28 +957,21 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
     //console.log(`todayIsAnniversary`, myAnniversary, todayIsAnniversary);
 
     return(
-      <div className={`${styles.col4Event} ${todayIsAnniversary ? styles.Birtdaybg: ""}`}style={{height:"30%"}}>
-        <div className='row' style={{height:"100%"}}>
-        <div className='col-md-3'>
+      <div className={`${styles.col4Event} ${todayIsAnniversary ? styles.Birtdaybg: ""}`}>
         <div className={`${styles.col4EvtDate}`}>
-            <p className={`${styles.col4EvtDay}`} style={{display: todayIsAnniversary ? "block" : "none",color: todayIsAnniversary ? "white" : "none"}}>{anniversary.Anniversary.getDate()}</p>
-            <p className={`${styles.col4EvtMnth}`} style={{display: todayIsAnniversary ? "block" : "none",color: todayIsAnniversary ? "white" : "none"}}>{this.utilityMethods.monthOfTheYear[anniversary["Resumption_Date"].getMonth()]}</p>
+            <p className={`${styles.col4EvtDay}`}>{anniversary.Anniversary.getDate()}</p>
+            <p className={`${styles.col4EvtMnth}`}>{this.utilityMethods.monthOfTheYear[anniversary["Resumption_Date"].getMonth()]}</p>
         </div>
-        </div>
-
-        <div className='col-md-9'>
         <div className={`${styles.col4EvtDetails}`}>
           <p className={styles.BirthdayTitle}
-            style={{display: todayIsAnniversary ? "block" : "none",color: todayIsAnniversary ? "Orange" : "none"}}
+            style={{display: todayIsAnniversary ? "block" : "none"}}
           >Happy {currentAnniDate.getFullYear() - anniversary.Anniversary.getFullYear()} Year(s) Anniversary To You!</p>
-          <p className={`${styles.col4EvtTitle}`} style={{display: todayIsAnniversary ? "block" : "none",color: todayIsAnniversary ? "white" : "none"}}>{anniversary["FullName"]}</p>
-          <p className={`${styles.col4EvtLocatn}`} style={{display: todayIsAnniversary ? "block" : "none",color: todayIsAnniversary ? "white" : "none"}}>{anniversary["Designation"]}</p>
+          <p className={`${styles.col4EvtTitle}`}>{anniversary["FullName"]}</p>
+          <p className={`${styles.col4EvtLocatn}`}>{anniversary["Designation"]}</p>
           <p className={`nextBirthdayTitle`}
             style={{display: showNextAnni ? "display" : "none"}}
           >Next Anniversary</p>
         </div>
-      </div>
-      </div>
       </div>
     );
   }):
@@ -1217,1630 +1201,1658 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
     }
   `;*/}
       
-  return (
-    // <div className={ `${styles.modernWorkSpace} ${styles.style2} ${styles.esearch} ${this.state.isOnTeams? styles.teamsStyles : ""}` }>
-    <div className={ `${styles.modernWorkSpace} ${styles.style2} ${styles.esearch}` } style={{backgroundColor:'White'}}>
-    
+      return (
+        // <div className={ `${styles.modernWorkSpace} ${styles.style2} ${styles.esearch} ${this.state.isOnTeams? styles.teamsStyles : ""}` }>
+        <div className={ `${styles.modernWorkSpace} ${styles.style2} ${styles.esearch}` } style={{backgroundColor:'White'}}>
+        
 
-        {/* test section */}
-        <div className={ styles.container }>
-      <div className="row">
-        {/* slider section */}
-        <div className="col-md-12" >
-        <div className={` ${styles.column2} ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'10px',margin:'10px 0px 0px 0px ',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
-        <div>
-            {/* <Carousel
-              buttonsLocation={CarouselButtonsLocation.bottom} buttonsDisplay={CarouselButtonsDisplay.buttonsOnly}
-              element={this.state.currentCarouselItemElement}
-              triggerPageEvent={this.triggerNextElement}
-              contentContainerStyles={{}}
-            /> */}
+            {/* test section */}
+            <div className={ styles.container }>
+          <div className="row">
+            {/* slider section */}
+            <div className="col-md-12" >
+            <div className={` ${styles.column2} ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'10px',margin:'10px 0px 0px 0px ',backgroundColor:'white',maxWidth:'1088px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
+            <div>
+                {/* <Carousel
+                  buttonsLocation={CarouselButtonsLocation.bottom} buttonsDisplay={CarouselButtonsDisplay.buttonsOnly}
+                  element={this.state.currentCarouselItemElement}
+                  triggerPageEvent={this.triggerNextElement}
+                  contentContainerStyles={{}}
+                /> */}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-         {/* first Webpart */}
-       <div className="col-md-4  ms-sm12 ms-lg4 ">
-       <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/welcome.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Welcome</b></div></div>
-       <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4}`}  style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
-                          
-                          <div className={`ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.myProfileColumn}`}>
-                            <div id="enterpriseSearch" style={{margin: '0 auto 30px'}}>
-                              {/*  <h4 className={styles.column2Title}>E-Search</h4>  */}
-                              <div className={ styles.extnSearch }>
-                                <div className={`${styles.wrap}`}>
-                                  <div className={`${styles.search}`} ref={this._menuButtonElement}>
-                                    {(this.state.searchText === "")?
-                                    <span className={` ${styles.searchSpan}`}>
-                                      <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`}></i>
-                                    </span>
-                                    : ""}
-                                    <input  name="newregionalcordinatoremailvalue" className={` ${styles.searchTerm}`}  readOnly={false} type="text" placeholder="Search for Content…" value={this.state.searchText}
-                                    onChange={(e) => {
-                                      this.setState({searchText: e.target["value"]});
-                                    }}
-                                    onKeyUp={(e) => {
-                                      if(e.keyCode===13 || e.key==="Enter"){
-                                        this._searchClicked();
-                                        // console.log(e.key);
-                                      }
-                                    }}
-                                    style={this.state.searchText===""? {paddingLeft: '15px'}: {}} ></input>
-                                    {(this.state.searchText == "")?
-                                    ""
+             {/* first Webpart */}
+           <div className="col-md-4  ms-sm12 ms-lg4 ">
+           <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Internal Communication</b></div></div>
+           <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4}`}  style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
+                              
+                              <div className={`ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.myProfileColumn}`}>
+                                <div id="enterpriseSearch" style={{margin: '0 auto 30px'}}>
+                                  {/*  <h4 className={styles.column2Title}>E-Search</h4>  */}
+                                  <div className={ styles.extnSearch }>
+                                    <div className={`${styles.wrap}`}>
+                                      <div className={`${styles.search}`} ref={this._menuButtonElement}>
+                                        {(this.state.searchText === "")?
+                                        <span className={` ${styles.searchSpan}`}>
+                                          <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`}></i>
+                                        </span>
+                                        : ""}
+                                        <input  name="newregionalcordinatoremailvalue" className={` ${styles.searchTerm}`}  readOnly={false} type="text" placeholder="Search for Content…" value={this.state.searchText}
+                                        onChange={(e) => {
+                                          this.setState({searchText: e.target["value"]});
+                                        }}
+                                        onKeyUp={(e) => {
+                                          if(e.keyCode===13 || e.key==="Enter"){
+                                            this._searchClicked();
+                                            // console.log(e.key);
+                                          }
+                                        }}
+                                        style={this.state.searchText===""? {paddingLeft: '15px'}: {}} ></input>
+                                        {(this.state.searchText == "")?
+                                        ""
+                                        :
+                                          <div className={` ${styles.searchButtonDiv}`} >
+                                            <button type="submit" className={` ${styles.searchClearButton}`} onClick={() => this._searchClearClicked()}>
+                                              <i className={`ms-Icon ms-Icon--Clear` }></i>
+                                            </button>  
+                                            <button type="submit" className={` ${styles.searchButton}`} onClick={() => this._searchClicked()}>
+                                              <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`} ></i>
+                                            </button>
+                                          </div>
+                                        } 
+                                      </div>
+              
+                                    </div> 
+                                  </div> 
+                                  { (this.state.searchstatus && this.state.isCalloutVisible) ? 
+                                    <Callout
+                                      style={{maxWidth: '500px', width: '75%'}}
+                                      beakWidth={15}
+                                      gapSpace={10}
+                                      directionalHint={DirectionalHint.bottomCenter}
+                                      target={this._menuButtonElement.current}
+                                      onDismiss={(e) => this._onCalloutDismiss(e)}
+                                    >
+                                      <div className={styles.searchResult}>
+                                        <div className={styles.column2Container}>
+                                          <div className={styles.docTitle}>
+                                          </div>
+                                          <div className={styles.docContainer}>
+                                            {eSearchResult}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </Callout>
                                     :
-                                      <div className={` ${styles.searchButtonDiv}`} >
-                                        <button type="submit" className={` ${styles.searchClearButton}`} onClick={() => this._searchClearClicked()}>
-                                          <i className={`ms-Icon ms-Icon--Clear` }></i>
-                                        </button>  
-                                        <button type="submit" className={` ${styles.searchButton}`} onClick={() => this._searchClicked()}>
-                                          <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`} ></i>
-                                        </button>
-                                      </div>
-                                    } 
-                                  </div>
-          
-                                </div> 
-                              </div> 
-                              { (this.state.searchstatus && this.state.isCalloutVisible) ? 
-                                <Callout
-                                  style={{maxWidth: '500px', width: '75%'}}
-                                  beakWidth={15}
-                                  gapSpace={10}
-                                  directionalHint={DirectionalHint.bottomCenter}
-                                  target={this._menuButtonElement.current}
-                                  onDismiss={(e) => this._onCalloutDismiss(e)}
-                                >
-                                  <div className={styles.searchResult}>
-                                    <div className={styles.column2Container}>
-                                      <div className={styles.docTitle}>
-                                      </div>
-                                      <div className={styles.docContainer}>
-                                        {eSearchResult}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </Callout>
-                                :
-                                <div></div>
-                              }
+                                    <div></div>
+                                  }
+                                </div>
+                              </div>
+              
+              
+                              <div className={`${styles.col1Welcome}`} style={{marginTop: '-61px',overflow:'hidden'}}>
+                                <div className={`${styles.col1ProfilePic}`} style={this.state.myProfile != null ? {backgroundImage: `url('${this.props.siteUrl}/_layouts/15/userphoto.aspx?size=L&accountname=${this.state.myProfile.mail}')`} : {}}></div>
+                                <p>WELCOME</p>
+                                <p>{this.state.myProfile != null ? this.state.myProfile.displayName : ""}</p>
+                                <p><a href={this.state.notificationCount ? "https://outlook.office.com/calendar/view/week" : ""} target="_blank">You have <span>{this.state.notificationCount}</span> notifications</a></p>
+                              </div>
+                              <div className={`${styles.col1Members}`}>
+                                <p>My Recent Contacts</p>
+                                <div className={`ms-Grid-row ${styles.msGridRow}`}>{myRecentUser}</div>
+                              </div>
                             </div>
-                          </div>
-          
-          
-                          <div className={`${styles.col1Welcome}`} style={{marginTop: '-61px',overflow:'hidden'}}>
-                            <div className={`${styles.col1ProfilePic}`} style={this.state.myProfile != null ? {backgroundImage: `url('${this.props.siteUrl}/_layouts/15/userphoto.aspx?size=L&accountname=${this.state.myProfile.mail}')`} : {}}></div>
-                            <p>You</p>
-                            <p>{this.state.myProfile != null ? this.state.myProfile.displayName : ""}</p>
-                            <p><a href={this.state.notificationCount ? "https://outlook.office.com/calendar/view/week" : ""} target="_blank">You have <span>{this.state.notificationCount}</span> notifications</a></p>
-                          </div>
-                          <div className={`${styles.col1Members}`}>
-                            <p>My Recent Contacts</p>
-                            <div className={`ms-Grid-row ${styles.msGridRow}`}>{myRecentUser}</div>
-                          </div>
-                        </div>
-       </div>
-          {/* second webpart */}
-       <div className="col-md-4">
-       <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b> My Emails <span>{this.state.mailMessageCount}</span></b></div></div>
-       <div className={` ${styles.scrollHidden} ${styles.column} ${styles.colOutlook} ${styles.msLg4} ${styles.zoom} ${styles.msSm12} ${styles.col2}`} style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-              {myMailElArr}
-            </div>
-       </div>
-        {/* third webpart */}
-       <div className="col-md-4">
-       <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Teams.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>TEAMS</b></div></div>
-       <div className={` ${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} `} style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-          <div>
-            <h4 className={`${styles.column2Title} ${styles.teamsTitle}`} style={{paddingRight: '55px'}}>Microsoft Teams <img src={require(`./images/setting_gear.svg`)} alt="Teams Centre" title="Teams Centre" width="21px" style={{float: 'right', cursor: 'pointer'}} onClickCapture={() => window.open("https://teams.microsoft.com/_#/apps/bafc60a5-488b-49b6-bc3a-9af2db0a761b/sections/57af5aa1-fef6-43d9-9cc2-a756219cd17f", "_blank")} /></h4>
-            <div className={ styles.column2Container }>
-              <div className={styles.colTeamsMyTeams}>
-                {myTeamGroups}
-              </div>
-              <div className={styles.colTeamsConvo}>
-                {myTeamMessages}
-              </div>
-            </div>
-          </div>
-        </div>
-      
-       </div>
-       {/* fourth webpart */}
-       {this.props.wbProperties.showCalendar && <div  className="col-md-4">
-        <div className={`col-md-4  ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/calendar.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MY CALENDAR</b></div></div>
-        <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-          height: '327px', maxHeight: '327',borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1'
-        }}>
-          {/* <h4>MY CALENDAR</h4> */}
-          <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`}>
-            {
-            // myUpcomingEvents
-              myCalendarEvents
-            }
-          </div>
-        </div>
-        </div>}
-
-        {/* fifth webpart */}
-        {this.props.wbProperties.showTasks && <div className="col-md-4">
-        <div className={` col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/MD Desk.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Task</b></div></div>
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}  style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}> 
-        <div className={ styles.column2Container }>
-              <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `} style={{display: this.state.myPlannerTasks.length==0 ? "flex" : "block"}}>
-              {plannerTasks}
-              </div>
-            </div>
-        
-        </div>
-        </div>}
-
-      {/* sixth webpart */}
-      {this.props.wbProperties.showEvent &&  <div className="col-md-4">
-      <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/EVENT.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>EVENTS</b></div></div>
-      <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-          height: '327px', maxHeight: '327px',borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1'
-        }}>
-            {/* <h4>EVENTS</h4> */}
-            <div className={`${styles.eventContainer} ${styles.scrollHidden}`}>
-              {
-              myUpcomingEvents
-              }
-            </div>
-          </div>
-      </div>}
-
-       {/* Seventh webpart */}
-       {this.props.wbProperties.showBirthday && <div  className="col-md-4">
-        <div className={`col-md-4  ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/calendar.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>BIRTHDAY</b></div></div>
-        <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-          height: '327px', maxHeight: '327',borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1'
-        }}>
-          
-           <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffBirthdays.length==0 ? "flex" : "block"}}>
-            {
-             StaffBirthdays
-            }
-          </div>
-        </div>
-        </div>}
-
-        {/* Eight webpart */}
-        {this.props.wbProperties.showAnnouncement && <div className="col-md-4">
-     <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Annoucement.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>ANNOUNCEMENT</b></div></div>
-     <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-     <div className={ styles.column2Container }>
-              <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} ${styles.announcements} `}>
-              {spAnnouncementNews}
-              </div>
-            </div>
-        
-        </div>
-     </div>}
-
-      {/* nineth webpart */}
-      {this.props.wbProperties.showAnniversary && <div className="col-md-4">
-      <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/EVENT.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF ANNIVERSARY</b></div></div>
-      <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-          height: '327px', maxHeight: '327px',borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1'
-        }}>
-           <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffAnniversary.length==0 ? "flex" : "block"}}>
-            {
-            staffAnniversary
-            }
-          </div>
-          </div>
-      </div>}
-
-
-       {/* Tenth webpart */}
-       {this.props.wbProperties.showMDDesk && <div className="col-md-4">
-      <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/MD Desk.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MD's DESK</b></div></div>
-      <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-            <div>
-              {/* <h4 className={`${styles.column2Title}`}>Reliance</h4> */}
-             <img src={require('./images/visionmission.png')} style={{
-           height : '380px',
-           width : '100%'
-          }}></img>
-
-            </div>
-          </div>
-      </div>}
-
-       {/* first Webpart */}
-      
-
-        {/* Eleventh webpart */}
-         {this.props.wbProperties.showStaffDir && <div className="col-md-4">
-        <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Employee Analytics.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF DIRECTORY</b></div></div>
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colExtns} `}style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-          <div>
-            {/* <h4 className={styles.column2Title}>STAFF DIRECTORY</h4> */}
-            <div className={ styles.column2Container }>
-              <div className={`ms-Grid-row ${styles.msGridRow}`}>
-                <div className={ styles.employeeSearch }>
-                  <input type="search" name="extnSearchBox" placeholder="Search for Staff…" id={ styles.employeeSearchBox }
-                    onInputCapture={(evt) => this.setState({searchExtn: evt.target["value"].trim().toLowerCase()}) }
-                  />
-                  <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
+           </div>
+              {/* second webpart */}
+           <div className="col-md-4">
+           <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b> My Emails <span>{this.state.mailMessageCount}</span></b></div></div>
+           <div className={` ${styles.scrollHidden} ${styles.column} ${styles.colOutlook} ${styles.msLg4} ${styles.zoom} ${styles.msSm12} ${styles.col2}`} style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+                  {myMailElArr}
                 </div>
-                <div className={` ${styles.extnContainer} ${styles.scrollHidden} `}>
-                  {
-                  // companyExtns
-                  employeeSearhResults
-                  }
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>}
-
-
-     
-
-         {/* Eleventh webpart */}
-        {/*  {this.props.wbProperties.showOnedrive && <div className="col-md-8">
-      <div className={` col-md-8 ${styles.msSm12} ${styles.msLg12}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',minWidth:'98%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/microsoft-onedrive-2019.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Celebrant of The Month</b></div></div>
-      <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colRecentDoc}  `}style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',minWidth:'98%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-          <div>
-            <div className={ styles.column2Container }>
-              <div className={ styles.docTitle}>
-                <span>Name</span><span>Date Modified</span>
-              </div>
-              <div className={ styles.docContainer }>
-                {myRecentDoc}
-              </div>
-            </div>
-          </div>
-        </div>
-     </div> */}
-
-     {/* twelfth webpart */}
-
-     {this.props.wbProperties.showLauncher && <div className="col-md-4">
-        <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>LAUNCHER</b></div></div>
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
-          <div>
-            {/* <h4 className={`${styles.column2Title} ${styles.launcherTitle}`}>Launcher</h4> */}
-            <div className={ styles.column2Container }>
-              <div className="row">
-                <div className ="col-md-4">
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank" style={{width:"100%"}}>
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--office ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/office_96x1.png)'}}
-                  ></div>
-                </a>
-                </div>
-
-                <div className ="col-md-4">
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/word" target="_blank" style={{width:"100%"}}>
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--word ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/word_96x1.png)'}}
-                  ></div>
-                </a>
-                </div>
-                <div className ="col-md-4">
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/excel" target="_blank" style={{width:"100%"}}>
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--excel ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/excel_96x1.png)'}}
-                  ></div>
-                </a>
-                </div>
-                <div className ="col-md-4">
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/powerpoint" target="_blank" style={{width:"100%"}}>
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--powerpoint ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/powerpoint_96x1.png)'}}
-                  ></div>
-                </a>
-                </div>
-                <div className ="col-md-4">
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/onenote" target="_blank" style={{width:"100%"}}>
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onenote ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onenote_96x1.png)'}}
-                  ></div>
-                </a>
-                </div>
-                <div className ="col-md-4">
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank"style={{width:"100%"}}>
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onedrive ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onedrive_96x1.png)'}}
-                  ></div>
-                </a>
-                </div>
-                <div className ="col-md-4">
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank" style={{width:"100%"}}>
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--access ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/access_96x1.png)'}}
-                  ></div>
-                </a>
-                </div>
-                <div className ="col-md-4">
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://www.microsoft.com/en-us/microsoft-365/project/project-management-software" target="_blank"style={{width:"100%"}}>
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--project ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/project_96x1.png)'}}
-                  ></div>
-                </a>
-                </div>
-                <div className ="col-md-4">
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.live.com/start/visio.aspx" target="_blank" style={{width:"100%"}}>
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--visio ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/visio_96x1.png)'}}
-                  ></div>
-                </a>
-                </div>
-              
-              </div>
-             
-            </div>
-          </div>
-        </div>
-        </div>}
-        {/* thirteenth webpart */}
-        {this.props.wbProperties.showLOB && <div className="col-md-4">
-        <div className={` col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>LINE OF BUSINESS APPS</b></div></div>
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `} style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-        <div>
-        <div className={ styles.column2Container }>
-              <div className="row">
-            {/* <h4 className={styles.column2Title}>LINE OF BUSINESS APPS</h4> */}
-            {LOBLinks}
-                {/* <div className={`  ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4} ${styles.lobApps}`} style={{width:"100%"}}>
-            
-            </div> */}
-          </div>
-        </div>
-        </div>
-        </div>
-        </div>}
-
-        {/* fourteenth webpart */}
-        {this.props.wbProperties.showOnedrive && <div className="col-md-4">
-      <div className={` col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/microsoft-onedrive-2019.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>ONE DRIVE</b></div></div>
-      <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colRecentDoc}  `}style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-          <div>
-            {/* <h4 className={`${styles.column2Title} ${styles.onedriveTitle}`}>OneDrive</h4> */}
-            <div className={ styles.column2Container }>
-              <div className={ styles.docTitle}>
-                <span>Name</span><span>Date Modified</span>
-              </div>
-              <div className={ styles.docContainer }>
-                {myRecentDoc}
-              </div>
-            </div>
-          </div>
-        </div>
-     </div>}
-
-         {/* thirteenth webpart */}
-         {this.props.wbProperties.showDepartmentalAnalytics && <div className="col-md-4">
-     <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Employee Analytics.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>DEPARTMENTAL ANALYTICS</b></div></div>
-     <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-          <div>
-            {/* <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>Departmental Analytics
-              <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
-            </h4> */}
-            <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
-              
-              <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `} style={{height: 'calc(100% - 30px)'}}>
-                <div style={{width: 'calc(100% - 0px)', display: "inline-block", position: "relative", right: 0}}>
-                {analyticsBarChart2}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-    
-     </div>}
-
-     {/* fourtheenth webpart */}
-     {this.props.wbProperties.showMyAnalytics &&  <div className= "col-md-8">      
-     <div className={` col-md-8 ${styles.msSm12} ${styles.msLg8}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',minWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/analytic.png')} width="6%" height="34px" style={{marginRight:"10px"}}/><b>MY ANALYTICS</b></div></div>
-     <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',minWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
-          <div>
-            {/* <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>MyANALYTICS
-              <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
-            </h4> */}
-            <div className={` ${styles.column2Container} ${styles.scrollHidden} `} style={{overflowY: "scroll"}}>
-              
-              <div className={` ${styles.analyticsOverview} `}>
-                {Object.keys(this.state.CollaborationActivityList).map(activity => {
-                  let duration = this.state.CollaborationActivityList[activity].reduce((acc, cur) => (acc + cur["parsedDuration"]), 0).toFixed(2), trackerColor = activity==="Meeting" ? "#e8c1a0" :  activity==="Focus" ? "#e8a838" :  activity==="Chats/Calls" ? "#f1e15b" :  activity==="Email" ? "#f47560" : "transparent";
-                  
-                  return (
-                  <div className={` ms-sm12 ms-md3 ${styles.msSm12} ${styles.msMd3} ${styles.analyticsCard} `} >
-                    <div>
-                    <p style={{backgroundImage: `url('${require('./images/analyticsMeeting.svg')}')`}}>{activity}</p>
-                    <p><span>{duration}</span><span>hrs</span><span className={`${styles.analyticsCardTracker}`}><span style={{width: `min(calc(100% * ${duration} / 24), 100%)`, backgroundColor: '#e8c1a0'}}></span></span></p>
-                    </div>
+           </div>
+            {/* third webpart */}
+           <div className="col-md-4">
+           <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Teams.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>TEAMS</b></div></div>
+           <div className={` ${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} `} style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+              <div>
+                <h4 className={`${styles.column2Title} ${styles.teamsTitle}`} style={{paddingRight: '55px'}}>Microsoft Teams <img src={require(`./images/setting_gear.svg`)} alt="Teams Centre" title="Teams Centre" width="21px" style={{float: 'right', cursor: 'pointer'}} onClickCapture={() => window.open("https://teams.microsoft.com/_#/apps/bafc60a5-488b-49b6-bc3a-9af2db0a761b/sections/57af5aa1-fef6-43d9-9cc2-a756219cd17f", "_blank")} /></h4>
+                <div className={ styles.column2Container }>
+                  <div className={styles.colTeamsMyTeams}>
+                    {myTeamGroups}
                   </div>
-                  );
-                })}
-              </div>
-
-              <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `}>
-                <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", left: 0}}>
-                {window.matchMedia("(min-width: 480px)").matches ? analyticsPieChart :  analyticsPieChartSM}
-                </div>
-                <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", right: 0}}>
-                {analyticsBarChart1}
+                  <div className={styles.colTeamsConvo}>
+                    {myTeamMessages}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        </div>}
-     
-
-        </div>
-        </div>
-
-      {/*     <div className={ styles.row }>
-           <div className={`${styles.column2} ms-sm12 ms-lg12 ${styles.msSm8} ${styles.msLg12} ${styles.col4} ${styles.colOpportunities}`} style={{borderRadius:'10px',margin:'10px 10px 10px 40px ',backgroundColor:'white',width:'1030px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'300px', maxHeight: '310px'}}>
-            <div>
-            <Carousel
-              buttonsLocation={CarouselButtonsLocation.bottom} buttonsDisplay={CarouselButtonsDisplay.buttonsOnly}
-              element={this.state.currentCarouselItemElement}
-              triggerPageEvent={this.triggerNextElement}
-              contentContainerStyles={{}}
-            />
-            </div>
-          </div> 
-          </div>
-
-      <div className={ styles.container }>
-        <div className='row'>
-          <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Internal Communication</b></div></div>
-          <div className={` col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b> My Emails <span>{this.state.mailMessageCount}</span></b></div></div>
-          <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 10px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Teams.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>TEAMS</b></div></div>
-          </div>
-          <div className={ styles.row }>
-          <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4}`}  style={{border:'solid 1px ',borderRadius:'10px',margin:'10px 10px 10px 40px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
-                          
-            <div className={`ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.myProfileColumn}`}>
-              <div id="enterpriseSearch" style={{margin: '0 auto 30px'}}>
-                <div className={ styles.extnSearch }>
-                  <div className={`${styles.wrap}`}>
-                    <div className={`${styles.search}`} ref={this._menuButtonElement}>
-                      {(this.state.searchText === "")?
-                      <span className={` ${styles.searchSpan}`}>
-                        <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`}></i>
-                      </span>
-                      : ""}
-                      <input  name="newregionalcordinatoremailvalue" className={` ${styles.searchTerm}`}  readOnly={false} type="text" placeholder="Search for Content…" value={this.state.searchText}
-                      onChange={(e) => {
-                        this.setState({searchText: e.target["value"]});
-                      }}
-                      onKeyUp={(e) => {
-                        if(e.keyCode===13 || e.key==="Enter"){
-                          this._searchClicked();
-                          // console.log(e.key);
-                        }
-                      }}
-                      style={this.state.searchText===""? {paddingLeft: '15px'}: {}} ></input>
-                      {(this.state.searchText == "")?
-                      ""
-                      :
-                        <div className={` ${styles.searchButtonDiv}`} >
-                          <button type="submit" className={` ${styles.searchClearButton}`} onClick={() => this._searchClearClicked()}>
-                            <i className={`ms-Icon ms-Icon--Clear` }></i>
-                          </button>  
-                          <button type="submit" className={` ${styles.searchButton}`} onClick={() => this._searchClicked()}>
-                            <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`} ></i>
-                          </button>
-                        </div>
-                      } 
-                    </div>
-
-                  </div> 
-                </div> 
-                { (this.state.searchstatus && this.state.isCalloutVisible) ? 
-                  <Callout
-                    style={{maxWidth: '500px', width: '75%'}}
-                    beakWidth={15}
-                    gapSpace={10}
-                    directionalHint={DirectionalHint.bottomCenter}
-                    target={this._menuButtonElement.current}
-                    onDismiss={(e) => this._onCalloutDismiss(e)}
-                  >
-                    <div className={styles.searchResult}>
-                      <div className={styles.column2Container}>
-                        <div className={styles.docTitle}>
-                        </div>
-                        <div className={styles.docContainer}>
-                          {eSearchResult}
-                        </div>
-                      </div>
-                    </div>
-                  </Callout>
-                  :
-                  <div></div>
+          
+           </div>
+           {/* fourth webpart */}
+           {this.props.wbProperties.showCalendar && <div  className="col-md-4">
+            <div className={`col-md-4  ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/calendar.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MY CALENDAR</b></div></div>
+            <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
+              height: '327px', maxHeight: '327',borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
+            }}>
+              {/* <h4>MY CALENDAR</h4> */}
+              <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`}>
+                {
+                // myUpcomingEvents
+                  myCalendarEvents
                 }
               </div>
             </div>
+            </div>}
 
-
-            <div className={`${styles.col1Welcome}`} style={{marginTop: '-61px',overflow:'hidden'}}>
-              <div className={`${styles.col1ProfilePic}`} style={this.state.myProfile != null ? {backgroundImage: `url('${this.props.siteUrl}/_layouts/15/userphoto.aspx?size=L&accountname=${this.state.myProfile.mail}')`} : {}}></div>
-              <p>WELCOME</p>
-              <p>{this.state.myProfile != null ? this.state.myProfile.displayName : ""}</p>
-              <p><a href={this.state.notificationCount ? "https://outlook.office.com/calendar/view/week" : ""} target="_blank">You have <span>{this.state.notificationCount}</span> notifications</a></p>
-            </div>
-            <div className={`${styles.col1Members}`}>
-              <p>My Recent Contacts</p>
-              <div className={`ms-Grid-row ${styles.msGridRow}`}>{myRecentUser}</div>
-            </div>
-          </div>
-          <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.zoom} ${styles.msSm12} ${styles.msLg4} ${styles.col2} ${styles.colOutlook}`} style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-            
-            <div className={` ${styles.scrollHidden}`}>
-              {myMailElArr}
-            </div>
-          </div>
-          <div className={` ${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} `} style={{border:'solid 1px',borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-          <div>
-            <h4 className={`${styles.column2Title} ${styles.teamsTitle}`} style={{paddingRight: '55px'}}>Microsoft Teams <img src={require(`./images/setting_gear.svg`)} alt="Teams Centre" title="Teams Centre" width="21px" style={{float: 'right', cursor: 'pointer'}} onClickCapture={() => window.open("https://teams.microsoft.com/_#/apps/bafc60a5-488b-49b6-bc3a-9af2db0a761b/sections/57af5aa1-fef6-43d9-9cc2-a756219cd17f", "_blank")} /></h4>
+            {/* fifth webpart */}
+            {this.props.wbProperties.showTasks && <div className="col-md-4">
+            <div className={` col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/MD Desk.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Task</b></div></div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}  style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}> 
             <div className={ styles.column2Container }>
-              <div className={styles.colTeamsMyTeams}>
-                {myTeamGroups}
-              </div>
-              <div className={styles.colTeamsConvo}>
-                {myTeamMessages}
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>
-       
-      </div>
-      <div className={ styles.container }>
-      <div className='row'>
-      {this.props.wbProperties.showCalendar && <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/calendar.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MY CALENDAR</b></div></div>}
-          {this.props.wbProperties.showTasks && <div className={` col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/MD Desk.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MY TASK</b></div></div>}
-          <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 10px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/EVENT.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>EVENTS</b></div></div>
-          </div>
-        <div className={ styles.row }>
-        {this.props.wbProperties.showCalendar && <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-          height: '327px', maxHeight: '327',border:'solid 1px ',borderRadius:'10px',margin:'10px 10px 10px 40px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
-        }}>
-         
-          <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`}>
-            {
-            // myUpcomingEvents
-              myCalendarEvents
-            }
-          </div>
-        </div> }
-        
-        {this.props.wbProperties.showTasks && <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}  style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}> 
-            
-            <div className={ styles.column2Container }>
-              <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `} style={{display: this.state.myPlannerTasks.length==0 ? "flex" : "block"}}>
-              {plannerTasks}
-              </div>
-            </div>
-        
-        </div>}
-        <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-          height: '327px', maxHeight: '327px',border:'solid 1px',borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
-        }}>
-           
-            <div className={`${styles.eventContainer} ${styles.scrollHidden}`}>
-              {
-              myUpcomingEvents
-              }
-            </div>
-          </div>
-          </div> 
-
-          <div className='row'>
-          <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/calendar.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF BIRTHDAY'S</b></div></div>
-          <div className={` col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Annoucement.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>ANNOUNCEMENT</b></div></div>
-          <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 10px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/EVENT.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF ANNIVERSARY</b></div></div>
-          </div>
-        <div className={ styles.row }>
-        <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-          height: '327px', maxHeight: '327',border:'solid 1px ',borderRadius:'10px',margin:'10px 10px 10px 40px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
-        }}>
-          
-          <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffBirthdays.length==0 ? "flex" : "block"}}>
-            {
-             StaffBirthdays
-            }
-          </div>
-        </div>
-        
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}  style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}> 
-           
-            <div className={ styles.column2Container }>
-              <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} ${styles.announcements} `}>
-              {spAnnouncementNews}
-              </div>
-            </div>
-        
-        </div>
-        <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-          height: '327px', maxHeight: '327px',border:'solid 1px',borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
-        }}>
-            
-            <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffAnniversary.length==0 ? "flex" : "block"}}>
-            {
-            staffAnniversary
-            }
-          </div>
-          </div>
-
-          </div> 
-
-
-          
-          <div className='row'>
-          <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/MD Desk.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MD's DESK</b></div></div>
-          <div className={` col-md-8`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'680px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/microsoft-onedrive-2019.svg')} width="7%" height="34px" style={{marginRight:"10px"}}/><b>ONE DRIVE</b></div></div>
-        
-          </div>
-          <div className={ styles.row }>
-          <div className={`${styles.column2} ms-sm12 ms-lg4  ${styles.msLg4} ${styles.col4} ${styles.colOpportunities}`} style={{
-           height: '327px', maxHeight: '327',border:'solid 1px ',borderRadius:'10px',margin:'10px 10px 10px 40px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
-          }}>
-            <div>
-             
-             <img src={require('./images/visionmission.png')} style={{
-           height : '380px',
-           width : '400px'
-          }}></img>
-
-            </div>
-          </div>
-        <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colRecentDoc}  `}style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'680px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-          <div>
-           
-            <div className={ styles.column2Container }>
-              <div className={ styles.docTitle}>
-                <span>Name</span><span>Date Modified</span>
-              </div>
-              <div className={ styles.docContainer }>
-                {myRecentDoc}
-              </div>
-            </div>
-          </div>
-        </div>
-          </div>
-        
-        </div> 
-
-        <div className='row'>
-          <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>LAUNCHER</b></div></div>
-          <div className={` col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>LINE OF BUSINESS APPS</b></div></div>
-          <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 10px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Employee Analytics.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF DIRECTORY</b></div></div>
-          </div>
-
-          <div className={ styles.row }>
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `} style={{border:'solid 1px ',borderRadius:'10px',margin:'10px 10px 10px 40px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
-          <div>
-            <div className={ styles.column2Container }>
-              <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `}>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--office ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/office_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/word" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--word ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/word_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/excel" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--excel ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/excel_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/powerpoint" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--powerpoint ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/powerpoint_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--access ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/access_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/onenote" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onenote ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onenote_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onedrive ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onedrive_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://www.microsoft.com/en-us/microsoft-365/project/project-management-software" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--project ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/project_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.live.com/start/visio.aspx" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--visio ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/visio_96x1.png)'}}
-                  ></div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `} style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-          <div>
-           
-            <div className={ styles.column2Container }>
-              <div className={` ms-Grid-row ${styles.msGridRow} `} style={{ overflowY: "scroll" }}>
-                {LOBLinks}
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colExtns} `}style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-          <div>
-           
-            <div className={ styles.column2Container }>
-              <div className={`ms-Grid-row ${styles.msGridRow}`}>
-                <div className={ styles.employeeSearch }>
-                  <input type="search" name="extnSearchBox" placeholder="Search for Staff…" id={ styles.employeeSearchBox }
-                    onInputCapture={(evt) => this.setState({searchExtn: evt.target["value"].trim().toLowerCase()}) }
-                  />
-                  <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
+                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `} style={{display: this.state.myPlannerTasks.length==0 ? "flex" : "block"}}>
+                  {plannerTasks}
+                  </div>
                 </div>
-                <div className={` ${styles.extnContainer} ${styles.scrollHidden} `}>
+            
+            </div>
+            </div>}
+
+          {/* sixth webpart */}
+          {this.props.wbProperties.showEvent &&  <div className="col-md-4">
+          <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/EVENT.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>EVENTS</b></div></div>
+          <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
+              height: '327px', maxHeight: '327px',borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
+            }}>
+                {/* <h4>EVENTS</h4> */}
+                <div className={`${styles.eventContainer} ${styles.scrollHidden}`}>
                   {
-                  // companyExtns
-                  employeeSearhResults
+                  myUpcomingEvents
                   }
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        </div>
+          </div>}
 
-        <div className='row'>
-          <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 42px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Employee Analytics.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>DEPARTMENTAL ANALYTICS</b></div></div>
-          <div className={` col-md-8`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'680px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/analytic.png')} width="6%" height="34px" style={{marginRight:"10px"}}/><b>MY ANALYTICS</b></div></div>
-        
-          </div>
-
-      
-          <div className={ styles.row }>
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'10px',margin:'10px 10px 10px 38px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-          <div>
-            <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
+           {/* Seventh webpart */}
+           {this.props.wbProperties.showBirthday && <div  className="col-md-4">
+            <div className={`col-md-4  ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/calendar.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>BIRTHDAY</b></div></div>
+            <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
+              height: '327px', maxHeight: '327',borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
+            }}>
               
-              <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `} style={{height: 'calc(100% - 30px)'}}>
-                <div style={{width: 'calc(100% - 0px)', display: "inline-block", position: "relative", right: 0}}>
-                {analyticsBarChart1}
+               <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffBirthdays.length==0 ? "flex" : "block"}}>
+                {
+                 StaffBirthdays
+                }
+              </div>
+            </div>
+            </div>}
+
+            {/* Eight webpart */}
+            {this.props.wbProperties.showAnnouncement && <div className="col-md-4">
+         <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Annoucement.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>ANNOUNCEMENT</b></div></div>
+         <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+         <div className={ styles.column2Container }>
+                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} ${styles.announcements} `}>
+                  {spAnnouncementNews}
+                  </div>
+                </div>
+            
+            </div>
+         </div>}
+
+          {/* nineth webpart */}
+          {this.props.wbProperties.showAnniversary && <div className="col-md-4">
+          <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/EVENT.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF ANNIVERSARY</b></div></div>
+          <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
+              height: '327px', maxHeight: '327px',borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
+            }}>
+               <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffAnniversary.length==0 ? "flex" : "block"}}>
+                {
+                staffAnniversary
+                }
+              </div>
+              </div>
+          </div>}
+
+
+           {/* Tenth webpart */}
+           {this.props.wbProperties.showMDDesk && <div className="col-md-4">
+          <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/MD Desk.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MD's DESK</b></div></div>
+          <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+                <div>
+                  {/* <h4 className={`${styles.column2Title}`}>Reliance</h4> */}
+                 <img src={require('./images/visionmission.png')} style={{
+               height : '380px',
+               width : '100%'
+              }}></img>
+    
+                </div>
+              </div>
+          </div>}
+            {/* Eleventh webpart */}
+            {this.props.wbProperties.showOnedrive && <div className="col-md-8">
+          <div className={` col-md-8 ${styles.msSm12} ${styles.msLg12}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',minWidth:'98%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/microsoft-onedrive-2019.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>ONE DRIVE</b></div></div>
+          <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colRecentDoc}  `}style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',minWidth:'98%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+              <div>
+                {/* <h4 className={`${styles.column2Title} ${styles.onedriveTitle}`}>OneDrive</h4> */}
+                <div className={ styles.column2Container }>
+                  <div className={ styles.docTitle}>
+                    <span>Name</span><span>Date Modified</span>
+                  </div>
+                  <div className={ styles.docContainer }>
+                    {myRecentDoc}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+         </div>}
 
-        <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',width:'680px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
-          <div>
-           
-            <div className={` ${styles.column2Container} ${styles.scrollHidden} `} style={{overflowY: "scroll"}}>
-              
-              <div className={` ${styles.analyticsOverview} `}>
-                {Object.keys(this.state.CollaborationActivityList).map(activity => {
-                  let duration = this.state.CollaborationActivityList[activity].reduce((acc, cur) => (acc + cur["parsedDuration"]), 0).toFixed(2), trackerColor = activity==="Meeting" ? "#e8c1a0" :  activity==="Focus" ? "#e8a838" :  activity==="Chats/Calls" ? "#f1e15b" :  activity==="Email" ? "#f47560" : "transparent";
+          {/* first Webpart */}
+          {/* <div className="col-md-4  ms-sm12 ms-lg4 ">
+           <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Latest Hire</b></div></div>
+           <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4}`}  style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
+                              
+                              <div className={`${styles.col1Welcome}`} style={{marginTop: '60px',overflow:'hidden'}}>
+                                <div className={`${styles.col1ProfilePic}`} style={this.state.myProfile != null ? {backgroundImage: `url('${this.props.siteUrl}/_layouts/15/userphoto.aspx?size=L&accountname=${this.state.staffAnniversary.Staff_Email}')`} : {}}></div>
+                                <p>WELCOME</p>
+                                <p>{this.state.myProfile != null ? this.state.myProfile.displayName : ""}</p>
+                                <p><a href={this.state.notificationCount ? "https://outlook.office.com/calendar/view/week" : ""} target="_blank">You have <span>{this.state.notificationCount}</span> notifications</a></p>
+                              </div>
+                            </div>
+           </div>  */}
+           <div className="col-md-4  ms-sm12 ms-lg4 ">
+           <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Latest Hire</b></div></div>
+           <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4}`}  style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
+              <div>
+                {/* <h4 className={`${styles.column2Title} ${styles.onedriveTitle}`}>OneDrive</h4> */}
+                <div className={ styles.column2Container }>
+                {LatestHire}
+                </div>
+              </div>
+            </div>
+           </div>
+
+             {/* Eleventh webpart */}
+             {this.props.wbProperties.showOnedrive && <div className="col-md-8">
+          <div className={` col-md-8 ${styles.msSm12} ${styles.msLg12}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',minWidth:'98%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/microsoft-onedrive-2019.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Celebrant of The Month</b></div></div>
+          <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colRecentDoc}  `}style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',minWidth:'98%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+              <div>
+                {/* <h4 className={`${styles.column2Title} ${styles.onedriveTitle}`}>OneDrive</h4> */}
+                <div className={ styles.column2Container }>
+                  <div className={ styles.docTitle}>
+                    <span>Name</span><span>Date Modified</span>
+                  </div>
+                  <div className={ styles.docContainer }>
+                    {myRecentDoc}
+                  </div>
+                </div>
+              </div>
+            </div>
+         </div>}
+
+         {/* twelfth webpart */}
+
+         {this.props.wbProperties.showLauncher && <div className="col-md-4">
+            <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>LAUNCHER</b></div></div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
+              <div>
+                {/* <h4 className={`${styles.column2Title} ${styles.launcherTitle}`}>Launcher</h4> */}
+                <div className={ styles.column2Container }>
+                  <div className="row">
+                    <div className ="col-md-4">
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank" style={{width:"100%"}}>
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--office ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/office_96x1.png)'}}
+                      ></div>
+                    </a>
+                    </div>
+
+                    <div className ="col-md-4">
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/word" target="_blank" style={{width:"100%"}}>
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--word ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/word_96x1.png)'}}
+                      ></div>
+                    </a>
+                    </div>
+                    <div className ="col-md-4">
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/excel" target="_blank" style={{width:"100%"}}>
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--excel ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/excel_96x1.png)'}}
+                      ></div>
+                    </a>
+                    </div>
+                    <div className ="col-md-4">
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/powerpoint" target="_blank" style={{width:"100%"}}>
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--powerpoint ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/powerpoint_96x1.png)'}}
+                      ></div>
+                    </a>
+                    </div>
+                    <div className ="col-md-4">
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/onenote" target="_blank" style={{width:"100%"}}>
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onenote ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onenote_96x1.png)'}}
+                      ></div>
+                    </a>
+                    </div>
+                    <div className ="col-md-4">
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank"style={{width:"100%"}}>
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onedrive ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onedrive_96x1.png)'}}
+                      ></div>
+                    </a>
+                    </div>
+                    <div className ="col-md-4">
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank" style={{width:"100%"}}>
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--access ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/access_96x1.png)'}}
+                      ></div>
+                    </a>
+                    </div>
+                    <div className ="col-md-4">
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://www.microsoft.com/en-us/microsoft-365/project/project-management-software" target="_blank"style={{width:"100%"}}>
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--project ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/project_96x1.png)'}}
+                      ></div>
+                    </a>
+                    </div>
+                    <div className ="col-md-4">
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.live.com/start/visio.aspx" target="_blank" style={{width:"100%"}}>
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--visio ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/visio_96x1.png)'}}
+                      ></div>
+                    </a>
+                    </div>
                   
-                  return (
-                  <div className={` ms-sm12 ms-md3 ${styles.msSm12} ${styles.msMd3} ${styles.analyticsCard} `} >
-                    <div>
-                    <p style={{backgroundImage: `url('${require('./images/analyticsMeeting.svg')}')`}}>{activity}</p>
-                    <p><span>{duration}</span><span>hrs</span><span className={`${styles.analyticsCardTracker}`}><span style={{width: `min(calc(100% * ${duration} / 24), 100%)`, backgroundColor: '#e8c1a0'}}></span></span></p>
+                  </div>
+                 
+                </div>
+              </div>
+            </div>
+            </div>}
+            {/* thirteenth webpart */}
+            {this.props.wbProperties.showLOB && <div className="col-md-4">
+            <div className={` col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>LINE OF BUSINESS APPS</b></div></div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `} style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+            <div>
+            <div className={ styles.column2Container }>
+                  <div className="row">
+                {/* <h4 className={styles.column2Title}>LINE OF BUSINESS APPS</h4> */}
+                {LOBLinks}
+                    {/* <div className={`  ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4} ${styles.lobApps}`} style={{width:"100%"}}>
+                
+                </div> */}
+              </div>
+            </div>
+            </div>
+            </div>
+            </div>}
+
+            {/* fourteenth webpart */}
+            {this.props.wbProperties.showStaffDir && <div className="col-md-4">
+            <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Employee Analytics.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF DIRECTORY</b></div></div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colExtns} `}style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+              <div>
+                {/* <h4 className={styles.column2Title}>STAFF DIRECTORY</h4> */}
+                <div className={ styles.column2Container }>
+                  <div className={`ms-Grid-row ${styles.msGridRow}`}>
+                    <div className={ styles.employeeSearch }>
+                      <input type="search" name="extnSearchBox" placeholder="Search for Staff…" id={ styles.employeeSearchBox }
+                        onInputCapture={(evt) => this.setState({searchExtn: evt.target["value"].trim().toLowerCase()}) }
+                      />
+                      <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
+                    </div>
+                    <div className={` ${styles.extnContainer} ${styles.scrollHidden} `}>
+                      {
+                      // companyExtns
+                      employeeSearhResults
+                      }
                     </div>
                   </div>
-                  );
-                })}
-              </div>
-
-              <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `}>
-                <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", left: 0}}>
-                {window.matchMedia("(min-width: 480px)").matches ? analyticsPieChart :  analyticsPieChartSM}
-                </div>
-                <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", right: 0}}>
-                {analyticsBarChart1}
                 </div>
               </div>
             </div>
+            </div>}
+
+             {/* thirteenth webpart */}
+             {this.props.wbProperties.showDepartmentalAnalytics && <div className="col-md-4">
+         <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Employee Analytics.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>DEPARTMENTAL ANALYTICS</b></div></div>
+         <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+              <div>
+                {/* <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>Departmental Analytics
+                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
+                </h4> */}
+                <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
+                  
+                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `} style={{height: 'calc(100% - 30px)'}}>
+                    <div style={{width: 'calc(100% - 0px)', display: "inline-block", position: "relative", right: 0}}>
+                    {analyticsBarChart2}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+         </div>}
+
+         {/* fourtheenth webpart */}
+         {this.props.wbProperties.showMyAnalytics &&  <div className= "col-md-8">      
+         <div className={` col-md-8 ${styles.msSm12} ${styles.msLg8}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',minWidth:'98%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/analytic.png')} width="6%" height="34px" style={{marginRight:"10px"}}/><b>MY ANALYTICS</b></div></div>
+         <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',minWidth:'98%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
+              <div>
+                {/* <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>MyANALYTICS
+                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
+                </h4> */}
+                <div className={` ${styles.column2Container} ${styles.scrollHidden} `} style={{overflowY: "scroll"}}>
+                  
+                  <div className={` ${styles.analyticsOverview} `}>
+                    {Object.keys(this.state.CollaborationActivityList).map(activity => {
+                      let duration = this.state.CollaborationActivityList[activity].reduce((acc, cur) => (acc + cur["parsedDuration"]), 0).toFixed(2), trackerColor = activity==="Meeting" ? "#e8c1a0" :  activity==="Focus" ? "#e8a838" :  activity==="Chats/Calls" ? "#f1e15b" :  activity==="Email" ? "#f47560" : "transparent";
+                      
+                      return (
+                      <div className={` ms-sm12 ms-md3 ${styles.msSm12} ${styles.msMd3} ${styles.analyticsCard} `} >
+                        <div>
+                        <p style={{backgroundImage: `url('${require('./images/analyticsMeeting.svg')}')`}}>{activity}</p>
+                        <p><span>{duration}</span><span>hrs</span><span className={`${styles.analyticsCardTracker}`}><span style={{width: `min(calc(100% * ${duration} / 24), 100%)`, backgroundColor: '#e8c1a0'}}></span></span></p>
+                        </div>
+                      </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `}>
+                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", left: 0}}>
+                    {window.matchMedia("(min-width: 480px)").matches ? analyticsPieChart :  analyticsPieChartSM}
+                    </div>
+                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", right: 0}}>
+                    {analyticsBarChart1}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>}
+         
+
+            </div>
+            </div>
+
+              <div className={ styles.row }>
+               <div className={`${styles.column2} ms-sm12 ms-lg12 ${styles.msSm8} ${styles.msLg12} ${styles.col4} ${styles.colOpportunities}`} style={{borderRadius:'10px',margin:'10px 10px 10px 40px ',backgroundColor:'white',width:'1030px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'300px', maxHeight: '310px'}}>
+                <div>
+                {/* <Carousel
+                  buttonsLocation={CarouselButtonsLocation.bottom} buttonsDisplay={CarouselButtonsDisplay.buttonsOnly}
+                  element={this.state.currentCarouselItemElement}
+                  triggerPageEvent={this.triggerNextElement}
+                  contentContainerStyles={{}}
+                /> */}
+                </div>
+              </div> 
+              </div>
+
+          <div className={ styles.container }>
+            <div className='row'>
+              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Internal Communication</b></div></div>
+              <div className={` col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b> My Emails <span>{this.state.mailMessageCount}</span></b></div></div>
+              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 10px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Teams.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>TEAMS</b></div></div>
+              </div>
+              <div className={ styles.row }>
+              <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4}`}  style={{border:'solid 1px ',borderRadius:'10px',margin:'10px 10px 10px 40px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
+                              
+                <div className={`ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.myProfileColumn}`}>
+                  <div id="enterpriseSearch" style={{margin: '0 auto 30px'}}>
+                    {/*  <h4 className={styles.column2Title}>E-Search</h4>  */}
+                    <div className={ styles.extnSearch }>
+                      <div className={`${styles.wrap}`}>
+                        <div className={`${styles.search}`} ref={this._menuButtonElement}>
+                          {(this.state.searchText === "")?
+                          <span className={` ${styles.searchSpan}`}>
+                            <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`}></i>
+                          </span>
+                          : ""}
+                          <input  name="newregionalcordinatoremailvalue" className={` ${styles.searchTerm}`}  readOnly={false} type="text" placeholder="Search for Content…" value={this.state.searchText}
+                          onChange={(e) => {
+                            this.setState({searchText: e.target["value"]});
+                          }}
+                          onKeyUp={(e) => {
+                            if(e.keyCode===13 || e.key==="Enter"){
+                              this._searchClicked();
+                              // console.log(e.key);
+                            }
+                          }}
+                          style={this.state.searchText===""? {paddingLeft: '15px'}: {}} ></input>
+                          {(this.state.searchText == "")?
+                          ""
+                          :
+                            <div className={` ${styles.searchButtonDiv}`} >
+                              <button type="submit" className={` ${styles.searchClearButton}`} onClick={() => this._searchClearClicked()}>
+                                <i className={`ms-Icon ms-Icon--Clear` }></i>
+                              </button>  
+                              <button type="submit" className={` ${styles.searchButton}`} onClick={() => this._searchClicked()}>
+                                <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`} ></i>
+                              </button>
+                            </div>
+                          } 
+                        </div>
+
+                      </div> 
+                    </div> 
+                    { (this.state.searchstatus && this.state.isCalloutVisible) ? 
+                      <Callout
+                        style={{maxWidth: '500px', width: '75%'}}
+                        beakWidth={15}
+                        gapSpace={10}
+                        directionalHint={DirectionalHint.bottomCenter}
+                        target={this._menuButtonElement.current}
+                        onDismiss={(e) => this._onCalloutDismiss(e)}
+                      >
+                        <div className={styles.searchResult}>
+                          <div className={styles.column2Container}>
+                            <div className={styles.docTitle}>
+                            </div>
+                            <div className={styles.docContainer}>
+                              {eSearchResult}
+                            </div>
+                          </div>
+                        </div>
+                      </Callout>
+                      :
+                      <div></div>
+                    }
+                  </div>
+                </div>
+
+
+                <div className={`${styles.col1Welcome}`} style={{marginTop: '-61px',overflow:'hidden'}}>
+                  <div className={`${styles.col1ProfilePic}`} style={this.state.myProfile != null ? {backgroundImage: `url('${this.props.siteUrl}/_layouts/15/userphoto.aspx?size=L&accountname=${this.state.myProfile.mail}')`} : {}}></div>
+                  <p>WELCOME</p>
+                  <p>{this.state.myProfile != null ? this.state.myProfile.displayName : ""}</p>
+                  <p><a href={this.state.notificationCount ? "https://outlook.office.com/calendar/view/week" : ""} target="_blank">You have <span>{this.state.notificationCount}</span> notifications</a></p>
+                </div>
+                <div className={`${styles.col1Members}`}>
+                  <p>My Recent Contacts</p>
+                  <div className={`ms-Grid-row ${styles.msGridRow}`}>{myRecentUser}</div>
+                </div>
+              </div>
+              <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.zoom} ${styles.msSm12} ${styles.msLg4} ${styles.col2} ${styles.colOutlook}`} style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+                {/* <p className={`${styles.col2Notification}`}>MY EMAILS <span>{this.state.mailMessageCount}</span></p> */}
+                <div className={` ${styles.scrollHidden}`}>
+                  {myMailElArr}
+                </div>
+              </div>
+              <div className={` ${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} `} style={{border:'solid 1px',borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+              <div>
+                <h4 className={`${styles.column2Title} ${styles.teamsTitle}`} style={{paddingRight: '55px'}}>Microsoft Teams <img src={require(`./images/setting_gear.svg`)} alt="Teams Centre" title="Teams Centre" width="21px" style={{float: 'right', cursor: 'pointer'}} onClickCapture={() => window.open("https://teams.microsoft.com/_#/apps/bafc60a5-488b-49b6-bc3a-9af2db0a761b/sections/57af5aa1-fef6-43d9-9cc2-a756219cd17f", "_blank")} /></h4>
+                <div className={ styles.column2Container }>
+                  <div className={styles.colTeamsMyTeams}>
+                    {myTeamGroups}
+                  </div>
+                  <div className={styles.colTeamsConvo}>
+                    {myTeamMessages}
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+           
           </div>
-        </div>
-       </div> */}
+          <div className={ styles.container }>
+          <div className='row'>
+          {this.props.wbProperties.showCalendar && <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/calendar.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MY CALENDAR</b></div></div>}
+              {this.props.wbProperties.showTasks && <div className={` col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/MD Desk.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MY TASK</b></div></div>}
+              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 10px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/EVENT.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>EVENTS</b></div></div>
+              </div>
+            <div className={ styles.row }>
+            {this.props.wbProperties.showCalendar && <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
+              height: '327px', maxHeight: '327',border:'solid 1px ',borderRadius:'10px',margin:'10px 10px 10px 40px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
+            }}>
+              {/* <h4>MY CALENDAR</h4> */}
+              <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`}>
+                {
+                // myUpcomingEvents
+                  myCalendarEvents
+                }
+              </div>
+            </div> }
+            
+            {this.props.wbProperties.showTasks && <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}  style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}> 
+                {/* <h4 className={styles.column2Title}>ANNOUNCEMENTS</h4> */}
+                <div className={ styles.column2Container }>
+                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `} style={{display: this.state.myPlannerTasks.length==0 ? "flex" : "block"}}>
+                  {plannerTasks}
+                  </div>
+                </div>
+            
+            </div>}
+            <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
+              height: '327px', maxHeight: '327px',border:'solid 1px',borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
+            }}>
+                {/* <h4>EVENTS</h4> */}
+                <div className={`${styles.eventContainer} ${styles.scrollHidden}`}>
+                  {
+                  myUpcomingEvents
+                  }
+                </div>
+              </div>
+              </div> 
 
-
-
-
-
-
-
-   {/*  
-      <div className={ styles.row }>
-           <div className={`${styles.column2} ms-sm12 ms-lg12 ${styles.msSm8} ${styles.msLg12} ${styles.col4} ${styles.colOpportunities}`} style={{borderRadius:'10px',margin:'10px 10px 10px 30px ',backgroundColor:'white',width:'1040px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
-            <div>
-               <Carousel
-              buttonsLocation={CarouselButtonsLocation.bottom} buttonsDisplay={CarouselButtonsDisplay.buttonsOnly}
-              element={this.state.currentCarouselItemElement}
-              triggerPageEvent={this.triggerNextElement}
-              contentContainerStyles={{}}
-            />
+              <div className='row'>
+              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/calendar.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF BIRTHDAY'S</b></div></div>
+              <div className={` col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Annoucement.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>ANNOUNCEMENT</b></div></div>
+              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 10px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/EVENT.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF ANNIVERSARY</b></div></div>
+              </div>
+            <div className={ styles.row }>
+            <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
+              height: '327px', maxHeight: '327',border:'solid 1px ',borderRadius:'10px',margin:'10px 10px 10px 40px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
+            }}>
+              {/* <h4>MY CALENDAR</h4> */}
+              <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffBirthdays.length==0 ? "flex" : "block"}}>
+                {
+                 StaffBirthdays
+                }
+              </div>
             </div>
-          </div> 
+            
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}  style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}> 
+                {/* <h4 className={styles.column2Title}>ANNOUNCEMENTS</h4> */}
+                <div className={ styles.column2Container }>
+                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} ${styles.announcements} `}>
+                  {spAnnouncementNews}
+                  </div>
+                </div>
+            
+            </div>
+            <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
+              height: '327px', maxHeight: '327px',border:'solid 1px',borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
+            }}>
+                {/* <h4>EVENTS</h4> */}
+                <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffAnniversary.length==0 ? "flex" : "block"}}>
+                {
+                staffAnniversary
+                }
+              </div>
+              </div>
+ 
+              </div> 
+
+
+              
+              <div className='row'>
+              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/MD Desk.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MD's DESK</b></div></div>
+              <div className={` col-md-8`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'680px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/microsoft-onedrive-2019.svg')} width="7%" height="34px" style={{marginRight:"10px"}}/><b>ONE DRIVE</b></div></div>
+            
+              </div>
+              <div className={ styles.row }>
+              <div className={`${styles.column2} ms-sm12 ms-lg4  ${styles.msLg4} ${styles.col4} ${styles.colOpportunities}`} style={{
+               height: '327px', maxHeight: '327',border:'solid 1px ',borderRadius:'10px',margin:'10px 10px 10px 40px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
+              }}>
+                <div>
+                  {/* <h4 className={`${styles.column2Title}`}>Reliance</h4> */}
+                 <img src={require('./images/visionmission.png')} style={{
+               height : '380px',
+               width : '400px'
+              }}></img>
+    
+                </div>
+              </div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colRecentDoc}  `}style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'680px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+              <div>
+                {/* <h4 className={`${styles.column2Title} ${styles.onedriveTitle}`}>OneDrive</h4> */}
+                <div className={ styles.column2Container }>
+                  <div className={ styles.docTitle}>
+                    <span>Name</span><span>Date Modified</span>
+                  </div>
+                  <div className={ styles.docContainer }>
+                    {myRecentDoc}
+                  </div>
+                </div>
+              </div>
+            </div>
+              </div>
+            
+            </div> 
+            
+
+ 
+            <div className='row'>
+              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>LAUNCHER</b></div></div>
+              <div className={` col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>LINE OF BUSINESS APPS</b></div></div>
+              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 10px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Employee Analytics.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF DIRECTORY</b></div></div>
+              </div>
+
+              <div className={ styles.row }>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `} style={{border:'solid 1px ',borderRadius:'10px',margin:'10px 10px 10px 40px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
+              <div>
+                {/* <h4 className={`${styles.column2Title} ${styles.launcherTitle}`}>Launcher</h4> */}
+                <div className={ styles.column2Container }>
+                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `}>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--office ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/office_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/word" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--word ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/word_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/excel" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--excel ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/excel_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/powerpoint" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--powerpoint ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/powerpoint_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--access ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/access_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/onenote" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onenote ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onenote_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onedrive ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onedrive_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://www.microsoft.com/en-us/microsoft-365/project/project-management-software" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--project ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/project_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.live.com/start/visio.aspx" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--visio ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/visio_96x1.png)'}}
+                      ></div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `} style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+              <div>
+                {/* <h4 className={styles.column2Title}>LINE OF BUSINESS APPS</h4> */}
+                <div className={ styles.column2Container }>
+                  <div className={` ms-Grid-row ${styles.msGridRow} `} style={{ overflowY: "scroll" }}>
+                    {LOBLinks}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colExtns} `}style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+              <div>
+                {/* <h4 className={styles.column2Title}>STAFF DIRECTORY</h4> */}
+                <div className={ styles.column2Container }>
+                  <div className={`ms-Grid-row ${styles.msGridRow}`}>
+                    <div className={ styles.employeeSearch }>
+                      <input type="search" name="extnSearchBox" placeholder="Search for Staff…" id={ styles.employeeSearchBox }
+                        onInputCapture={(evt) => this.setState({searchExtn: evt.target["value"].trim().toLowerCase()}) }
+                      />
+                      <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
+                    </div>
+                    <div className={` ${styles.extnContainer} ${styles.scrollHidden} `}>
+                      {
+                      // companyExtns
+                      employeeSearhResults
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <div className='row'>
+              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 42px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Employee Analytics.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>DEPARTMENTAL ANALYTICS</b></div></div>
+              <div className={` col-md-8`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'680px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/analytic.png')} width="6%" height="34px" style={{marginRight:"10px"}}/><b>MY ANALYTICS</b></div></div>
+            
+              </div>
+
+          
+              <div className={ styles.row }>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'10px',margin:'10px 10px 10px 38px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+              <div>
+                {/* <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>Departmental Analytics
+                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
+                </h4> */}
+                <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
+                  
+                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `} style={{height: 'calc(100% - 30px)'}}>
+                    <div style={{width: 'calc(100% - 0px)', display: "inline-block", position: "relative", right: 0}}>
+                    {analyticsBarChart1}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',width:'680px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
+              <div>
+                {/* <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>MyANALYTICS
+                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
+                </h4> */}
+                <div className={` ${styles.column2Container} ${styles.scrollHidden} `} style={{overflowY: "scroll"}}>
+                  
+                  <div className={` ${styles.analyticsOverview} `}>
+                    {Object.keys(this.state.CollaborationActivityList).map(activity => {
+                      let duration = this.state.CollaborationActivityList[activity].reduce((acc, cur) => (acc + cur["parsedDuration"]), 0).toFixed(2), trackerColor = activity==="Meeting" ? "#e8c1a0" :  activity==="Focus" ? "#e8a838" :  activity==="Chats/Calls" ? "#f1e15b" :  activity==="Email" ? "#f47560" : "transparent";
+                      
+                      return (
+                      <div className={` ms-sm12 ms-md3 ${styles.msSm12} ${styles.msMd3} ${styles.analyticsCard} `} >
+                        <div>
+                        <p style={{backgroundImage: `url('${require('./images/analyticsMeeting.svg')}')`}}>{activity}</p>
+                        <p><span>{duration}</span><span>hrs</span><span className={`${styles.analyticsCardTracker}`}><span style={{width: `min(calc(100% * ${duration} / 24), 100%)`, backgroundColor: '#e8c1a0'}}></span></span></p>
+                        </div>
+                      </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `}>
+                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", left: 0}}>
+                    {window.matchMedia("(min-width: 480px)").matches ? analyticsPieChart :  analyticsPieChartSM}
+                    </div>
+                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", right: 0}}>
+                    {analyticsBarChart1}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+           </div>
+
+
+
+
+
+
+
+       {/*  
+          <div className={ styles.row }>
+               <div className={`${styles.column2} ms-sm12 ms-lg12 ${styles.msSm8} ${styles.msLg12} ${styles.col4} ${styles.colOpportunities}`} style={{borderRadius:'10px',margin:'10px 10px 10px 30px ',backgroundColor:'white',width:'1040px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
+                <div>
+                   <Carousel
+                  buttonsLocation={CarouselButtonsLocation.bottom} buttonsDisplay={CarouselButtonsDisplay.buttonsOnly}
+                  element={this.state.currentCarouselItemElement}
+                  triggerPageEvent={this.triggerNextElement}
+                  contentContainerStyles={{}}
+                />
+                </div>
+              </div> 
+              </div> */}
+
+         {/*  <div className={ `${styles.container} ${styles.carouselContainer}` }>
+            <div className={ styles.row }>
+              <div className={`${styles.column} ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12}`} style={{
+                height: '340px', maxHeight: '340px', marginBottom: '20px'
+              }}>
+                 {/* <Carousel showThumbs={true} autoPlay={true} infiniteLoop={true} interval={5000} autoFocus={true} transitionTime={5000} >
+                  {this.state.carouselItems.map((imageList) => {
+                    return (<div style={{display:"flex", height:"100%"}}>
+                     <a href={imageList.ResourceLink} target='_blank'> <img src={imageList.FileRef} /> </a> 
+                    </div>);
+                  })}    
+                </Carousel>  */}
+              {/*   <Carousel
+                  buttonsLocation={CarouselButtonsLocation.bottom} buttonsDisplay={CarouselButtonsDisplay.buttonsOnly}
+                  element={this.state.currentCarouselItemElement}
+                  triggerPageEvent={this.triggerNextElement}
+                  contentContainerStyles={{}}
+                />
+               {/* <MyCarousel duration={5000}>
+                  {this.state.carouselItems.map((imageList) => {
+                    return (<MyCarouselItem width='100%'>
+                      <div style={{display:"flex", height:"100%"}}>
+                        <a href={imageList.ResourceLink} target='_blank'> <img src={imageList.FileRef} /> </a> 
+                      </div>
+                      </MyCarouselItem>);
+                  })}
+                </MyCarousel> */}
+               {/* <Rerousel itemRef={ref}>
+      
+                </Rerousel> */}
+
+             {/*  </div>
+            </div>
+          </div>*/}
+
+         {/*  <div className={ `${styles.container} ${styles.firstContainer}` }>
+            <div className={ styles.row }>
+
+              <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4}`}>
+                              
+                <div className={`ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.myProfileColumn}`}>
+                  <div id="enterpriseSearch" style={{margin: '0 auto 30px'}}>
+                    {/*  <h4 className={styles.column2Title}>E-Search</h4>  */}
+                   {/*  <div className={ styles.extnSearch }>
+                      <div className={`${styles.wrap}`}>
+                        <div className={`${styles.search}`} ref={this._menuButtonElement}>
+                          {(this.state.searchText === "")?
+                          <span className={` ${styles.searchSpan}`}>
+                            <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`}></i>
+                          </span>
+                          : ""}
+                          <input  name="newregionalcordinatoremailvalue" className={` ${styles.searchTerm}`}  readOnly={false} type="text" placeholder="Search for Content…" value={this.state.searchText}
+                          onChange={(e) => {
+                            this.setState({searchText: e.target["value"]});
+                          }}
+                          onKeyUp={(e) => {
+                            if(e.keyCode===13 || e.key==="Enter"){
+                              this._searchClicked();
+                              // console.log(e.key);
+                            }
+                          }}
+                          style={this.state.searchText===""? {paddingLeft: '15px'}: {}} ></input>
+                          {(this.state.searchText == "")?
+                          ""
+                          :
+                            <div className={` ${styles.searchButtonDiv}`} >
+                              <button type="submit" className={` ${styles.searchClearButton}`} onClick={() => this._searchClearClicked()}>
+                                <i className={`ms-Icon ms-Icon--Clear` }></i>
+                              </button>  
+                              <button type="submit" className={` ${styles.searchButton}`} onClick={() => this._searchClicked()}>
+                                <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`} ></i>
+                              </button>
+                            </div>
+                          } 
+                        </div>
+
+                      </div> 
+                    </div> 
+                    { (this.state.searchstatus && this.state.isCalloutVisible) ? 
+                      <Callout
+                        style={{maxWidth: '500px', width: '75%'}}
+                        beakWidth={15}
+                        gapSpace={10}
+                        directionalHint={DirectionalHint.bottomCenter}
+                        target={this._menuButtonElement.current}
+                        onDismiss={(e) => this._onCalloutDismiss(e)}
+                      >
+                        <div className={styles.searchResult}>
+                          <div className={styles.column2Container}>
+                            <div className={styles.docTitle}>
+                            </div>
+                            <div className={styles.docContainer}>
+                              {eSearchResult}
+                            </div>
+                          </div>
+                        </div>
+                      </Callout>
+                      :
+                      <div></div>
+                    }
+                  </div>
+                </div>
+
+
+                <div className={`${styles.col1Welcome}`}>
+                  <div className={`${styles.col1ProfilePic}`} style={this.state.myProfile != null ? {backgroundImage: `url('${this.props.siteUrl}/_layouts/15/userphoto.aspx?size=L&accountname=${this.state.myProfile.mail}')`} : {}}></div>
+                  <p>WELCOME</p>
+                  <p>{this.state.myProfile != null ? this.state.myProfile.displayName : ""}</p>
+                  <p><a href={this.state.notificationCount ? "https://outlook.office.com/calendar/view/week" : "https://outlook.office.com/calendar/view/week"} target="_blank">You have <span>{this.state.notificationCount}</span> notifications</a></p>
+                </div>
+                <div className={`${styles.col1Members}`}>
+                  <p>My Recent Contacts</p>
+                  <div className={`ms-Grid-row ${styles.msGridRow}`}>{myRecentUser}</div>
+                </div>
+              </div>
+              
+              <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col2} ${styles.colOutlook}`}>
+                <p className={`${styles.col2Notification}`}>My Emails<span>{this.state.mailMessageCount}</span></p>
+                <div className={` ${styles.outlookMailContainer} ${styles.scrollHidden}`}>
+                  {myMailElArr}
+                </div>
+              </div>
+              
+              <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} `}>
+                <div>
+                  <h4 className={`${styles.column2Title} ${styles.teamsTitle}`} style={{paddingRight: '55px'}}>Microsoft Teams <img src={require(`./images/setting_gear.svg`)} alt="Teams Centre" title="Teams Centre" width="21px" style={{float: 'right', cursor: 'pointer'}} onClickCapture={() => window.open("https://teams.microsoft.com/_#/apps/bafc60a5-488b-49b6-bc3a-9af2db0a761b/sections/57af5aa1-fef6-43d9-9cc2-a756219cd17f", "_blank")} /></h4>
+                  <div className={ styles.column2Container }>
+                    <div className={styles.colTeamsMyTeams}>
+                      {myTeamGroups}
+                    </div>
+                    <div className={styles.colTeamsConvo}>
+                      {myTeamMessages}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+            </div>
           </div> */}
 
-     {/*  <div className={ `${styles.container} ${styles.carouselContainer}` }>
-        <div className={ styles.row }>
-          <div className={`${styles.column} ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12}`} style={{
-            height: '340px', maxHeight: '340px', marginBottom: '20px'
-          }}>
-             {/* <Carousel showThumbs={true} autoPlay={true} infiniteLoop={true} interval={5000} autoFocus={true} transitionTime={5000} >
-              {this.state.carouselItems.map((imageList) => {
-                return (<div style={{display:"flex", height:"100%"}}>
-                 <a href={imageList.ResourceLink} target='_blank'> <img src={imageList.FileRef} /> </a> 
-                </div>);
-              })}    
-            </Carousel>  */}
-          {/*   <Carousel
-              buttonsLocation={CarouselButtonsLocation.bottom} buttonsDisplay={CarouselButtonsDisplay.buttonsOnly}
-              element={this.state.currentCarouselItemElement}
-              triggerPageEvent={this.triggerNextElement}
-              contentContainerStyles={{}}
-            />
-           {/* <MyCarousel duration={5000}>
-              {this.state.carouselItems.map((imageList) => {
-                return (<MyCarouselItem width='100%'>
-                  <div style={{display:"flex", height:"100%"}}>
-                    <a href={imageList.ResourceLink} target='_blank'> <img src={imageList.FileRef} /> </a> 
+         {/*  <div className={ styles.container }>
+          <div className={ styles.row }>
+              
+            {this.props.wbProperties.showTasks && <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}>
+              <div>
+                <h4 className={`${styles.column2Title} ${styles.taskTitle}`}>My Tasks</h4>
+                <div className={ styles.column2Container }>
+                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `} style={{display: this.state.myPlannerTasks.length==0 ? "flex" : "block"}}>
+                  {plannerTasks}
                   </div>
-                  </MyCarouselItem>);
-              })}
-            </MyCarousel> */}
-           {/* <Rerousel itemRef={ref}>
-  
-            </Rerousel> */}
-
-         {/*  </div>
-        </div>
-      </div>*/}
-
-     {/*  <div className={ `${styles.container} ${styles.firstContainer}` }>
-        <div className={ styles.row }>
-
-          <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4}`}>
-                          
-            <div className={`ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.myProfileColumn}`}>
-              <div id="enterpriseSearch" style={{margin: '0 auto 30px'}}>
-                {/*  <h4 className={styles.column2Title}>E-Search</h4>  */}
-               {/*  <div className={ styles.extnSearch }>
-                  <div className={`${styles.wrap}`}>
-                    <div className={`${styles.search}`} ref={this._menuButtonElement}>
-                      {(this.state.searchText === "")?
-                      <span className={` ${styles.searchSpan}`}>
-                        <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`}></i>
-                      </span>
-                      : ""}
-                      <input  name="newregionalcordinatoremailvalue" className={` ${styles.searchTerm}`}  readOnly={false} type="text" placeholder="Search for Content…" value={this.state.searchText}
-                      onChange={(e) => {
-                        this.setState({searchText: e.target["value"]});
-                      }}
-                      onKeyUp={(e) => {
-                        if(e.keyCode===13 || e.key==="Enter"){
-                          this._searchClicked();
-                          // console.log(e.key);
-                        }
-                      }}
-                      style={this.state.searchText===""? {paddingLeft: '15px'}: {}} ></input>
-                      {(this.state.searchText == "")?
-                      ""
-                      :
-                        <div className={` ${styles.searchButtonDiv}`} >
-                          <button type="submit" className={` ${styles.searchClearButton}`} onClick={() => this._searchClearClicked()}>
-                            <i className={`ms-Icon ms-Icon--Clear` }></i>
-                          </button>  
-                          <button type="submit" className={` ${styles.searchButton}`} onClick={() => this._searchClicked()}>
-                            <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`} ></i>
-                          </button>
-                        </div>
-                      } 
-                    </div>
-
-                  </div> 
-                </div> 
-                { (this.state.searchstatus && this.state.isCalloutVisible) ? 
-                  <Callout
-                    style={{maxWidth: '500px', width: '75%'}}
-                    beakWidth={15}
-                    gapSpace={10}
-                    directionalHint={DirectionalHint.bottomCenter}
-                    target={this._menuButtonElement.current}
-                    onDismiss={(e) => this._onCalloutDismiss(e)}
-                  >
-                    <div className={styles.searchResult}>
-                      <div className={styles.column2Container}>
-                        <div className={styles.docTitle}>
-                        </div>
-                        <div className={styles.docContainer}>
-                          {eSearchResult}
-                        </div>
-                      </div>
-                    </div>
-                  </Callout>
-                  :
-                  <div></div>
-                }
-              </div>
-            </div>
-
-
-            <div className={`${styles.col1Welcome}`}>
-              <div className={`${styles.col1ProfilePic}`} style={this.state.myProfile != null ? {backgroundImage: `url('${this.props.siteUrl}/_layouts/15/userphoto.aspx?size=L&accountname=${this.state.myProfile.mail}')`} : {}}></div>
-              <p>WELCOME</p>
-              <p>{this.state.myProfile != null ? this.state.myProfile.displayName : ""}</p>
-              <p><a href={this.state.notificationCount ? "https://outlook.office.com/calendar/view/week" : "https://outlook.office.com/calendar/view/week"} target="_blank">You have <span>{this.state.notificationCount}</span> notifications</a></p>
-            </div>
-            <div className={`${styles.col1Members}`}>
-              <p>My Recent Contacts</p>
-              <div className={`ms-Grid-row ${styles.msGridRow}`}>{myRecentUser}</div>
-            </div>
-          </div>
-          
-          <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col2} ${styles.colOutlook}`}>
-            <p className={`${styles.col2Notification}`}>My Emails<span>{this.state.mailMessageCount}</span></p>
-            <div className={` ${styles.outlookMailContainer} ${styles.scrollHidden}`}>
-              {myMailElArr}
-            </div>
-          </div>
-          
-          <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} `}>
-            <div>
-              <h4 className={`${styles.column2Title} ${styles.teamsTitle}`} style={{paddingRight: '55px'}}>Microsoft Teams <img src={require(`./images/setting_gear.svg`)} alt="Teams Centre" title="Teams Centre" width="21px" style={{float: 'right', cursor: 'pointer'}} onClickCapture={() => window.open("https://teams.microsoft.com/_#/apps/bafc60a5-488b-49b6-bc3a-9af2db0a761b/sections/57af5aa1-fef6-43d9-9cc2-a756219cd17f", "_blank")} /></h4>
-              <div className={ styles.column2Container }>
-                <div className={styles.colTeamsMyTeams}>
-                  {myTeamGroups}
-                </div>
-                <div className={styles.colTeamsConvo}>
-                  {myTeamMessages}
                 </div>
               </div>
-            </div>
-          </div>
-        
-        </div>
-      </div> */}
+            </div>}
 
-     {/*  <div className={ styles.container }>
-      <div className={ styles.row }>
-          
-        {this.props.wbProperties.showTasks && <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}>
-          <div>
-            <h4 className={`${styles.column2Title} ${styles.taskTitle}`}>My Tasks</h4>
-            <div className={ styles.column2Container }>
-              <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `} style={{display: this.state.myPlannerTasks.length==0 ? "flex" : "block"}}>
-              {plannerTasks}
-              </div>
-            </div>
-          </div>
-        </div>}
-
-        {this.props.wbProperties.showCalendar && <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-          height: '400px', maxHeight: '400px'
-          }}>
-          <div>
-            <h4 className={`${styles.column2Title}`}>My Calendar</h4>
-            <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.myCalendar.length==0 ? "flex" : "block"}}>
-              {
-              // myUpcomingEvents
-                myCalendarEvents
-              }
-            </div>
-          </div>
-        </div>}
-
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `}>
-          <div>
-            <h4 className={styles.column2Title}>SharePoint Business Process Requests</h4>
-            <div className={ styles.column2Container }>
-              <div className={` ms-Grid-row ${styles.msGridRow} `} style={{ overflowY: "scroll" }}>
-                {LOBLinks}
-              </div>
-            </div>
-          </div>
-        </div> */}
-
-       {/*  <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-          height: '400px', maxHeight: '400px'
-        }}>
-          <div>
-          <h4 className={`${styles.column2Title}`}>Staff Birthdays</h4>
-          <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffBirthdays.length==0 ? "flex" : "block"}}>
-            {
-             StaffBirthdays
-            }
-          </div>
-          </div>
-        </div>
-
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}>
-          <div>
-            <h4 className={styles.column2Title}>Announcements</h4>
-            <div className={ styles.column2Container }>
-              <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} ${styles.announcements} `}>
-              {spAnnouncementNews}
-              </div>
-            </div>
-          </div>
-        </div> */}
-        
-         {/*  <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-          height: '400px', maxHeight: '400px'
-        }}>
-          <div>
-          <h4 className={`${styles.column2Title}`}>Company Events</h4>
-          <div className={`${styles.eventContainer} ${styles.scrollHidden}`} style={{display: this.state.companyEvents.length==0 ? "flex" : "block"}}>
-            {
-            myUpcomingEvents
-            }
-          </div>
-          </div>
-        </div> */}
-        
-
-       {/*  <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-          height: '400px', maxHeight: '400px'
-        }}>
-          <div>
-          <h4 className={`${styles.column2Title}`}>Anniversary</h4>
-          <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffAnniversary.length==0 ? "flex" : "block"}}>
-            {
-            staffAnniversary
-            }
-          </div>
-          </div>
-        </div>
-        
-
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `}>
-          <div>
-            <h4 className={`${styles.column2Title} ${styles.launcherTitle}`}>Launcher</h4>
-            <div className={ styles.column2Container }>
-              <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `}>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--office ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/office_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/word" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--word ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/word_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/excel" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--excel ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/excel_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/powerpoint" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--powerpoint ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/powerpoint_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--access ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/access_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/onenote" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onenote ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onenote_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onedrive ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onedrive_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://www.microsoft.com/en-us/microsoft-365/project/project-management-software" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--project ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/project_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.live.com/start/visio.aspx" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--visio ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/visio_96x1.png)'}}
-                  ></div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div> */}
-
-        {/* <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colRecentDoc}  `}>
-          <div>
-            <h4 className={`${styles.column2Title} ${styles.onedriveTitle}`}>OneDrive</h4>
-            <div className={ styles.column2Container }>
-              <div className={ styles.docTitle}>
-                <span>Name</span><span>Date Modified</span>
-              </div>
-              <div className={ styles.docContainer }>
-                {myRecentDoc}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colExtns} `}>
-          <div>
-            <h4 className={styles.column2Title}>Staff Directory</h4>
-            <div className={ styles.column2Container }>
-              <div className={`ms-Grid-row ${styles.msGridRow}`}>
-                <div className={ styles.employeeSearch }>
-                  <input type="search" name="extnSearchBox" placeholder="Search for Staff…" id={ styles.employeeSearchBox }
-                    onInputCapture={(evt) => this.setState({searchExtn: evt.target["value"].trim().toLowerCase()}) }
-                  />
-                  <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
-                </div>
-                <div className={` ${styles.extnContainer} ${styles.scrollHidden} `}>
+            {this.props.wbProperties.showCalendar && <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
+              height: '400px', maxHeight: '400px'
+              }}>
+              <div>
+                <h4 className={`${styles.column2Title}`}>My Calendar</h4>
+                <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.myCalendar.length==0 ? "flex" : "block"}}>
                   {
-                  // companyExtns
-                  employeeSearhResults
+                  // myUpcomingEvents
+                    myCalendarEvents
                   }
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+            </div>}
 
-
-        <div className={` ${styles.column2} ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.colTeams} ${styles.colSPSites} `} style={{
-          height: '450px', maxHeight: '450px'
-        }}>
-          <div>
-            <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>MyANALYTICS
-              <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
-            </h4>
-            <div className={` ${styles.column2Container} ${styles.scrollHidden} `} style={{overflowY: "scroll"}}>
-              
-              <div className={` ${styles.analyticsOverview} `}>
-                {Object.keys(this.state.CollaborationActivityList).map(activity => {
-                  let duration = this.state.CollaborationActivityList[activity].reduce((acc, cur) => (acc + cur["parsedDuration"]), 0).toFixed(2), trackerColor = activity==="Meeting" ? "#e8c1a0" :  activity==="Focus" ? "#e8a838" :  activity==="Chats/Calls" ? "#f1e15b" :  activity==="Email" ? "#f47560" : "transparent";
-                  
-                  return (
-                  <div className={` ms-sm12 ms-md3 ${styles.msSm12} ${styles.msMd3} ${styles.analyticsCard} `} >
-                    <div>
-                    <p style={{backgroundImage: `url('${require('./images/analyticsMeeting.svg')}')`}}>{activity}</p>
-                    <p><span>{duration}</span><span>hrs</span><span className={`${styles.analyticsCardTracker}`}><span style={{width: `min(calc(100% * ${duration} / 24), 100%)`, backgroundColor: '#e8c1a0'}}></span></span></p>
-                    </div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `}>
+              <div>
+                <h4 className={styles.column2Title}>SharePoint Business Process Requests</h4>
+                <div className={ styles.column2Container }>
+                  <div className={` ms-Grid-row ${styles.msGridRow} `} style={{ overflowY: "scroll" }}>
+                    {LOBLinks}
                   </div>
-                  );
-                })}
-              </div>
-
-              <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `}>
-                <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", left: 0}}>
-                {window.matchMedia("(min-width: 480px)").matches ? analyticsPieChart :  analyticsPieChartSM}
-                </div>
-                <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", right: 0}}>
-                {analyticsBarChart1}
                 </div>
               </div>
-            </div>
-          </div>
-        </div> */}
+            </div> */}
 
-
-        {/* 
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} `}>
-          <div>
-            <h4 className={`${styles.column2Title} ${styles.teamsTitle}`} style={{paddingRight: '55px'}}>Microsoft Teams <img src={require(`./images/setting_gear.svg`)} alt="Teams Centre" title="Teams Centre" width="21px" style={{float: 'right', cursor: 'pointer'}} onClickCapture={() => window.open("https://teams.microsoft.com/_#/apps/bafc60a5-488b-49b6-bc3a-9af2db0a761b/sections/57af5aa1-fef6-43d9-9cc2-a756219cd17f", "_blank")} /></h4>
-            <div className={ styles.column2Container }>
-              <div className={styles.colTeamsMyTeams}>
-                {myTeamGroups}
-              </div>
-              <div className={styles.colTeamsConvo}>
-                {myTeamMessages}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={` ${styles.column2} ms-sm12 ms-lg4  ${styles.msSm12} ${styles.msLg8} ${styles.colLauncher} ${styles.colExtns} `}>
-          <div>
-          <h4 className={styles.column2Title}>ENGAGEMENT PROGRESS</h4>
-          <div className={ styles.column2Container }>
-            <div className="ms-Grid-row">
-              <div className={ styles.engageSearch }>
-                <input type="search" name="extnSearchBox" placeholder="Search for Engagements…" id={ styles.engageSearchBox }
-                  onInputCapture={(evt) => this.setState({searchEngage: evt.target["value"].trim().toLowerCase()}) }
-                />
-                <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
-              </div>
-              <div className={` ${styles.extnContainer} ${styles.scrollHidden} ${styles.engageProgress2}`}>
-                {
-                  
-                engagementsProcess1
-              }
-              </div>
-            </div>
-          </div>
-          </div>
-        </div>
-
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colRecentDoc} `}>
-          <div>
-            <h4 className={styles.column2Title}>Shared Documents</h4>
-            <div className={ styles.column2Container }>
-            <div className={ styles.docTitle}>
-              <span>Name</span><span>Date Modified</span>
-            </div>
-            <div className={ styles.docContainer }>
-              // {myRecentDoc}
-              {mysharedDoc}
-            </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg8} ${styles.col4} ${styles.colProcessStage}`} style={{
-          height: '400px', maxHeight: '400px'
-        }}>
-          <div>
-            <h4 className={`${styles.column2Title}`}>PROCESS STAGES</h4>
-            <div className={ styles.extnSearch }>
-              <input type="search" name="extnSearchBox" placeholder="Search for Process Stages…" id={ styles.extnSearchBox }
-                onInputCapture={({target}) => this.setState({searchProcessStage: target["value"].trim().toLowerCase()}) }
-              />
-              <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
-            </div>
-            {processesStage1}
-          </div>
-        </div>
-        
-        <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colSPSites} `} style={{
-          height: '400px', maxHeight: '400px'
-        }}>
-          <div >
-            <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>Process Stage Analytics
-            </h4>
-            <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
-              <reactIframe.default
-                url={Data.biChartUrl[0]}
-                width="100%" height="800px"
-                styles={{display: "none"}}
-              />
-              
-            </div>
-          </div>
-        </div>
-
-        <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colSPSites} `} style={{
-          height: '450px', maxHeight: '450px'
-        }}>
-          <div>
-            <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>MyANALYTICS
-              <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
-            </h4>
-            <div className={` ${styles.column2Container} ${styles.scrollHidden} `} style={{overflowY: "scroll"}}>
-              
-              <div className={` ${styles.analyticsOverview} `}>
-                {Object.keys(this.state.CollaborationActivityList).map(activity => {
-                  let duration = this.state.CollaborationActivityList[activity].reduce((acc, cur) => (acc + cur["parsedDuration"]), 0).toFixed(2), trackerColor = activity==="Meeting" ? "#e8c1a0" :  activity==="Focus" ? "#e8a838" :  activity==="Chats/Calls" ? "#f1e15b" :  activity==="Email" ? "#f47560" : "transparent";
-                  
-                  return (
-                  <div className={` ms-sm12 ms-md3 ${styles.msSm12} ${styles.msMd3} ${styles.analyticsCard} `} >
-                    <div>
-                    <p style={{backgroundImage: `url('${require('./images/analyticsMeeting.svg')}')`}}>{activity}</p>
-                    <p><span>{duration}</span><span>hrs</span><span className={`${styles.analyticsCardTracker}`}><span style={{width: `min(calc(100% * ${duration} / 24), 100%)`, backgroundColor: '#e8c1a0'}}></span></span></p>
-                    </div>
-                  </div>
-                  );
-                })}
-              </div>
-
-              <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `}>
-                <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", left: 0}}>
-                {window.matchMedia("(min-width: 480px)").matches ? analyticsPieChart :  analyticsPieChartSM}
-                </div>
-                <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", right: 0}}>
-                {analyticsBarChart1}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colSPSites} `} style={{
-          height: '450px', maxHeight: '450px'
-        }}>
-          <div>
-            <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>Departmental Analytics
-              <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
-            </h4>
-            <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
-              
-              <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `} style={{height: 'calc(100% - 30px)'}}>
-                <div style={{width: 'calc(100% - 0px)', display: "inline-block", position: "relative", right: 0}}>
-                {analyticsBarChart2}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `}>
-          <div>
-            <h4 className={`${styles.column2Title} ${styles.launcherTitle}`}>Launcher</h4>
-            <div className={ styles.column2Container }>
-              <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `}>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--office ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/office_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/word" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--word ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/word_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/excel" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--excel ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/excel_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/powerpoint" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--powerpoint ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/powerpoint_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--access ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/access_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/onenote" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onenote ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onenote_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onedrive ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onedrive_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://www.microsoft.com/en-us/microsoft-365/project/project-management-software" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--project ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/project_96x1.png)'}}
-                  ></div>
-                </a>
-                <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.live.com/start/visio.aspx" target="_blank">
-                  <div className={`ms-BrandIcon--icon96 ms-BrandIcon--visio ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                    style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/visio_96x1.png)'}}
-                  ></div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        
-
-        */}
-        
-
-
-
-
-        {/* <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${ styles.colSPSites } `}>
-          <div>
-            <h4 className={`${styles.column2Title} ${styles.spTitle}`}>Employee Count</h4>
-            <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
-              <div className={` ${styles.powerBiContainer} `}>
-                <ChartControl
-                  type={ChartType.Bar}
-                  options={barChartOptions}
-                  data={barChartData}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTwitter} `}>
-          <div>
-            <div className={ styles.twitterEmbed } dangerouslySetInnerHTML= {{__html:
-            `<a class="twitter-timeline" data-width="100%" data-height="100%" data-tweet-limit=5 data-chrome="nofooter" href="https://twitter.com/RelianceInfoSys?ref_src=twsrc%5Etfw">Tweets</a>`
+           {/*  <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
+              height: '400px', maxHeight: '400px'
             }}>
-            </div>
-          </div>
-        </div>
-
-       <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg8} ${styles.col4} ${styles.colProcessStage}`} style={{
-          height: '400px', maxHeight: '400px'
-        }}>
-          <div>
-          <div>
-          <h4 className={`${styles.column2Title}`}>Employee TimeSheet</h4>
-          <input id={ styles.extnSearchBox } type="text" placeholder="Search Name"></input>
-         <button>Search</button>
-          </div> 
-           
-           <table>
-            {/*<th>Created</th>
-           <th>User</th>
-           <th>Period</th>
-           <th>Period Starts</th>
-           <th>Status</th><br></br>    */}
-           {/* {this.state.items.map(function(item,key){
-              console.log(item);
-                return (<div  key={key}>
-  
-                  <tr> 
-                    <td>{item.Created}</td>
-                    <td>{item.Employee}</td>
-                    <td>{formatDateTime(item.Period)}</td>
-                    <td>{formatDateTime(item.Period_x002d_Starts)}</td>
-                    <td>{item.TotalHours}</td>
-                    <td>{item.Status}</td>
-                    <td><FontAwesomeIcon icon={item.Status.toString()==="Approved"?'check-circle':item.Status.toString()==="Rejected"?'window-close':'check-circle'} style={{color:item.Status.toString()==="Approved"?'Green':item.Status.toString()==="Rejected"?'Red':'Green'}} ></FontAwesomeIcon></td>
-                  </tr>    
-                </div>);
-                
-            })}
-         
-        </table>      
-          </div>
-          </div>
-
-          <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg8} ${styles.col4} ${styles.colProcessStage}`} style={{
-            height: '400px', maxHeight: '400px'
-          }}>
-            <div>
-              <h4 className={`${styles.column2Title}`}>TIME SHEET</h4>
-              <div className={ styles.extnSearch }>
-                <input type="search" name="extnSearchBox"placeholder="Search for Time Sheet…" id={ styles.extnSearchBox }
-                  onInputCapture={({target}) => this.setState({searchTimeSheet: target["value"].trim().toLowerCase()}) }
-                />
-                <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
+              <div>
+              <h4 className={`${styles.column2Title}`}>Staff Birthdays</h4>
+              <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffBirthdays.length==0 ? "flex" : "block"}}>
+                {
+                 StaffBirthdays
+                }
               </div>
-              {timeSheet}
+              </div>
             </div>
-          </div>
 
-          <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colFAQ} `}>
-            <div>
-              <h4 className={styles.column2Title}>FAQ</h4>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}>
+              <div>
+                <h4 className={styles.column2Title}>Announcements</h4>
+                <div className={ styles.column2Container }>
+                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} ${styles.announcements} `}>
+                  {spAnnouncementNews}
+                  </div>
+                </div>
+              </div>
+            </div> */}
+            
+             {/*  <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
+              height: '400px', maxHeight: '400px'
+            }}>
+              <div>
+              <h4 className={`${styles.column2Title}`}>Company Events</h4>
+              <div className={`${styles.eventContainer} ${styles.scrollHidden}`} style={{display: this.state.companyEvents.length==0 ? "flex" : "block"}}>
+                {
+                myUpcomingEvents
+                }
+              </div>
+              </div>
+            </div> */}
+            
+
+           {/*  <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
+              height: '400px', maxHeight: '400px'
+            }}>
+              <div>
+              <h4 className={`${styles.column2Title}`}>Anniversary</h4>
+              <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffAnniversary.length==0 ? "flex" : "block"}}>
+                {
+                staffAnniversary
+                }
+              </div>
+              </div>
+            </div>
+            
+
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `}>
+              <div>
+                <h4 className={`${styles.column2Title} ${styles.launcherTitle}`}>Launcher</h4>
+                <div className={ styles.column2Container }>
+                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `}>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--office ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/office_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/word" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--word ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/word_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/excel" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--excel ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/excel_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/powerpoint" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--powerpoint ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/powerpoint_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--access ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/access_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/onenote" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onenote ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onenote_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onedrive ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onedrive_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://www.microsoft.com/en-us/microsoft-365/project/project-management-software" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--project ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/project_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.live.com/start/visio.aspx" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--visio ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/visio_96x1.png)'}}
+                      ></div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div> */}
+
+            {/* <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colRecentDoc}  `}>
+              <div>
+                <h4 className={`${styles.column2Title} ${styles.onedriveTitle}`}>OneDrive</h4>
+                <div className={ styles.column2Container }>
+                  <div className={ styles.docTitle}>
+                    <span>Name</span><span>Date Modified</span>
+                  </div>
+                  <div className={ styles.docContainer }>
+                    {myRecentDoc}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colExtns} `}>
+              <div>
+                <h4 className={styles.column2Title}>Staff Directory</h4>
+                <div className={ styles.column2Container }>
+                  <div className={`ms-Grid-row ${styles.msGridRow}`}>
+                    <div className={ styles.employeeSearch }>
+                      <input type="search" name="extnSearchBox" placeholder="Search for Staff…" id={ styles.employeeSearchBox }
+                        onInputCapture={(evt) => this.setState({searchExtn: evt.target["value"].trim().toLowerCase()}) }
+                      />
+                      <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
+                    </div>
+                    <div className={` ${styles.extnContainer} ${styles.scrollHidden} `}>
+                      {
+                      // companyExtns
+                      employeeSearhResults
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div className={` ${styles.column2} ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.colTeams} ${styles.colSPSites} `} style={{
+              height: '450px', maxHeight: '450px'
+            }}>
+              <div>
+                <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>MyANALYTICS
+                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
+                </h4>
+                <div className={` ${styles.column2Container} ${styles.scrollHidden} `} style={{overflowY: "scroll"}}>
+                  
+                  <div className={` ${styles.analyticsOverview} `}>
+                    {Object.keys(this.state.CollaborationActivityList).map(activity => {
+                      let duration = this.state.CollaborationActivityList[activity].reduce((acc, cur) => (acc + cur["parsedDuration"]), 0).toFixed(2), trackerColor = activity==="Meeting" ? "#e8c1a0" :  activity==="Focus" ? "#e8a838" :  activity==="Chats/Calls" ? "#f1e15b" :  activity==="Email" ? "#f47560" : "transparent";
+                      
+                      return (
+                      <div className={` ms-sm12 ms-md3 ${styles.msSm12} ${styles.msMd3} ${styles.analyticsCard} `} >
+                        <div>
+                        <p style={{backgroundImage: `url('${require('./images/analyticsMeeting.svg')}')`}}>{activity}</p>
+                        <p><span>{duration}</span><span>hrs</span><span className={`${styles.analyticsCardTracker}`}><span style={{width: `min(calc(100% * ${duration} / 24), 100%)`, backgroundColor: '#e8c1a0'}}></span></span></p>
+                        </div>
+                      </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `}>
+                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", left: 0}}>
+                    {window.matchMedia("(min-width: 480px)").matches ? analyticsPieChart :  analyticsPieChartSM}
+                    </div>
+                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", right: 0}}>
+                    {analyticsBarChart1}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> */}
+
+
+            {/* 
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} `}>
+              <div>
+                <h4 className={`${styles.column2Title} ${styles.teamsTitle}`} style={{paddingRight: '55px'}}>Microsoft Teams <img src={require(`./images/setting_gear.svg`)} alt="Teams Centre" title="Teams Centre" width="21px" style={{float: 'right', cursor: 'pointer'}} onClickCapture={() => window.open("https://teams.microsoft.com/_#/apps/bafc60a5-488b-49b6-bc3a-9af2db0a761b/sections/57af5aa1-fef6-43d9-9cc2-a756219cd17f", "_blank")} /></h4>
+                <div className={ styles.column2Container }>
+                  <div className={styles.colTeamsMyTeams}>
+                    {myTeamGroups}
+                  </div>
+                  <div className={styles.colTeamsConvo}>
+                    {myTeamMessages}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4  ${styles.msSm12} ${styles.msLg8} ${styles.colLauncher} ${styles.colExtns} `}>
+              <div>
+              <h4 className={styles.column2Title}>ENGAGEMENT PROGRESS</h4>
               <div className={ styles.column2Container }>
-                <div className={ styles.faqHeaderImg }></div>
-                <div className={` ${styles.faqContent} ${styles.scrollHidden} `}>
-                  {spFAQ}
-                </div>                  
+                <div className="ms-Grid-row">
+                  <div className={ styles.engageSearch }>
+                    <input type="search" name="extnSearchBox" placeholder="Search for Engagements…" id={ styles.engageSearchBox }
+                      onInputCapture={(evt) => this.setState({searchEngage: evt.target["value"].trim().toLowerCase()}) }
+                    />
+                    <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
+                  </div>
+                  <div className={` ${styles.extnContainer} ${styles.scrollHidden} ${styles.engageProgress2}`}>
+                    {
+                      
+                    engagementsProcess1
+                  }
+                  </div>
+                </div>
+              </div>
               </div>
             </div>
-          </div>
-          <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg12} ${styles.colTeams} ${styles.colSPSites} `} style={{
-            height: '450px', maxHeight: '450px'
-          }}>
-            <div>
-              <h4 className={`${styles.column2Title}`}>Product Catalogue</h4>
 
-              <div className={`${styles.listSearch} ${styles.scrollHidden}`}>
-                <div className={styles.Pcontainer}>
-                  <div className={styles.Prow}>
-                    <div className={styles.Pcolumn}>
-                      <span className={styles.title}>{this.props.list}</span>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colRecentDoc} `}>
+              <div>
+                <h4 className={styles.column2Title}>Shared Documents</h4>
+                <div className={ styles.column2Container }>
+                <div className={ styles.docTitle}>
+                  <span>Name</span><span>Date Modified</span>
+                </div>
+                <div className={ styles.docContainer }>
+                  // {myRecentDoc}
+                  {mysharedDoc}
+                </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg8} ${styles.col4} ${styles.colProcessStage}`} style={{
+              height: '400px', maxHeight: '400px'
+            }}>
+              <div>
+                <h4 className={`${styles.column2Title}`}>PROCESS STAGES</h4>
+                <div className={ styles.extnSearch }>
+                  <input type="search" name="extnSearchBox" placeholder="Search for Process Stages…" id={ styles.extnSearchBox }
+                    onInputCapture={({target}) => this.setState({searchProcessStage: target["value"].trim().toLowerCase()}) }
+                  />
+                  <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
+                </div>
+                {processesStage1}
+              </div>
+            </div>
+            
+            <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colSPSites} `} style={{
+              height: '400px', maxHeight: '400px'
+            }}>
+              <div >
+                <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>Process Stage Analytics
+                </h4>
+                <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
+                  <reactIframe.default
+                    url={Data.biChartUrl[0]}
+                    width="100%" height="800px"
+                    styles={{display: "none"}}
+                  />
+                  
+                </div>
+              </div>
+            </div>
 
-                      <div className={styles.PmainContainer}>
-                        <section className={styles.filterContainer}>
-                          <h4>Filter</h4>
-                          <hr />
-                          <span className={styles.Ptitle}>
-                            Products <br></br>{" "}
-                          </span>
-                          <hr />
-                          {options.map((checkBoxItem: ICheckboxInput) => {
-                            return (
-                              <Stack tokens={stackTokens}>
-                                <Checkbox
-                                  className={styles.Plabel}
-                                  label={checkBoxItem.Title}
-                                  title={checkBoxItem.Title}
-                                  onChange={(ev, checked) => this._onChange(ev, checked, "Product")}
-                                />
-                                <span></span>
-                              </Stack>
-                            );
-                          })}
-                          <hr />
-                          <span className={styles.Ptitle}>Existing Customers </span>
-                          <hr />
-                          {options1.map((checkBoxItem: ICheckboxInput) => {
-                            return (
-                              <Stack tokens={stackTokens1}>
-                                <Checkbox
-                                  label={checkBoxItem.Title}
-                                  title={checkBoxItem.Title}
-                                  onChange={(ev, checked) => this._onChange(ev, checked, "Customer")}
-                                />
-                                <span></span>
-                              </Stack>
-                            );
-                          })}
-                          <hr />
-                          <span className={styles.Ptitle}>
-                            Sectors <br></br>{" "}
-                          </span>
-                          <hr />
-                          {options2.map((checkBoxItem: ICheckboxInput) => {
-                            return (
-                              <Stack tokens={stackTokens2}>
-                                <Checkbox
-                                  label={checkBoxItem.Title}
-                                  title={checkBoxItem.Title}
-                                  onChange={(ev, checked) => this._onChange(ev, checked, "Sector")}
-                                />
-                                <span></span>
-                              </Stack>
-                            );
-                          })}
-                          <hr />
-                          <span className={styles.Ptitle}>
-                            Industries <br></br>{" "}
-                          </span>
-                          <hr />
-                          <label className={styles.Plabel}>  </label>
-                          {options3.map((checkBoxItem: ICheckboxInput) => {
-                            return (
-                              <Stack tokens={stackTokens3}>
-                                <Checkbox
-                                  label={checkBoxItem.Title}
-                                  title={checkBoxItem.Title}
-                                  onChange={(ev, checked) => this._onChange(ev, checked, "Industry")}
-                                />
-                                <span></span>
-                              </Stack>
-                            );
-                          })}
-                        </section>
-                        <section className={styles.catalogContainer}>
-                          <div className={`styles.searchContainer`}>
-                            <div ref={this._menuButtonElement}>
-                              <SearchBox
-                                className={styles.PsearchBoxDiv}
-                                placeholder={`Search Product`}
-                                onSearch={(value) => this.searchListForContent(value)}
-                                onChanged={(value) => {
-                                  this.setState({ PsearchText: value });
-                                  this._onCalloutDismiss(value);
-                                }}
-                                onClear={(e) => this._onCalloutDismiss(e)}
-                              />
-                            </div>
-                          </div>{" "}
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <div className={styles.productContainerP}>
-                            {CatalogCardArray}
+            <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colSPSites} `} style={{
+              height: '450px', maxHeight: '450px'
+            }}>
+              <div>
+                <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>MyANALYTICS
+                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
+                </h4>
+                <div className={` ${styles.column2Container} ${styles.scrollHidden} `} style={{overflowY: "scroll"}}>
+                  
+                  <div className={` ${styles.analyticsOverview} `}>
+                    {Object.keys(this.state.CollaborationActivityList).map(activity => {
+                      let duration = this.state.CollaborationActivityList[activity].reduce((acc, cur) => (acc + cur["parsedDuration"]), 0).toFixed(2), trackerColor = activity==="Meeting" ? "#e8c1a0" :  activity==="Focus" ? "#e8a838" :  activity==="Chats/Calls" ? "#f1e15b" :  activity==="Email" ? "#f47560" : "transparent";
+                      
+                      return (
+                      <div className={` ms-sm12 ms-md3 ${styles.msSm12} ${styles.msMd3} ${styles.analyticsCard} `} >
+                        <div>
+                        <p style={{backgroundImage: `url('${require('./images/analyticsMeeting.svg')}')`}}>{activity}</p>
+                        <p><span>{duration}</span><span>hrs</span><span className={`${styles.analyticsCardTracker}`}><span style={{width: `min(calc(100% * ${duration} / 24), 100%)`, backgroundColor: '#e8c1a0'}}></span></span></p>
+                        </div>
+                      </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `}>
+                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", left: 0}}>
+                    {window.matchMedia("(min-width: 480px)").matches ? analyticsPieChart :  analyticsPieChartSM}
+                    </div>
+                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", right: 0}}>
+                    {analyticsBarChart1}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colSPSites} `} style={{
+              height: '450px', maxHeight: '450px'
+            }}>
+              <div>
+                <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>Departmental Analytics
+                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
+                </h4>
+                <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
+                  
+                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `} style={{height: 'calc(100% - 30px)'}}>
+                    <div style={{width: 'calc(100% - 0px)', display: "inline-block", position: "relative", right: 0}}>
+                    {analyticsBarChart2}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `}>
+              <div>
+                <h4 className={`${styles.column2Title} ${styles.launcherTitle}`}>Launcher</h4>
+                <div className={ styles.column2Container }>
+                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `}>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--office ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/office_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/word" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--word ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/word_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/excel" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--excel ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/excel_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/powerpoint" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--powerpoint ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/powerpoint_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--access ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/access_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/onenote" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onenote ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onenote_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onedrive ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onedrive_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://www.microsoft.com/en-us/microsoft-365/project/project-management-software" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--project ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/project_96x1.png)'}}
+                      ></div>
+                    </a>
+                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.live.com/start/visio.aspx" target="_blank">
+                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--visio ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
+                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/visio_96x1.png)'}}
+                      ></div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            
+
+            */}
+            
+
+
+
+
+            {/* <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${ styles.colSPSites } `}>
+              <div>
+                <h4 className={`${styles.column2Title} ${styles.spTitle}`}>Employee Count</h4>
+                <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
+                  <div className={` ${styles.powerBiContainer} `}>
+                    <ChartControl
+                      type={ChartType.Bar}
+                      options={barChartOptions}
+                      data={barChartData}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTwitter} `}>
+              <div>
+                <div className={ styles.twitterEmbed } dangerouslySetInnerHTML= {{__html:
+                `<a class="twitter-timeline" data-width="100%" data-height="100%" data-tweet-limit=5 data-chrome="nofooter" href="https://twitter.com/RelianceInfoSys?ref_src=twsrc%5Etfw">Tweets</a>`
+                }}>
+                </div>
+              </div>
+            </div>
+
+           <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg8} ${styles.col4} ${styles.colProcessStage}`} style={{
+              height: '400px', maxHeight: '400px'
+            }}>
+              <div>
+              <div>
+              <h4 className={`${styles.column2Title}`}>Employee TimeSheet</h4>
+              <input id={ styles.extnSearchBox } type="text" placeholder="Search Name"></input>
+             <button>Search</button>
+              </div> 
+               
+               <table>
+                {/*<th>Created</th>
+               <th>User</th>
+               <th>Period</th>
+               <th>Period Starts</th>
+               <th>Status</th><br></br>    */}
+               {/* {this.state.items.map(function(item,key){
+                  console.log(item);
+                    return (<div  key={key}>
+      
+                      <tr> 
+                        <td>{item.Created}</td>
+                        <td>{item.Employee}</td>
+                        <td>{formatDateTime(item.Period)}</td>
+                        <td>{formatDateTime(item.Period_x002d_Starts)}</td>
+                        <td>{item.TotalHours}</td>
+                        <td>{item.Status}</td>
+                        <td><FontAwesomeIcon icon={item.Status.toString()==="Approved"?'check-circle':item.Status.toString()==="Rejected"?'window-close':'check-circle'} style={{color:item.Status.toString()==="Approved"?'Green':item.Status.toString()==="Rejected"?'Red':'Green'}} ></FontAwesomeIcon></td>
+                      </tr>    
+                    </div>);
+                    
+                })}
+             
+            </table>      
+              </div>
+              </div>
+
+              <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg8} ${styles.col4} ${styles.colProcessStage}`} style={{
+                height: '400px', maxHeight: '400px'
+              }}>
+                <div>
+                  <h4 className={`${styles.column2Title}`}>TIME SHEET</h4>
+                  <div className={ styles.extnSearch }>
+                    <input type="search" name="extnSearchBox"placeholder="Search for Time Sheet…" id={ styles.extnSearchBox }
+                      onInputCapture={({target}) => this.setState({searchTimeSheet: target["value"].trim().toLowerCase()}) }
+                    />
+                    <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
+                  </div>
+                  {timeSheet}
+                </div>
+              </div>
+
+              <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colFAQ} `}>
+                <div>
+                  <h4 className={styles.column2Title}>FAQ</h4>
+                  <div className={ styles.column2Container }>
+                    <div className={ styles.faqHeaderImg }></div>
+                    <div className={` ${styles.faqContent} ${styles.scrollHidden} `}>
+                      {spFAQ}
+                    </div>                  
+                  </div>
+                </div>
+              </div>
+              <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg12} ${styles.colTeams} ${styles.colSPSites} `} style={{
+                height: '450px', maxHeight: '450px'
+              }}>
+                <div>
+                  <h4 className={`${styles.column2Title}`}>Product Catalogue</h4>
+
+                  <div className={`${styles.listSearch} ${styles.scrollHidden}`}>
+                    <div className={styles.Pcontainer}>
+                      <div className={styles.Prow}>
+                        <div className={styles.Pcolumn}>
+                          <span className={styles.title}>{this.props.list}</span>
+
+                          <div className={styles.PmainContainer}>
+                            <section className={styles.filterContainer}>
+                              <h4>Filter</h4>
+                              <hr />
+                              <span className={styles.Ptitle}>
+                                Products <br></br>{" "}
+                              </span>
+                              <hr />
+                              {options.map((checkBoxItem: ICheckboxInput) => {
+                                return (
+                                  <Stack tokens={stackTokens}>
+                                    <Checkbox
+                                      className={styles.Plabel}
+                                      label={checkBoxItem.Title}
+                                      title={checkBoxItem.Title}
+                                      onChange={(ev, checked) => this._onChange(ev, checked, "Product")}
+                                    />
+                                    <span></span>
+                                  </Stack>
+                                );
+                              })}
+                              <hr />
+                              <span className={styles.Ptitle}>Existing Customers </span>
+                              <hr />
+                              {options1.map((checkBoxItem: ICheckboxInput) => {
+                                return (
+                                  <Stack tokens={stackTokens1}>
+                                    <Checkbox
+                                      label={checkBoxItem.Title}
+                                      title={checkBoxItem.Title}
+                                      onChange={(ev, checked) => this._onChange(ev, checked, "Customer")}
+                                    />
+                                    <span></span>
+                                  </Stack>
+                                );
+                              })}
+                              <hr />
+                              <span className={styles.Ptitle}>
+                                Sectors <br></br>{" "}
+                              </span>
+                              <hr />
+                              {options2.map((checkBoxItem: ICheckboxInput) => {
+                                return (
+                                  <Stack tokens={stackTokens2}>
+                                    <Checkbox
+                                      label={checkBoxItem.Title}
+                                      title={checkBoxItem.Title}
+                                      onChange={(ev, checked) => this._onChange(ev, checked, "Sector")}
+                                    />
+                                    <span></span>
+                                  </Stack>
+                                );
+                              })}
+                              <hr />
+                              <span className={styles.Ptitle}>
+                                Industries <br></br>{" "}
+                              </span>
+                              <hr />
+                              <label className={styles.Plabel}>  </label>
+                              {options3.map((checkBoxItem: ICheckboxInput) => {
+                                return (
+                                  <Stack tokens={stackTokens3}>
+                                    <Checkbox
+                                      label={checkBoxItem.Title}
+                                      title={checkBoxItem.Title}
+                                      onChange={(ev, checked) => this._onChange(ev, checked, "Industry")}
+                                    />
+                                    <span></span>
+                                  </Stack>
+                                );
+                              })}
+                            </section>
+                            <section className={styles.catalogContainer}>
+                              <div className={`styles.searchContainer`}>
+                                <div ref={this._menuButtonElement}>
+                                  <SearchBox
+                                    className={styles.PsearchBoxDiv}
+                                    placeholder={`Search Product`}
+                                    onSearch={(value) => this.searchListForContent(value)}
+                                    onChanged={(value) => {
+                                      this.setState({ PsearchText: value });
+                                      this._onCalloutDismiss(value);
+                                    }}
+                                    onClear={(e) => this._onCalloutDismiss(e)}
+                                  />
+                                </div>
+                              </div>{" "}
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              <div className={styles.productContainerP}>
+                                {CatalogCardArray}
+                              </div>
+                            </section>
                           </div>
-                        </section>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        */}
+            */}
 
-      </div>
-  );
-}
+          </div>
+      );
+    }
     else{
       return (
         <div></div>
@@ -2858,9 +2870,9 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
       this.setState({isOnTeams: true});
     }
 
-    //this.carouselInterval = setInterval(() => {
-      //this.autoplayELements();
-   // }, 3000);
+    // this.carouselInterval = setInterval(() => {
+    //   this.autoplayELements();
+    // }, 3000);
 
       /* const script = document.createElement("script");
       script.src = "https://platform.twitter.com/widgets.js";
