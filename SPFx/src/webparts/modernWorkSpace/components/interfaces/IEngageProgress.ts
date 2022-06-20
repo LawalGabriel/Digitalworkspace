@@ -8,6 +8,7 @@ export interface IEngageProgress{
     Client_x0020_Name: string;
     Created: string;
     Modified: string;
+    EngagementStages: string;
     Author: {EMail: string, Department: string, Title: string};
 }
 
@@ -34,7 +35,7 @@ export class EngageProgress{
         this.Title = item.Title;
         this.ProjectTitle = item.Project_x0020_Title ? item.Project_x0020_Title : "";
         this.ProjectDescription = item.Project_x0020_Description ? item.Project_x0020_Description : "";
-        this.EngagementStage = item.Engagement_x0020_Stage;
+        this.EngagementStage = item.EngagementStages ? item.EngagementStages : null;
         this.Unit = item.Unit;
         this.ClientName = item.Client_x0020_Name;
         this.Created = new Date(item.Created);

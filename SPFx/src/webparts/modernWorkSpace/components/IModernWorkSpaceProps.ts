@@ -23,6 +23,7 @@ export interface IModernWorkSpaceProps {
    list: string | string[];
    listTitle: string;
    wbProperties: IModernWorkSpaceWebPartProps;
+   dynamicsUri: string;
   //itemRef: RefObject;
   //interval: Number;
   //Stop: Boolean;

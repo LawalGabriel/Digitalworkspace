@@ -67,10 +67,12 @@ export class SPEvent{
     public Description: string;
 
     constructor(item: ISPEvent){
+        let eventDate: Date = new Date(item.EventDate);
+        
         this.ID = item.ID;
         this.Created = new Date(item.Created);
         this.GUID = item.GUID;
-        this.EventDate = new Date(item.EventDate);
+        this.EventDate = item.fRecurrence ? new Date(new Date().getFullYear(), eventDate.getMonth(), eventDate.getDate()) : eventDate;
         this.EndDate = new Date(item.EndDate);
         this.Location = item.Location ? item.Location : "Undisclosed Location";
         this.Title = item.Title ? item.Title: "";

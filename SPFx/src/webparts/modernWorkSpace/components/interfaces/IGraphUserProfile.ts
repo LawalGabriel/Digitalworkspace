@@ -8,6 +8,7 @@ export interface IGraphUserProfile{
     directReports: any;
     userPrincipalName: string;
     businessPhones?: string[];
+    employeeId?: string;
 }
 
 export interface IGraphUserProfileItems{
@@ -42,8 +43,8 @@ export class GraphUserProfile{
         this.directReports = item.directReports;
         this.userPrincipalName = item.userPrincipalName;
         this.businessPhones = item.businessPhones ? item.businessPhones : [];   
-        this.Birthday = new Date();
-        this.dummyBirthday = new Date();
+        this.Birthday = item.employeeId ? new Date(item.employeeId) : null;
+        this.dummyBirthday = item.employeeId ? new Date(item.employeeId) : null;
     }
 }
 

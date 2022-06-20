@@ -724,7 +724,7 @@ $themeColor4: #e0e1e2;
         padding: 0 20px;
         display: inline-flex;
         justify-content: space-evenly;
-        font-size: 80%;
+        font-size: 50%;
         font-weight: 700;
         border-top: 1px dashed #be1f2cba;
         margin: 0 40px;
@@ -744,7 +744,7 @@ $themeColor4: #e0e1e2;
       display: flex;
       justify-content: center;
       flex-direction: column;
-      height: 76px;
+      height: 80px;
       padding: 5px 15px;
       border-right: 1px solid #278ccc;
     }
@@ -754,12 +754,12 @@ $themeColor4: #e0e1e2;
     }
     .col4EvtDate{
       .col4EvtDay{
-        font-size: 15px;
+        font-size: 10px;
         font-weight: 400;
         line-height: 1;
       }
       .col4EvtMnth{
-        font-size: 11px;
+        font-size: 8px;
       }
     }
     
@@ -3079,13 +3079,14 @@ $themeColor4: #e0e1e2;
       border-right: 1px solid #be1f2c !important;
       margin: 0px 0 !important;
       height: inherit !important;
+      font-size: 15px !important;
     }
     .col4EvtDate p{
       color: #be1f2c !important;
     }
     .col4EvtDate{
       .col4EvtDay{
-        font-size: 28px !important;
+        font-size: 15px !important;
       }
     }
     .col4EvtDetails{

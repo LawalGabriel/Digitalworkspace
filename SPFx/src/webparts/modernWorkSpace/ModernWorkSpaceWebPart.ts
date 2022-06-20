@@ -81,6 +81,7 @@ export default class ModernWorkSpaceWebPart extends BaseClientSideWebPart <IMode
         siteUrl: `https://relianceinfo.sharepoint.com/sites/Portal1`,
         siteUrl2: `https://relianceinfo.sharepoint.com/sites/RelianceIntranetPortal2`,
         subSitePath: this.context.pageContext.web.serverRelativeUrl,
+        dynamicsUri: "https://relianceinfo.crm4.dynamics.com",
         listTitle: `ProdList`
       }
     );

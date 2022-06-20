@@ -15,11 +15,13 @@ import { TimeSheet } from './interfaces/ITimeSheet';
 import { PSearchResult } from './model/ISearchResult';
 import { LineGraphInData, Activity, GroupedActivity, AggregatedActivity, LineGraphData, PieGraphData, PieData,CollaborationActivity} from "./interfaces/Objects";
 import { SPEvents } from './interfaces/ISPEventBirthday';
-import { ICarouselImage } from './interfaces/IGraphDriveFile';  
+//import { ICarouselImage } from './interfaces/IGraphDriveFile';  
+import { DynamicsOpp } from './interfaces/IDynamicsOpportunities';
 
 
  
 export interface IModernWorkSpaceState {
+  DynamicOpportunities: DynamicsOpp[];
   isConnected: Boolean;
   isOnTeams?: Boolean;
   notificationCount: number;
@@ -79,11 +81,11 @@ export interface IModernWorkSpaceState {
   barChartData: {}[];
   pieChartData: PieGraphData[];
   imageURLs: string[];
-  resourceLink: String[];  
-  carouselItems: ICarouselImage[];
-  carouselItemElements: JSX.Element[];
-  currentCarouselItemElement: JSX.Element;
-  currentCarouselItemIndex: number;
-  carouselCanMoveNext: boolean;
-  carouselCanMovePrev: boolean;
+  searchOpportunities:string;
+  //carouselItems: ICarouselImage[];
+  // carouselItemElements: JSX.Element[];
+  // currentCarouselItemElement: JSX.Element;
+  // currentCarouselItemIndex: number;
+  // carouselCanMoveNext: boolean;
+  // carouselCanMovePrev: boolean;
 }

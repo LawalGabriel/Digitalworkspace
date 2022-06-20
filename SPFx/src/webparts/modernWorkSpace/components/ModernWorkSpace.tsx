@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './ModernWorkSpace.module.scss';
-import { IModernWorkSpaceProps } from './IModernWorkSpaceProps';
-//import { escape } from '@microsoft/sp-lodash-subset';
+import { DynamicsOpp, IDynamicsOpportunities } from './interfaces/IDynamicsOpportunities';
+import {IModernWorkSpaceProps } from './IModernWorkSpaceProps';
 import { IModernWorkSpaceState } from './IModernWorkSpaceState';
 import { ICheckboxInput } from './model/ICheckboxInput';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
@@ -17,19 +17,20 @@ import InlineSearchResults from './InlineSearchResults/InlineSearchResults';
 import ListSearchProductCard from './InlineSearchResults/ListSearchProductCard';
 import SPSearchService from './model/SPSearchService';
 import { LineGraphInData, Activity, GroupedActivity, AggregatedActivity, LineGraphData, PieGraphData, PieData,CollaborationActivity} from "./interfaces/Objects";
+import { Carousel, Image } from '@fluentui/react-northstar';
 
-import { Carousel, CarouselButtonsDisplay, CarouselButtonsLocation } from "@pnp/spfx-controls-react/lib/Carousel";
+
+
 // import { IoMdAttach } from 'react-icons/io';
-import { SPEvents, ISPEventItem} from './interfaces/ISPEventBirthday';
 import * as  moment from 'moment';
 import {FontAwesomeIcon}  from '@fortawesome/react-fontawesome';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { parse, toSeconds } from 'iso8601-duration';
 config.autoA11y = true;
-import { TextField, Slider, PrimaryButton, IPersonaProps, IPersonaSharedProps, Persona, PersonaSize, Callout, DirectionalHint, HighContrastSelector, ImageFit, initializeIcons, styled } from 'office-ui-fabric-react/lib';
+import { TextField, Slider, PrimaryButton, Callout, DirectionalHint, IPersonaProps, IPersonaSharedProps, Persona, PersonaSize, personaSize, initializeIcons } from 'office-ui-fabric-react/lib';
 import { escape } from '@microsoft/sp-lodash-subset';
-import { Environment, EnvironmentType, ServiceScope } from '@microsoft/sp-core-library';
-import {ISPSearchResult, LobLink, ILobLinkItems} from './interfaces/ISPSearchResult';
+import { Environment, EnvironmentType } from '@microsoft/sp-core-library';
+import {ISPSearchResult} from './interfaces/ISPSearchResult';
 import { ISearchResults, ICells, ICellValue, ISearchResponse } from './interfaces/ISearchService';
 import {
   MSGraphClient,
@@ -38,25 +39,19 @@ import {
 } from '@microsoft/sp-http';
 import * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
 import { ChartControl, ChartType } from '@pnp/spfx-controls-react/lib/ChartControl';
-// import { Carousel } from 'react-responsive-carousel';
-// import { Carousel } from 'react-responsive-carousel';
-// import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Rerousel } from 'rerousel';
 
 import { IGraphMail, IGraphMailItems, GraphMail } from './interfaces/IGraphMail';
 import { IGraphMyTeam, IGraphMyTeamItems, GraphMyTeam, IGraphTeamMessage, IGraphTeamMessageItems, GraphTeamMessage } from './interfaces/IGraphMyTeam';
 import { IGraphUserProfile, IGraphUserProfileItems, GraphUserProfile, ISPUsers, SPUsers } from './interfaces/IGraphUserProfile';
 import { IGraphDriveFile, IGraphDriveFileItems, GraphDriveFile } from './interfaces/IGraphDriveFile';
 import { ISPEvent, ISPEventItems, SPEvent, myOutlookEvent } from './interfaces/ISPEvent';
-import { CarouselImageService } from './model/CarouselImageService';
-import { IDataService } from './model/IDataService';
+import { ISPSite, ISPSiteItems, SPSite } from './interfaces/ISPSite';
+import { ISPFaq, ISPFaqItems, SPFaq } from './interfaces/ISPFaq';
+import { ISPLineExtn, ISPLineExtnItems, SPLineExtn } from './interfaces/ISPLineExtn';
 import { ISPAnnouncement, ISPAnnouncementItems, SPAnnouncement } from './interfaces/ISPAnnouncement';
 import { ILeaveRequestItems, LeaveRequest, ILoanRequestItems, LoanRequest, IPettyCashItems, PettyCash, ISalaryAdvItems, SalaryAdv, completedProcess, ICompletedProcess, aggProcess } from './interfaces/IProcessStage';
 import { IEngageProgressItem, EngageProgress } from './interfaces/IEngageProgress';
 import { ITimeSheetItem,  TimeSheet } from './interfaces/ITimeSheet';
-import { ICarouselImage,ICarouselImageFile,ICarouselImageRLink } from './interfaces/IGraphDriveFile'; 
-import { faWindowRestore } from '@fortawesome/free-solid-svg-icons';
-import { useRef } from 'react';
 
 import * as Data from './sampleData';
 import { ResponsiveBar } from '@nivo/bar';
@@ -64,17 +59,14 @@ import { ResponsivePie } from '@nivo/pie';
 import * as reactIframe from 'react-iframe';
 import { DynamicsTask } from './interfaces/IDynamicsTask';
 
+
+
 function formatDateTime(dateTime) { 
   return moment.utc(dateTime).local().format('DD-MMMM-YY');
 }
 
 function formatDate(dateTime) { 
   return moment.utc(dateTime).local().format('DD-MMMM');
-}
-
-function App() {
-  const ref = useRef(null);
-
 }
 
 const options: ICheckboxInput[] = [
@@ -125,9 +117,67 @@ const options3: ICheckboxInput[] = [
 // Used to add spacing between checkboxes
 const stackTokens3 = { childrenGap: 10 };
 
+//for fluentui carousel
+const imageAltTags = {
+  allan: 'Portrait of Allan Munger',
+  carole: 'Portrait of Carole Poland',
+  elvia: 'Portrait of Elvia Atkins',
+  kat: 'Portrait of Kat Larsson',
+};
+
+const carouselItems = [
+  {
+    key: 'allan',
+    id: 'allan',
+    content: (
+      <Image
+        src="https://fabricweb.azureedge.net/fabric-website/assets/images/avatar/AllanMunger.jpg"
+        fluid
+        alt={imageAltTags.allan}
+      />
+    ),
+    'aria-label': imageAltTags.allan,
+  },
+  {
+    key: 'carole',
+    id: 'carole',
+    content: (
+      <Image
+        src="https://fabricweb.azureedge.net/fabric-website/assets/images/avatar/CarolePoland.jpg"
+        fluid
+        alt={imageAltTags.carole}
+      />
+    ),
+    'aria-label': imageAltTags.carole,
+  },
+  {
+    key: 'elvia',
+    id: 'elvia',
+    content: (
+      <Image
+        src="https://fabricweb.azureedge.net/fabric-website/assets/images/avatar/ElviaAtkins.jpg"
+        fluid
+        alt={imageAltTags.elvia}
+      />
+    ),
+    'aria-label': imageAltTags.elvia,
+  },
+  {
+    key: 'kat',
+    id: 'kat',
+    content: (
+      <Image
+        src="https://fabricweb.azureedge.net/fabric-website/assets/images/avatar/KatLarsson.jpg"
+        fluid
+        alt={imageAltTags.kat}
+      />
+    ),
+    'aria-label': imageAltTags.kat,
+  },
+];
+
+
 export default class ModernWorkSpace extends React.Component<IModernWorkSpaceProps, IModernWorkSpaceState> {
-  private dataCenterServiceInstance: IDataService;
-  //private carouselInterval;
   constructor(props:  IModernWorkSpaceProps, state: IModernWorkSpaceState){
     super(props);
     this.state = {
@@ -135,6 +185,7 @@ export default class ModernWorkSpace extends React.Component<IModernWorkSpacePro
       isOnTeams: false,
       notificationCount: 0,
       allUser: [],
+      DynamicOpportunities: [],
       myRecentUsers: [],
       myProfile: null,
       mailMessageArr: [],
@@ -157,7 +208,7 @@ export default class ModernWorkSpace extends React.Component<IModernWorkSpacePro
       searchExtn: "",
       employeeCount: [],
       searchstatus: false,
-      LOBLinkList: [], 
+      LOBLinkList: [],  
       searchText: "", 
       item: [],
       isCalloutVisible: false,
@@ -173,6 +224,7 @@ export default class ModernWorkSpace extends React.Component<IModernWorkSpacePro
       searchEngage: "",
       allTimeSheet: [],
       searchTimeSheet: "",
+      searchOpportunities:"",
       PsearchText: "",
       PisCalloutVisible: false,
       PsearchResult: [],
@@ -187,47 +239,24 @@ export default class ModernWorkSpace extends React.Component<IModernWorkSpacePro
       AggregatedActivityList: [],
       CollaborationActivityList: {Email: [], Focus: [], Meeting: [], "Chat/Call": []},
       barChartData: [],
-      pieChartData: [],
       imageURLs: [],
-      resourceLink: [],
-      carouselItems: [],
-      carouselItemElements: [],
-      currentCarouselItemElement: <div></div>,
-      currentCarouselItemIndex: 0,
-      carouselCanMoveNext: false,
-      carouselCanMovePrev: false
+
+      pieChartData: []
     };
 
-    let serviceScope: ServiceScope = this.props.serviceScope;
-  
-    // this.dataCenterServiceInstance = serviceScope.consume(CarouselImageService.serviceKey);
-    // this.dataCenterServiceInstance.getImages('Gallery Slide').then((carouselItems: ICarouselImage[]) => {
-    //   console.log(carouselItems);
-    //   this.setState({
-    //     carouselItems: carouselItems,
-    //     carouselItemElements: carouselItems.map(imageList => (
-    //     <div style={{display:"flex", height:"100%"}}>
-    //       <a href={imageList.ResourceLink} target='_blank'>
-    //         <img style={{width:'100%', height:'100%', objectFit:"contain"}} src={imageList.FileRef} />
-    //       </a> 
-    //     </div>)
-    //     )
-    //    // imageURLs: this._getGalleryImages(carouselItems) ,
-    //     //resourceLink: this._getGalleryResourseLink(carouselItems)
-
-    //   });
-    // });
-
   }
+
+
   public _msGraphFactory: Promise<MSGraphClient> = this.props.context.msGraphClientFactory.getClient();
   
   private _menuButtonElement = React.createRef<HTMLDivElement>();
 
-  
+  public _aadClientFactory: Promise<AadHttpClient> = this.props.context.aadHttpClientFactory.getClient(this.props.dynamicsUri);
   public render(): React.ReactElement<IModernWorkSpaceProps> {
     if(Environment.type == EnvironmentType.ClassicSharePoint || Environment.type == EnvironmentType.SharePoint){
 
       initializeIcons();
+
       const analyticsBarChart1 = <ResponsiveBar
         data={this.state.barChartData}
         keys={[ 'Collab', 'Focus' ]}
@@ -321,7 +350,7 @@ export default class ModernWorkSpace extends React.Component<IModernWorkSpacePro
         motionStiffness={90}
         motionDamping={15}
       />;
-
+    
       const analyticsBarChart2 = <ResponsiveBar
         data={Data.barChartData2}
         keys={[ 'Meeting', 'Email' ]}
@@ -506,7 +535,7 @@ export default class ModernWorkSpace extends React.Component<IModernWorkSpacePro
         motionStiffness={90}
         motionDamping={15}
       />;
-      
+    
       const analyticsPieChart = (
         <ResponsivePie
           data={this.state.pieChartData}
@@ -740,11 +769,26 @@ export default class ModernWorkSpace extends React.Component<IModernWorkSpacePro
         />
       );
 
+      const CarouselExample = () => (
+        <Carousel
+          aria-roledescription="carousel"
+          aria-label="Portrait collection"
+          navigation={{
+            'aria-label': 'people portraits',
+            items: carouselItems.map((item, index) => ({
+              key: item.id,
+              'aria-label': imageAltTags[item.id],
+              'aria-controls': item.id,
+            })),
+          }}
+          items={carouselItems}
+          getItemPositionText={(index: number, size: number) => `${index + 1} of ${size}`}
+        />
+      );
+
       const myRecentUser: JSX.Element[] = this.state.myRecentUsers.map((user, i) => {
-        let userLink = `https://delve.office.com/?u=${user.id}&v=work`, linkToMail = `mailto:${user.userPrincipalName}?body=Hello%20${user.displayName}%0D%0A%0D%0A`;
-        // if(i<12) 
-        return (
-        <a className={`ms-Grid-col ms-sm2 ms-md2 ms-lg2 ms-xl2 ms-xxl2 ms-xxxl2 ${styles.msGridCol} ${styles.msSm2}} ${styles.msMd2} ${styles.msLg2} ${styles.msXl2} ${styles.msXxl2} ${styles.msXxxl2} ${styles.col1memeber}`} target="_blank" href={userLink} title={user.displayName}>
+        if(i<12) return (
+        <a className={`ms-Grid-col ms-sm2 ms-md2 ms-lg2 ms-xl2 ms-xxl2 ms-xxxl2 ${styles.msGridCol} ${styles.msSm2}} ${styles.msMd2} ${styles.msLg2} ${styles.msXl2} ${styles.msXxl2} ${styles.msXxxl2} ${styles.col1memeber}`} target="_blank" href={`mailto:${user.userPrincipalName}?body=Hello%20${user.displayName}%0D%0A%0D%0A`} title={user.displayName}>
           <div className={`${styles.col1memberImg}`} style={{backgroundImage: `url('${this.props.siteUrl}/_layouts/15/userphoto.aspx?size=L&accountname=${user.userPrincipalName}')`}}></div>
         </a>
         );
@@ -823,25 +867,25 @@ export default class ModernWorkSpace extends React.Component<IModernWorkSpacePro
         );
       });
 
-      const LOBLinks: JSX.Element[] = this.state.LOBLinkList.map(link => (
-       
-
-      <div className='col-md-4'>
-
-     
-        <div className={`${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4} ${styles.lobApps}`}>
-          <a href={link.url} target="_blank" title={link.title} style={{backgroundImage: `url('${link.attachImage}')`}} ></a>
-        </div>
-        </div>
-      ));  
-
-      const myUpcomingEvents: JSX.Element[] = this.state.companyEvents.length>0 ?
-      this.state.companyEvents.map(event => {
+      const mysharedDoc: JSX.Element[] = this.state.docsSharedWithMe.map(doc => {
+        const docExtn = doc.name.split(".").pop().toLowerCase(), extns = ["csv", "docx", "dotx", "onetoc", "pdf", "potx", "pptx", "pub", "xlsx", "xltx", "zip", "png", "jpg"];
+        
+        let docClass = extns.indexOf(docExtn) !== -1 ? styles[`${docExtn}Doc0`] : styles.fileDoc0;
+                
         return(
-        <div className={`${styles.col4Event}`}>
+          <p className={`${styles.docType} ${docClass}`}>
+            <a href={doc.webUrl} target="_blank">{doc.name}</a>
+            <span>{this.utilityMethod.convertDateTime(doc.lastModifiedDateTime, "-")}</span>
+          </p>
+        );
+      });
+
+      const myUpcomingEvents: JSX.Element[] = this.state.companyEvents.map(event => {
+        return(
+        <div className={`${styles.col4Event}`} style={{height:"64px"}}>
           <div className={`${styles.col4EvtDate}`}>
-              <p className={`${styles.col4EvtDay}`}>{event.EventDate.getDate()}</p>
-              <p className={`${styles.col4EvtMnth}`}>{this.utilityMethod.monthsOfTheYear[event.EventDate.getMonth()]}</p>
+              <p className={`${styles.col4EvtDay}`} >{formatDateTime(event.EventDate.getDate())}</p>
+              <p className={`${styles.col4EvtMnth}`} >{formatDateTime(this.utilityMethod.monthsOfTheYear[event.EventDate.getMonth()])}</p>
           </div>
           <div className={`${styles.col4EvtDetails}`}>
               <p className={`${styles.col4EvtTitle}`}>{event.Title}</p>
@@ -850,13 +894,9 @@ export default class ModernWorkSpace extends React.Component<IModernWorkSpacePro
           </div>
         </div>
         );
-      }) :
-      [<div className={`${styles.colEmptyContent}`}>
-        <p>Hello <strong>{this.state.myProfile ? this.state.myProfile.displayName : "User"}</strong>;<br/> No Organization Event have been booked yet <br/> CHECK BACK LATER!!! </p>
-      </div>];
+      });
 
-      const myCalendarEvents: JSX.Element[] = this.state.myCalendar.length>0 ?
-      this.state.myCalendar.map(event => {
+      const myCalendarEvents: JSX.Element[] = this.state.myCalendar.map(event => {
         return (
           <div className={`${styles.col4Event}`}>
             <div>
@@ -891,165 +931,38 @@ export default class ModernWorkSpace extends React.Component<IModernWorkSpacePro
             </p>}
           </div>
         );
-      }):
-      [<div className={`${styles.colEmptyContent}`}>
-        <p>Hello <strong>{this.state.myProfile ? this.state.myProfile.displayName : "User"}</strong>;<br/> You currently don't have any activity scheduled!! Vist <a href="https://outlook.office.com/calendar/?state=0">Outlook</a> to schedule an activity/meeting! </p>
-      </div>];
+      });
 
-      const LatestHire: JSX.Element[] = [this.state.staffAnniversary.sort((a,z) => z.Resumption_Date.getTime() - a.Resumption_Date.getTime())[0]].map((staff, i) => {
-        // if(i<12) 
-        return (
-        <a className={`ms-Grid-col ms-sm2 ms-md2 ms-lg2 ms-xl2 ms-xxl2 ms-xxxl2 ${styles.msGridCol} ${styles.msSm2}} ${styles.msMd2} ${styles.msLg2} ${styles.msXl2} ${styles.msXxl2} ${styles.msXxxl2} ${styles.col1memeber}`} target="_blank" title={staff&&staff.FullName}>
-          <div className={`${styles.col1memberImg}`} style={{backgroundImage: `url('${this.props.siteUrl}/_layouts/15/userphoto.aspx?size=L&accountname=${staff && staff.Staff_Email}')`}}>
-            {staff&&staff.FullName}
-          </div>
-        </a>
+      const mySPSites: JSX.Element[] = this.state.mySPSites.map((site, i) => {
+        if(i<12){
+          const imgClass = `img${Math.floor(Math.random()*3)}`;
+          return(
+            // <a href={site.Uri} target="_blank">{site.Name}</a>
+            <div className={ styles.spSite }>
+            {/* <a className={` ${styles.spSiteImg} ${styles[imgClass]}`} href={site.Uri} target="_blank"></a> */}
+            <a className={` ${styles.spSiteImg} ${styles.img1}`} href={site.Uri} target="_blank"></a>
+              <p>{site.Name}</p>
+              <a className={ styles.spSiteTitle } href={site.Uri} target="_blank">Go to</a>
+            </div>
+          );
+        }
+      });
+
+      const companyExtns: JSX.Element[] = this.state.lineExtn.filter(linExtn => linExtn.Office.toLowerCase().indexOf(this.state.searchExtn)!=-1/*  || linExtn.Role.toLowerCase().indexOf(this.state.searchExtn.toLowerCase().trim())!=-1 */).map((line, i) => {
+
+        return(
+        <div className={` ${styles.extnContent} ${styles.scrollHidden} `}>
+          <input type="checkbox" name={`extnOffice1${i}`} id={`extnOffice1${i}`} />
+          <label className={ styles.extnOffice } htmlFor={`extnOffice1${i}`} title={line.Office}>
+            <p>{line.Office}</p>
+            <p>{line.Role}</p>
+          </label>
+          <div className={ styles.extnNumber }>{line.ExtNo}</div>
+        </div>
         );
       });
-      
-  let nextBd: number = 0, currentDate: Date = new Date();
-const StaffBirthdays: JSX.Element[] = this.state.staffBirthdays.length>0 ? this.state.staffBirthdays && this.state.staffBirthdays.length>0 && this.state.staffBirthdays.filter(curEmployee => curEmployee.Birthday > (new Date(1900, currentDate.getMonth(), currentDate.getDate())) && curEmployee.Birthday.getDate() >= currentDate.getDate() && curEmployee.Birthday.getMonth() === currentDate.getMonth()).sort((a,b)=>(a.Birthday.getDate()>b.Birthday.getDate())?1:-1).map(birthday => {
-  const myBirthday = birthday.Birthday;
-  const todayIsBirthday: Boolean = myBirthday.getDate()===currentDate.getDate() && myBirthday.getMonth()===currentDate.getMonth();
-  let showNextBd = (nextBd===1 || (!todayIsBirthday && nextBd===0));
- 
-  nextBd = todayIsBirthday ? 1 : 2;
-    
-  // console.log(`${myBirthday} - ${todayIsBirthday} - ${showNextBd}`);
 
-  return(
-    <div className={`${styles.col4Event} ${todayIsBirthday ? styles.Birtdaybg: ""}`} style={{height:"64px"}}>
-      
-      <div className={`${styles.col4EvtDate}`}>
-          <p className={`${styles.col4EvtDay}`}>{birthday.Birthday.getDate()}</p>
-          <p className={`${styles.col4EvtMnth}`}>{this.utilityMethods.monthOfTheYear[birthday["Date_of_Birth"].getMonth()]}</p>
-    
-      </div>
-      <div className={`${styles.col4EvtDetails}`}>
-        <p className={styles.BirthdayTitle}
-          style={{display: todayIsBirthday ? "block" : "none"}}
-        >Happy Birthday To You!</p>
-        <p className={`${styles.col4EvtTitle}`}>{birthday["FullName"]}</p>
-        <p className={`${styles.col4EvtLocatn}`}>{birthday["Designation"]}</p>
-        <p className={`nextBirthdayTitle`}
-          style={{display: showNextBd ? "display" : "none"}}
-        >Next Birthday</p>
-      </div>
-    </div>
-    
-  );
-}):
-[<div className={`${styles.colEmptyContent}`}>
-      <p>Hello <strong>{this.state.myProfile ? this.state.myProfile.displayName : "User"}</strong>;<br/> No Staff Birthday Today <br/> CHECK BACK LATER!!! </p>
-    </div>];  
-
-let nextanni: number = 0, currentAnniDate: Date = new Date();
-const staffAnniversaryThisMonth = this.state.staffAnniversary && this.state.staffAnniversary.length>0 && this.state.staffAnniversary.filter(curEmployee => curEmployee.Anniversary > (new Date(1900, currentAnniDate.getMonth(), currentAnniDate.getDate())) && curEmployee.Anniversary.getDate() >= currentAnniDate.getDate() && curEmployee.Anniversary.getMonth() === currentAnniDate.getMonth());
-const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
-  staffAnniversaryThisMonth.sort((a,b)=>(a.Anniversary.getDate()>b.Anniversary.getDate())?1:-1).map(anniversary => {
-  //const myAnniversary = anniversary.anniversaryThisYear;
-    const myAnniversary = anniversary.Anniversary;
-    // console.log(myAnniversary)
-    const todayIsAnniversary: Boolean = myAnniversary.getDate()===currentAnniDate.getDate() && myAnniversary.getMonth()===currentAnniDate.getMonth();
-    let showNextAnni = (nextanni===1 || (!todayIsAnniversary && nextanni===0));
-
-    nextBd = todayIsAnniversary ? 1 : 2;
-    //console.log(`todayIsAnniversary`, myAnniversary, todayIsAnniversary);
-
-    return(
-      <div className={`${styles.col4Event} ${todayIsAnniversary ? styles.Birtdaybg: ""}`}>
-        <div className={`${styles.col4EvtDate}`}>
-            <p className={`${styles.col4EvtDay}`}>{anniversary.Anniversary.getDate()}</p>
-            <p className={`${styles.col4EvtMnth}`}>{this.utilityMethods.monthOfTheYear[anniversary["Resumption_Date"].getMonth()]}</p>
-        </div>
-        <div className={`${styles.col4EvtDetails}`}>
-          <p className={styles.BirthdayTitle}
-            style={{display: todayIsAnniversary ? "block" : "none"}}
-          >Happy {currentAnniDate.getFullYear() - anniversary.Anniversary.getFullYear()} Year(s) Anniversary To You!</p>
-          <p className={`${styles.col4EvtTitle}`}>{anniversary["FullName"]}</p>
-          <p className={`${styles.col4EvtLocatn}`}>{anniversary["Designation"]}</p>
-          <p className={`nextBirthdayTitle`}
-            style={{display: showNextAnni ? "display" : "none"}}
-          >Next Anniversary</p>
-        </div>
-      </div>
-    );
-  }):
-  [<div className={`${styles.colEmptyContent}`}>
-        <p>Hello <strong>{this.state.myProfile ? this.state.myProfile.displayName : "User"}</strong>;<br/> No Staff Anniversary Today <br/> CHECK BACK LATER!!! </p>
-      </div>];  
-      
-{/* const StaffBirthday: JSX.Element[] = this.state.staffBirthdays && this.state.staffBirthdays.length>0 ?
-      this.state.staffBirthdays.map(bday => {
-        return (
-          <div className={`${styles.col4Event}`}>
-            <div>
-              <div className={`${styles.col4EvtDate}`}>
-                <p className={`${styles.col4EvtDay}`}>
-                  {(new Date(bday["Date_of_Birth"])).getDate()}
-                </p>
-                <p className={`${styles.col4EvtMnth}`}>
-                  {this.utilityMethod.monthsOfTheYear[(new Date(bday["Date_of_Birth"])).getMonth()]}
-                </p>
-              </div>
-              <div className={`${styles.col4EvtDetails}`}>
-              <p className={`${styles.col4EvtTitle}`}><a target="_blank" >{bday["First_Name"]}</a></p>
-              <p className={`${styles.col4EvtLocatn}`}></p>
-              <p
-                className={`${styles.col4EvtDesc}`}
-              ></p>
-            </div>
-            </div>
-            <p className={styles.col4EvtTime}>ALL DAY</p>
-            {/* {(event.endTime.getTime() - event.startTime.getTime() === 86400000) ?
-            <p className={styles.col4EvtTime}>ALL DAY</p> :
-            <p className={styles.col4EvtTime}>
-              <span>{this.utilityMethod.getFormattedTime(event.startTime)}</span>
-              <span>{">>>>>"}</span>
-              <span>{this.utilityMethod.getFormattedTime(event.endTime)}</span>
-            </p>} */}
-       {/*   </div>
-        );
-      }):
-      [<div className={`${styles.colEmptyContent}`}>
-        <p>Hello <strong>{this.state.myProfile ? this.state.myProfile.displayName : "User"}</strong>;<br/> There's no upcoming birthday on the list</p>
-      </div>]; */}
-      
-    {/*  const staffAnniversary: JSX.Element[] = this.state.staffAnniversary && this.state.staffAnniversary.length>0 ?
-      this.state.staffAnniversary.map(Anniday => {
-        return (
-          <div className={`${styles.col4Event}`}>
-            <div>
-              <div className={`${styles.col4EvtDate}`}>
-                <p className={`${styles.col4EvtDay}`}>
-                {(new Date(Anniday["Resumption_Date"])).getDate()}
-                </p>
-                <p className={`${styles.col4EvtMnth}`}>
-                  {this.utilityMethod.monthsOfTheYear[(new Date(Anniday["Resumption_Date"])).getMonth()]}
-                </p>
-              </div>
-              <div className={`${styles.col4EvtDetails}`}>
-              <p className={`${styles.col4EvtTitle}`}><a target="_blank" >{Anniday["First_Name"]}</a></p>
-              <p className={`${styles.col4EvtLocatn}`}></p>
-              <p
-                className={`${styles.col4EvtDesc}`}
-              ></p> */}
-           {/*  </div>
-            </div>
-            <p className={styles.col4EvtTime}>ALL DAY</p>
-            {/*<p className={styles.col4EvtTime}>
-              <span>{this.utilityMethod.getFormattedTime(event.startTime)}</span>
-              <span>{">>>>>"}</span>
-              <span>{this.utilityMethod.getFormattedTime(event.endTime)}</span>
-            </p>} 
-          </div>
-        );
-      }):
-      [<div className={`${styles.colEmptyContent}`}>
-        <p>Hello <strong>{this.state.myProfile ? this.state.myProfile.displayName : "User"}</strong>;<br/> There's no upcoming anniversary on the list</p>
-      </div>]; */}
-
-      const employeeSearhResults: JSX.Element[] = this.state.allUser.filter(userProfile => (Boolean(userProfile.mail) && (userProfile.mail.toLowerCase().indexOf(this.state.searchExtn)!=-1 || userProfile.displayName.toLowerCase().indexOf(this.state.searchExtn)!=-1)) /* || userProfile.department.toLowerCase().indexOf(this.state.searchExtn)!=-1 */ ).map((user, i) => {
+      const employeeSearhResults: JSX.Element[] = this.state.allUser.filter(userProfile => userProfile.mail.toLowerCase().indexOf("relianceinfosystems.com")!=-1 && (userProfile.mail.toLowerCase().indexOf(this.state.searchExtn)!=-1 || userProfile.displayName.toLowerCase().indexOf(this.state.searchExtn)!=-1) /* || this.utilityMethod.monthsOfTheYear[userProfile.Birthday?.getMonth()+1].indexOf(this.state.searchExtn)!=-1 */ ).map((user, i) => {
 
         return (
           <div className={` ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12 ${styles.msGridCol} ${styles.msSm12}} ${styles.msMd12} ${styles.msLg12} ${styles.msXl12} ${styles.msXxl12} ${styles.msXxxl12} ${styles.employeeSearchDiv} ${styles.employeeSearchDiv2}`}>
@@ -1062,34 +975,33 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
                 <div>
                 <p className={`${styles.contactCardName} ${styles.contactCardLink} `}>{user.displayName}</p>
                 <ul>
-                  {user.jobTitle ?
+                  {user.department ?
                   <li className={` ${styles.contactCardLinkRole} ${styles.contactCardLink} `}>
                     <p>
                     <span><FontAwesomeIcon icon={'business-time'} ></FontAwesomeIcon>  {user.jobTitle} </span>
                     </p>
                   </li>
                   : ""}
-                  {user.department ?
                   <li className={` ${styles.contactCardLinkRole} ${styles.contactCardLink} `}>
                   <p>
                   <span><FontAwesomeIcon icon={'chalkboard-teacher'} ></FontAwesomeIcon>  {user.department}</span>
                   </p>
                   </li>
-                  : ""}
-                  {user.mail ?
                   <li className={` ${styles.contactCardLinkRole} ${styles.contactCardLink} `}>
                     <p>
                     <span><FontAwesomeIcon icon={'envelope'} ></FontAwesomeIcon>  {user.mail}</span>
                     </p>
                   </li>
-                  : ""}
-                  {user.mobilePhone || user.businessPhones.join() ?
                   <li className={` ${styles.contactCardLinkExtn} ${styles.contactCardLink} `}>
                     <p>
-                    <span><FontAwesomeIcon icon={'mobile-alt'}  ></FontAwesomeIcon> {user.mobilePhone} </span>{user.mobilePhone&&user.businessPhones.join() ? " | " : ""}<span>  {user.businessPhones.join(": ")}</span>
+                    <span><FontAwesomeIcon icon={'mobile-alt'}  ></FontAwesomeIcon> {user.mobilePhone} </span> | <span>  {user.businessPhones}</span>
                     </p>
                   </li>
-                  : ""}
+                  <li className={` ${styles.contactCardLinkBirthday} ${styles.contactCardLink} `}>
+                  <p>
+                  <span> {user.Birthday ? `Birthday: ${formatDate(user.Birthday)}` : ""}</span>
+                  </p>
+                  </li>
                 </ul>
                 </div>
               </div>
@@ -1098,38 +1010,43 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
         );
       });
 
-      const spAnnouncementNews: JSX.Element[] = this.state.spAnnouncements.length>0 ?
-      this.state.spAnnouncements.map((news) => {
+      const spFAQ: JSX.Element[] = this.state.spFAQ.map((faq, i) => {
+
+        return(
+          <div className={ styles.faqs }>
+            <input type="checkbox" id={`faq${i}`}/>
+            <label htmlFor={`faq${i}`}>
+              <span className={ styles.faqId }>{`N.${i+1}`}</span>
+              <div className={ styles.faqQtn }>
+                <p>{faq.Question}</p>
+                <p className={ styles.faqTime }><span>{this.utilityMethod.convertDateTime(faq.Created, ".", true)}</span><span>{`${faq.Created.getHours() < 10 ? "0" : ""}${faq.Created.getHours()}.${faq.Created.getMinutes() < 10 ? "0" : ""}${faq.Created.getMinutes()}`}</span></p>
+              </div>
+            </label>
+            <p className={ styles.faqAnswer }>{faq.Answer}</p>
+          </div>
+        );
+      });
+
+      const spAnnouncementNews: JSX.Element[] = this.state.spAnnouncements.map((news) => {
         const createdBy = this.state.spUsers.filter(user => user.Id==news.AuthorId)[0];
 
         return(
           <div className={styles.newSection}>
-            <h5 className={styles.newsTitle}>
-              {news.Title}
-              <h5 style={{fontSize:"11px", fontWeight: 400}}>{moment.utc(news.Created).local().format('Do MMMM, YYYY')}</h5>
-            </h5>
+            <h5 className={styles.newsTitle}>{news.Title}</h5>
             {/* <h5 className={styles.newsBy}>{`by ${createdBy ? createdBy.Title : `User-${news.AuthorId}`}`}</h5> */}
             <h5 className={styles.newsBy}>{`by ${createdBy ? createdBy.Title : "User-" + news.AuthorId}`}</h5>
-            <img className={styles.newsImage} src={news.AttachmentServerURL} width={'90%'} />
             <div className={styles.newsDesc} dangerouslySetInnerHTML={{__html: news.Description}}></div>
-            
-            <hr className={styles.hr1} />
-            <hr className={styles.hr1} />
           </div>
         );
-      }):
-      [<div className={`${styles.colEmptyContent}`}>
-        <p>Hello <strong>{this.state.myProfile ? this.state.myProfile.displayName : "User"}</strong>;<br/> APOLOGIES!!! No Announcement have been made <br/> CHECK BACK LATER!!! </p>
-      </div>];
+      });
 
       const plannerTasks: JSX.Element[] = this.state.myPlannerTasks.length>0 ?
         this.state.myPlannerTasks.map((task, i) => {
           const dueDate = new Date(task.dueDateTime),
-            dueDateFormatted = `${this.utilityMethod.convertDateTime(dueDate, "-", false, true, true)} ${this.utilityMethod.getFormattedTime(dueDate)}`,
-            taskLink = `https://tasks.office.com/${this.state.myProfile.mail.split("@").pop()}/Home/Task/${task.id}?Type=TaskLink`;
+            dueDateFormatted = `${this.utilityMethod.convertDateTime(dueDate, "-", false, true, true)} ${this.utilityMethod.getFormattedTime(dueDate)}`, taskLink = `https://tasks.office.com/${this.state.myProfile.mail.split("@").pop()}/Home/Task/${task.id}?Type=TaskLink`;
 
           return (
-            <div className={styles.plannerTask} onClick={()=>{window.open(taskLink, "_blank");}} style={{cursor: "pointer"}}>
+            <div className={styles.plannerTask} onClick={()=>{window.open(taskLink, "_blank")}} style={{cursor: "pointer"}}>
               <div>
                 <div className={styles.plannerTaskDetails}>
                   <div>
@@ -1165,8 +1082,30 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
           );
         }) :
         [<div className={`${styles.plannerTask} ${styles.emptyPlanner} ${styles.colEmptyContent}`}>
-          <p>Hello <strong>{this.state.myProfile ? this.state.myProfile.displayName : "User"}</strong>;<br/> Your outlook planner is empty, visit <a target="_blank" href="https://tasks.office.com/">Office Planner</a> to schedule/assign a new  task! </p>
+          <p>Hello <strong>{this.state.myProfile ? this.state.myProfile.displayName : "User"}</strong>;<br/> Your outlook planner is empty, visit <a>Office Planner</a> to schedule/assign a task! </p>
         </div>];
+
+      const twitterFeed = (): JSX.Element => {
+        React.useEffect(() => {
+          const script = document.createElement("script");
+          script.src = "https://platform.twitter.com/widgets.js";
+          document.getElementsByClassName("twitter-embed")[0].appendChild(script);
+        }, []);
+
+        return(
+          // <section>
+          //   <div className="twitter-embed">
+          //   <a className="twitter-timeline" data-theme="dark" data-tweet-limit="5" data-chrome="noheader nofooter noborders" href="https://twitter.com/HeyMarkKop">Tweets by HeyMarkKop</a>
+          //   </div>
+          // </section>
+
+          <section>
+          
+
+         
+        </section>
+        );
+      };
       
       const eSearchResult: JSX.Element[] = this.state.item.map(searchitem => {
         
@@ -1183,50 +1122,240 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
           </ul>
         );
       });
-
-    {/*const Item = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: calc(100%/2);
-    height: 100px;
-    font-family: Signika;
-    font-weight: bold;
-    font-size: 1.5em;
-    border: solid 1px black;
-    background-color: #61DAFB;
-    
-    @media(max-width: 1150px) {
-        width: 100%
-    }
-  `;*/}
       
+      const processesStage1: JSX.Element = (
+        <table className={`${styles.processStages}`}>
+        <thead><tr><th></th><th>Process</th><th>Requestor</th><th>Stage</th><th>Date</th></tr></thead>
+        <tbody className={styles.scrollHidden}>
+        {
+          this.state.allProcessStages.sort((a, b) => b["Modified"] - a["Modified"]).filter(item => item["Title"].toLowerCase().indexOf(this.state.searchProcessStage.toLowerCase()) !== -1 || item["EmployeeName"].toLowerCase().indexOf(this.state.searchProcessStage.toLowerCase()) !== -1 || item["Process"].toLowerCase().indexOf(this.state.searchProcessStage.toLowerCase()) !== -1).map((stage, i) => (
+            <tr>
+            <td className={styles.serialNo}>{i+1}</td>
+            <td>{stage["Process"]==="salaryAdv" ? "SALARY ADVANCE" : stage["Process"]==="pettyCash" ? "PETTY CASH" : stage["Process"]==="leave" ? "LEAVE" : stage["Process"]==="loan" ? "LOAN": ""}</td>
+            <td>{stage["Process"]==="salaryAdv" ? stage["Title"] : stage["EmployeeName"]}</td>
+            {/* <td>{stage["Process"]==="salaryAdv" ? stage["Title"] : stage["Process"]==="pettyCash" ? this.state.spUsers.filter(user => user.Id==stage["AuthorId"])[0] ? this.state.spUsers.filter(user => user.Id==stage["AuthorId"])[0].Title : "" : stage["EmployeeName"]}</td> */}
+            {/* {stage["Process"]==="salaryAdv" ? <td>{this.state.spUsers.filter(user => user.Id==app.AuthorId)[0] ? this.state.spUsers.filter(user => user.Id==app.AuthorId)[0].Title : ""}</td> : stage["Process"]==="salaryAdv" ? <td>{stage["Title"]}</td> : <td>{stage["EmployeeName"]}</td>} */}
+            <td>{stage["Stage"]}</td>
+            <td>{formatDateTime(stage["Modified"])}</td>
+            </tr>
+          ))
+        }
+        </tbody>
+        </table>
+      );
+  
+
+      const timeSheet: JSX.Element = (
+        <table className={`${styles.Opp}`}>
+        <thead><tr><th></th><th>Date</th><th>Name</th><th>Period</th><th>Period Starts</th><th>Total Hours</th> <th>indicator</th><th>Status</th></tr></thead>
+        <tbody className={styles.scrollHidden}>
+        {
+          this.state.allTimeSheet.sort((a, b) => b["Modified"] - a["Modified"]).filter(item => item["Title"].toLowerCase().indexOf(this.state.searchTimeSheet.toLowerCase()) !== -1 || item["Employee"].toLowerCase().indexOf(this.state.searchTimeSheet.toLowerCase()) !== -1 || item["Week"].toLowerCase().indexOf(this.state.searchTimeSheet.toLowerCase()) !== -1).map((status, i) => (
+            <tr>
+            <td className={styles.serialNo}>{i+1}</td>
+            <td>{formatDateTime(status["Created"])}</td>
+            <td>{status["Employee"]}</td>
+            <td>{status["Period"]}</td>
+            <td>{status["PeriodStarts"]}</td>
+            <td>{status["TotalHours"]}</td>
+            <td>  <FontAwesomeIcon icon={status.Status.toString()==="Approved"?'check-circle':status.Status.toString()==="Rejected"?'window-close':'check-circle'} style={{color:status.Status.toString()==="Approved"?'Green':status.Status.toString()==="Rejected"?'Red':'Green'}} ></FontAwesomeIcon></td>
+            <td>{status["Status"]}</td>
+            </tr>
+          ))
+        }
+        </tbody>
+        </table>
+      );
+      
+      const Opportunities: JSX.Element = (
+        <table className={`${styles.Opp}`}>
+        <thead><tr><th></th><th>Closing Date</th><th>Handling Officer</th><th>Company Name</th><th>Current Situation</th> <th>Customer Need </th></tr></thead>
+        <tbody  className={styles.scrollHidden}>
+        {
+         this.state.DynamicOpportunities.sort((a, b) => b["Modified"] - a["Modified"]).filter(item => item["name"].toLowerCase().indexOf(this.state.searchOpportunities.toLowerCase()) !== -1 || item["userfullname"].toLowerCase().indexOf(this.state.searchOpportunities.toLowerCase()) !== -1 || item["customerneed"].toLowerCase().indexOf(this.state.searchOpportunities.toLowerCase()) !== -1).map((status, i) => (
+            <tr>
+            <td className={styles.serialNo}>{i+1}</td>
+            <td>{formatDateTime(status["estimatedclosedate"])}</td>
+            <td>{status.userfullname}</td>
+            <td style={{
+                paddingRight : '25px'
+              }}>{status.name}</td>
+            {/* <td style={{
+                textAlign : 'center',paddingRight : '60px'
+              }}>{status.totalamount}</td> */}
+            {/* <td>{status["totalamountlessfreight"]}</td> */}
+            <td style={{
+                paddingRight : '20px'
+              }}>{status.currentsituation}</td>
+            <td>{status.customerneed}</td>
+            {/* <td>  <FontAwesomeIcon icon={status.Status.toString()==="Approved"?'check-circle':status.Status.toString()==="Rejected"?'window-close':'check-circle'} style={{color:status.Status.toString()==="Approved"?'Green':status.Status.toString()==="Rejected"?'Red':'Green'}} ></FontAwesomeIcon></td> */}
+            {/* <td>{status["Status"]}</td> */}
+            </tr>
+          ))
+        }
+        </tbody>
+        </table>
+      );
+
+      const engagementsProcess1: JSX.Element[] = this.state.allEngagements.filter(item => item.ProjectTitle.toLowerCase().indexOf(this.state.searchEngage)!=-1 || item.AuthorName.toLowerCase().indexOf(this.state.searchEngage)!=-1).map(engage => {
+        let percent: number, userName = this.state.spUsers.filter(user => user.Email === engage.AuthorEmail ), progressStage: string, progressColor: string;
+        if(engage.EngagementStage){
+          switch (engage.EngagementStage) {
+            case "Initiation":
+              percent = 0;
+              progressStage = "Not Started";
+              progressColor= "#555555";
+              break;
+          
+            case "Planning":
+              percent = 33;
+              progressStage = "Started";
+              progressColor= "#cd5c5c";
+              break;
+        
+            case "Execution":
+              percent = 66;
+              progressStage = "In Progress";
+              progressColor= "#27827f";
+              break;
+
+            case "Monitoring & Control":
+              percent = 66;
+              progressStage = "In Progress";
+              progressColor= "#27827f";
+              break;
+            
+            case "Close":
+              percent = 100;
+              progressStage = "Completed";
+              progressColor= "#869932";
+              break;
+            
+            default:
+              percent = 0;
+              progressStage = "Not Started";
+              progressColor= "#555555";
+              break;
+          }
+        } else{
+          percent = 0;
+          progressStage = "Not Started";
+          progressColor= "#555555";
+        }
+        return (
+          <div className={`${styles.engage2}`}>
+          <div className={`${styles.engageByImage}`} >
+            {/* <img src={`https://outlook.office.com/owa/service.svc/s/GetPersonaPhoto?email=${engage.AuthorEmail}&UA=0&size=HR96x96&sc=1583094860137`} style={{borderColor: progressColor}} /> */}
+            <img src={`${this.props.siteUrl}/_layouts/15/userphoto.aspx?size=L&accountname=${engage.AuthorEmail}`} style={{borderColor: progressColor}} />
+          </div>
+          <div className={`${styles.engageDetail}`}>
+            <div>
+              <p className={`${styles.engageBy}`}>
+              <span>{engage.AuthorName ? engage.AuthorName : "Unknown"}</span> <span>{engage.AuthorDepartment ? ` - ${engage.AuthorDepartment}` : ""}</span>
+              </p>
+              <p>
+                <span className={`${styles.engageDescription}`}>{engage.ClientName} - </span> 
+                <span className={`${styles.engageHeader}`}>{engage.ProjectTitle}</span>
+                <span className={`${styles.engageDescription}`} style={{color: progressColor, fontWeight: 700}}>
+                  {engage.EngagementStage ? ` - ${engage.EngagementStage}` : ""}
+                </span>
+              </p>
+              
+            </div>
+          </div>
+          <div className={styles.engageTime}>
+            <p>{this.utilityMethod.convertDateTime(engage.Created, "-", true  , true, false, true)}</p>
+            <p>{this.utilityMethod.getFormattedTime(engage.Created)}</p>
+          </div>
+      </div>
+      );
+      });
+
+      const chartOptions: Chart.ChartOptions = {
+        legend: {display: true, position: "right"},
+        title: {display: true, text: "EMPLOYEE COUNT"}
+      };
+      const chartOptions1: Chart.ChartOptions = {
+        legend: {display: false, position: "bottom"},
+        title: {display: true, text: "EMPLOYEE COUNT"},
+        maintainAspectRatio: true,
+        responsive: true,
+        rotation : 90
+      };
+      const barChartOptions: Chart.ChartOptions = {
+        // legend: {display: false, position: "bottom"},
+        title: {display: false, text: "EMPLOYEE COUNT"},
+        scales: {
+          yAxes:[{ticks: {beginAtZero: true}, barThickness: 5}]
+        },
+        responsive: true,
+        maintainAspectRatio: false
+      };
+
+      // barChartOptions.scales.yAxes[0].
+
+      const barChartData: Chart.ChartData ={
+        labels: this.state.employeeCount.map(dept => dept.Department),
+        datasets: [{
+          label: `Departments`,
+          data: this.state.employeeCount.map(dept => dept.Count)
+          
+        }]
+      };
+
+      const CatalogCardArray: JSX.Element[] = this.state.PsearchResult.filter(product => {
+        let customCheckValue: boolean, sectorCheckValue: boolean, productCheckValue: boolean, industryCheckValue: boolean;
+        // customCheckValue = sectorCheckValue = productCheckValue = true;
+        if(this.state.productChecked.length===0) productCheckValue = true;
+        if(this.state.customerChecked.length===0) customCheckValue = true;
+        if(this.state.sectorChecked.length===0) sectorCheckValue = true;
+        if(this.state.industryChecked.length===0) industryCheckValue = true;
+  
+        // productCheckValue = this.state.productChecked.indexOf(product.Title.toLowerCase()) > -1;
+        this.state.productChecked.forEach(chkStr => productCheckValue = product.Title.length===0 ? false : (product.Title.toLowerCase().indexOf(chkStr)>-1) || (chkStr.indexOf(product.Title.toLowerCase())>-1) ? true : productCheckValue );
+        // console.log(productCheckValue);
+  
+        this.state.customerChecked.forEach(chkStr => customCheckValue = product.ExistingCustomer.length===0 ? false : (product.ExistingCustomer.toLowerCase().indexOf(chkStr)>-1) || (chkStr.indexOf(product.ExistingCustomer.toLowerCase())>-1) ? true : customCheckValue );
+  
+        this.state.sectorChecked.forEach(chkStr => sectorCheckValue = product.TargetMarket.length===0 ? false : (product.TargetMarket.toLowerCase().indexOf(chkStr)>-1) ? true : sectorCheckValue );
+  
+        this.state.industryChecked.forEach(chkStr => industryCheckValue = product.TargetMarket.length===0 ? false : (product.TargetMarket.toLowerCase().indexOf(chkStr)>-1) ? true : industryCheckValue );
+        
+        return (productCheckValue && customCheckValue && sectorCheckValue && industryCheckValue);
+      }).map(product => {
+        return (
+        <ListSearchProductCard
+          title={product.Title}
+          department={product.AuthorDepartment}
+          time={product.Modified}
+          imgSrc={product.ProductLogo}
+          product={product}
+        />
+        );
+      });
+
       return (
         // <div className={ `${styles.modernWorkSpace} ${styles.style2} ${styles.esearch} ${this.state.isOnTeams? styles.teamsStyles : ""}` }>
-        <div className={ `${styles.modernWorkSpace} ${styles.style2} ${styles.esearch}` } style={{backgroundColor:'White'}}>
-        
+        <div className={ `${styles.modernWorkSpace} ${styles.style2} ${styles.esearch}` } style={{backgroundColor:'008AFF'}}>
 
-            {/* test section */}
-            <div className={ styles.container }>
+             
+    {/* test section */}
+          <div className={ styles.container }>
           <div className="row">
             {/* slider section */}
-            <div className="col-md-12" >
-            <div className={` ${styles.column2} ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'10px',margin:'10px 0px 0px 0px ',backgroundColor:'white',maxWidth:'1088px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
-            <div>
-                {/* <Carousel
-                  buttonsLocation={CarouselButtonsLocation.bottom} buttonsDisplay={CarouselButtonsDisplay.buttonsOnly}
-                  element={this.state.currentCarouselItemElement}
-                  triggerPageEvent={this.triggerNextElement}
-                  contentContainerStyles={{}}
-                /> */}
+            {/* <div className="col-md-12" >
+            <div className={` col-md-12  ${styles.msSm12} ${styles.msLg12}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',height:'53px',textAlign:'center',color:'#1e90ff',maxWidth:'100%',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="5%" height="34px" style={{marginRight:"10px"}}/><b>PRODUCT CATALOGUE</b></div></div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'0px',margin:'10px 0px 0px 0px ',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
+                <div>
+
+                  {CarouselExample}
                 </div>
               </div>
-            </div>
-
-             {/* first Webpart */}
+            </div> */}
+            {/* first Webpart */}
            <div className="col-md-4  ms-sm12 ms-lg4 ">
-           <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Internal Communication</b></div></div>
-           <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4}`}  style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
+           <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Internal Communication</b></div></div>
+           <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4}`}  style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
                               
                               <div className={`ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.myProfileColumn}`}>
                                 <div id="enterpriseSearch" style={{margin: '0 auto 30px'}}>
@@ -1306,15 +1435,15 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
            </div>
               {/* second webpart */}
            <div className="col-md-4">
-           <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b> My Emails <span>{this.state.mailMessageCount}</span></b></div></div>
-           <div className={` ${styles.scrollHidden} ${styles.column} ${styles.colOutlook} ${styles.msLg4} ${styles.zoom} ${styles.msSm12} ${styles.col2}`} style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+           <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b> My Emails <span>{this.state.mailMessageCount}</span></b></div></div>
+           <div className={` ${styles.scrollHidden} ${styles.column} ${styles.colOutlook} ${styles.msLg4} ${styles.zoom} ${styles.msSm12} ${styles.col2}`} style={{borderRadius:'0px',marginTop:'10px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
                   {myMailElArr}
                 </div>
            </div>
             {/* third webpart */}
            <div className="col-md-4">
-           <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Teams.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>TEAMS</b></div></div>
-           <div className={` ${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} `} style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+           <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Teams.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>TEAMS</b></div></div>
+           <div className={` ${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} `} style={{borderRadius:'0px',marginTop:'10px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
               <div>
                 <h4 className={`${styles.column2Title} ${styles.teamsTitle}`} style={{paddingRight: '55px'}}>Microsoft Teams <img src={require(`./images/setting_gear.svg`)} alt="Teams Centre" title="Teams Centre" width="21px" style={{float: 'right', cursor: 'pointer'}} onClickCapture={() => window.open("https://teams.microsoft.com/_#/apps/bafc60a5-488b-49b6-bc3a-9af2db0a761b/sections/57af5aa1-fef6-43d9-9cc2-a756219cd17f", "_blank")} /></h4>
                 <div className={ styles.column2Container }>
@@ -1329,11 +1458,12 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
             </div>
           
            </div>
+           
            {/* fourth webpart */}
-           {this.props.wbProperties.showCalendar && <div  className="col-md-4">
-            <div className={`col-md-4  ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/calendar.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MY CALENDAR</b></div></div>
+            <div  className="col-md-4">
+            <div className={`col-md-4  ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/calendar.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MY CALENDAR</b></div></div>
             <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-              height: '327px', maxHeight: '327',borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
+              height: '327px', maxHeight: '327',borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1'
             }}>
               {/* <h4>MY CALENDAR</h4> */}
               <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`}>
@@ -1343,26 +1473,27 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
                 }
               </div>
             </div>
-            </div>}
+            </div>
 
             {/* fifth webpart */}
-            {this.props.wbProperties.showTasks && <div className="col-md-4">
-            <div className={` col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/MD Desk.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Task</b></div></div>
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}  style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}> 
-            <div className={ styles.column2Container }>
-                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `} style={{display: this.state.myPlannerTasks.length==0 ? "flex" : "block"}}>
-                  {plannerTasks}
+            <div className="col-md-4">
+            <div className={` col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Annoucement.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>ANNOUNCEMENT</b></div></div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}  style={{borderRadius:'0px',marginTop:'10px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}> 
+                {/* <h4 className={styles.column2Title}>ANNOUNCEMENTS</h4> */}
+                <div className={ styles.column2Container }>
+                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} ${styles.announcements} `}>
+                  {spAnnouncementNews}
                   </div>
                 </div>
             
             </div>
-            </div>}
+            </div>
 
           {/* sixth webpart */}
-          {this.props.wbProperties.showEvent &&  <div className="col-md-4">
-          <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/EVENT.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>EVENTS</b></div></div>
+          <div className="col-md-4">
+          <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/EVENT.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>EVENTS</b></div></div>
           <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-              height: '327px', maxHeight: '327px',borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
+              height: '327px', maxHeight: '327px',borderRadius:'0px',marginTop:'10px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1'
             }}>
                 {/* <h4>EVENTS</h4> */}
                 <div className={`${styles.eventContainer} ${styles.scrollHidden}`}>
@@ -1371,55 +1502,11 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
                   }
                 </div>
               </div>
-          </div>}
-
-           {/* Seventh webpart */}
-           {this.props.wbProperties.showBirthday && <div  className="col-md-4">
-            <div className={`col-md-4  ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/calendar.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>BIRTHDAY</b></div></div>
-            <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-              height: '327px', maxHeight: '327',borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
-            }}>
-              
-               <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffBirthdays.length==0 ? "flex" : "block"}}>
-                {
-                 StaffBirthdays
-                }
-              </div>
-            </div>
-            </div>}
-
-            {/* Eight webpart */}
-            {this.props.wbProperties.showAnnouncement && <div className="col-md-4">
-         <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Annoucement.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>ANNOUNCEMENT</b></div></div>
-         <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-         <div className={ styles.column2Container }>
-                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} ${styles.announcements} `}>
-                  {spAnnouncementNews}
-                  </div>
-                </div>
-            
-            </div>
-         </div>}
-
-          {/* nineth webpart */}
-          {this.props.wbProperties.showAnniversary && <div className="col-md-4">
-          <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/EVENT.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF ANNIVERSARY</b></div></div>
-          <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-              height: '327px', maxHeight: '327px',borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
-            }}>
-               <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffAnniversary.length==0 ? "flex" : "block"}}>
-                {
-                staffAnniversary
-                }
-              </div>
-              </div>
-          </div>}
-
-
-           {/* Tenth webpart */}
-           {this.props.wbProperties.showMDDesk && <div className="col-md-4">
-          <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/MD Desk.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MD's DESK</b></div></div>
-          <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+          </div>
+             {/* seventh webpart */}
+          <div className="col-md-4">
+          <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/MD Desk.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MD's DESK</b></div></div>
+          <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
                 <div>
                   {/* <h4 className={`${styles.column2Title}`}>Reliance</h4> */}
                  <img src={require('./images/visionmission.png')} style={{
@@ -1429,11 +1516,11 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
     
                 </div>
               </div>
-          </div>}
-            {/* Eleventh webpart */}
-            {this.props.wbProperties.showOnedrive && <div className="col-md-8">
-          <div className={` col-md-8 ${styles.msSm12} ${styles.msLg12}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',minWidth:'98%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/microsoft-onedrive-2019.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>ONE DRIVE</b></div></div>
-          <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colRecentDoc}  `}style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',minWidth:'98%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+          </div>
+            {/* Eight webpart */}
+          <div className="col-md-8">
+          <div className={` col-md-8 ${styles.msSm12} ${styles.msLg12}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',minWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/microsoft-onedrive-2019.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>ONE DRIVE</b></div></div>
+          <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colRecentDoc}  `}style={{borderRadius:'0px',marginTop:'10px',backgroundColor:'white',minWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
               <div>
                 {/* <h4 className={`${styles.column2Title} ${styles.onedriveTitle}`}>OneDrive</h4> */}
                 <div className={ styles.column2Container }>
@@ -1446,56 +1533,154 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
                 </div>
               </div>
             </div>
-         </div>}
+         </div>
 
-          {/* first Webpart */}
-          {/* <div className="col-md-4  ms-sm12 ms-lg4 ">
-           <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Latest Hire</b></div></div>
-           <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4}`}  style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
-                              
-                              <div className={`${styles.col1Welcome}`} style={{marginTop: '60px',overflow:'hidden'}}>
-                                <div className={`${styles.col1ProfilePic}`} style={this.state.myProfile != null ? {backgroundImage: `url('${this.props.siteUrl}/_layouts/15/userphoto.aspx?size=L&accountname=${this.state.staffAnniversary.Staff_Email}')`} : {}}></div>
-                                <p>WELCOME</p>
-                                <p>{this.state.myProfile != null ? this.state.myProfile.displayName : ""}</p>
-                                <p><a href={this.state.notificationCount ? "https://outlook.office.com/calendar/view/week" : ""} target="_blank">You have <span>{this.state.notificationCount}</span> notifications</a></p>
-                              </div>
-                            </div>
-           </div>  */}
-           <div className="col-md-4  ms-sm12 ms-lg4 ">
-           <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Latest Hire</b></div></div>
-           <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4}`}  style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
+         {/* ninth webpart */}
+         <div className="col-md-4">
+         <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/MD Desk.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MY TASK</b></div></div>
+         <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
               <div>
-                {/* <h4 className={`${styles.column2Title} ${styles.onedriveTitle}`}>OneDrive</h4> */}
+                {/* <h4 className={styles.column2Title}>MY TASKS</h4> */}
                 <div className={ styles.column2Container }>
-                {LatestHire}
-                </div>
-              </div>
-            </div>
-           </div>
-
-             {/* Eleventh webpart */}
-             {this.props.wbProperties.showOnedrive && <div className="col-md-8">
-          <div className={` col-md-8 ${styles.msSm12} ${styles.msLg12}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',minWidth:'98%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/microsoft-onedrive-2019.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Celebrant of The Month</b></div></div>
-          <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colRecentDoc}  `}style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',minWidth:'98%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-              <div>
-                {/* <h4 className={`${styles.column2Title} ${styles.onedriveTitle}`}>OneDrive</h4> */}
-                <div className={ styles.column2Container }>
-                  <div className={ styles.docTitle}>
-                    <span>Name</span><span>Date Modified</span>
-                  </div>
-                  <div className={ styles.docContainer }>
-                    {myRecentDoc}
+                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `} style={{display: this.state.myPlannerTasks.length==0 ? "flex" : "block"}}>
+                  {plannerTasks}
                   </div>
                 </div>
               </div>
             </div>
-         </div>}
+         </div>
 
-         {/* twelfth webpart */}
+         {/* tenth webpart */}
+         <div className="col-md-8">
+         <div className={` col-md-8 ${styles.msSm12} ${styles.msLg12}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Collaboration.png')} width="7%" height="40px" style={{marginRight:"10px"}}/><b>ENGAGEMENT PROGRESS</b></div></div>
+         <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colLauncher} ${styles.colExtns} `} style={{borderRadius:'0px',marginTop:'10px',backgroundColor:'white',minWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+              <div>
+              {/* <h4 className={styles.column2Title}>ENGAGEMENT PROGRESS</h4> */}
+              <div className={ styles.column2Container }>
+                <div className="ms-Grid-row">
+                  <div className={ styles.engageSearch }>
+                    <input type="search" name="extnSearchBox" placeholder="Search for Engagements…" id={ styles.engageSearchBox }
+                      onInputCapture={(evt) => this.setState({searchEngage: evt.target["value"].trim().toLowerCase()}) }
+                    />
+                    <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
+                  </div>
+                  <div className={` ${styles.extnContainer} ${styles.scrollHidden} ${styles.engageProgress2}`}>
+                    {
+                      
+                    engagementsProcess1
+                  }
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+       </div>
 
-         {this.props.wbProperties.showLauncher && <div className="col-md-4">
-            <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>LAUNCHER</b></div></div>
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
+       {/* eleventh webpart */}
+       <div className="col-md-4">
+       <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/analytic.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>PROCESSS STAGES</b></div></div>
+       <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4} ${styles.colProcessStage}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+              <div>
+                {/* <h4 className={`${styles.column2Title}`}>PROCESS STAGES</h4> */}
+                <div className={ styles.extnSearch }>
+                  <input type="search" name="extnSearchBox" placeholder="Search for Process Stages…" id={ styles.extnSearchBox }
+                    onInputCapture={({target}) => this.setState({searchProcessStage: target["value"].trim().toLowerCase()}) }
+                  />
+                  <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
+                </div>
+                {processesStage1}
+              </div>
+            </div>
+       </div>
+       {/* twelfth webpart */}
+       <div className="col-md-8">
+       <div className={` col-md-8 ${styles.msSm12} ${styles.msLg8}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',minWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/ellipsis1.svg')} width="6%" height="34px" style={{marginRight:"10px"}}/><b>PROCESS STAGE ANALYTICS</b></div></div>
+       <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'0px',marginTop:'10px',backgroundColor:'white',minWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
+              <div >
+                {/* <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>Process Stage Analytics
+                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button> 
+                </h4> */}
+                <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
+                  <reactIframe.default
+                    url={Data.biChartUrl[0]}
+                    width="100%" height="800px"
+                    styles={{display: "none"}}
+                  />
+                  {/* <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `} style={{height: 'calc(100% - 30px)'}}>
+                    <div style={{width: 'calc(100% - 0px)', display: "inline-block", position: "relative", right: 0}}>
+                    {analyticsBarChart3}
+                    </div>
+                  </div> */}
+                </div>
+              </div>
+            </div>
+       </div>
+         
+         {/* thirteenth webpart */}
+         <div className="col-md-4">
+         <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Employee Analytics.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>DEPARTMENTAL ANALYTICS</b></div></div>
+         <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+              <div>
+                {/* <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>Departmental Analytics
+                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
+                </h4> */}
+                <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
+                  
+                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `} style={{height: 'calc(100% - 30px)'}}>
+                    <div style={{width: 'calc(100% - 0px)', display: "inline-block", position: "relative", right: 0}}>
+                    {analyticsBarChart2}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+         </div>
+
+         {/* fourtheenth webpart */}
+         <div className= "col-md-8">
+
+        
+         <div className={` col-md-8 ${styles.msSm12} ${styles.msLg8}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',minWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/analytic.png')} width="6%" height="34px" style={{marginRight:"10px"}}/><b>MY ANALYTICS</b></div></div>
+         <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'0px',marginTop:'10px',backgroundColor:'white',minWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
+              <div>
+                {/* <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>MyANALYTICS
+                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
+                </h4> */}
+                <div className={` ${styles.column2Container} ${styles.scrollHidden} `} style={{overflowY: "scroll"}}>
+                  
+                  <div className={` ${styles.analyticsOverview} `}>
+                    {Object.keys(this.state.CollaborationActivityList).map(activity => {
+                      let duration = this.state.CollaborationActivityList[activity].reduce((acc, cur) => (acc + cur["parsedDuration"]), 0).toFixed(2), trackerColor = activity==="Meeting" ? "#e8c1a0" :  activity==="Focus" ? "#e8a838" :  activity==="Chats/Calls" ? "#f1e15b" :  activity==="Email" ? "#f47560" : "transparent";
+                      
+                      return (
+                      <div className={` ms-sm12 ms-md3 ${styles.msSm12} ${styles.msMd3} ${styles.analyticsCard} `} >
+                        <div>
+                        <p style={{backgroundImage: `url('${require('./images/analyticsMeeting.svg')}')`}}>{activity}</p>
+                        <p><span>{duration}</span><span>hrs</span><span className={`${styles.analyticsCardTracker}`}><span style={{width: `min(calc(100% * ${duration} / 24), 100%)`, backgroundColor: '#e8c1a0'}}></span></span></p>
+                        </div>
+                      </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `}>
+                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", left: 0}}>
+                    {window.matchMedia("(min-width: 480px)").matches ? analyticsPieChart :  analyticsPieChartSM}
+                    </div>
+                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", right: 0}}>
+                    {analyticsBarChart1}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+            {/* fifteenth webpart */}
+
+            <div className="col-md-4">
+            <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>LAUNCHER</b></div></div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
               <div>
                 {/* <h4 className={`${styles.column2Title} ${styles.launcherTitle}`}>Launcher</h4> */}
                 <div className={ styles.column2Container }>
@@ -1570,425 +1755,42 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
                 </div>
               </div>
             </div>
-            </div>}
-            {/* thirteenth webpart */}
-            {this.props.wbProperties.showLOB && <div className="col-md-4">
-            <div className={` col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>LINE OF BUSINESS APPS</b></div></div>
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `} style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-            <div>
-            <div className={ styles.column2Container }>
+            </div>
+            {/* sixteenth webpart */}
+            <div className="col-md-4">
+            <div className={` col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>LINE OF BUSINESS APPS</b></div></div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `} style={{borderRadius:'0px',marginTop:'10px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+              <div>
+                {/* <h4 className={styles.column2Title}>LINE OF BUSINESS APPS</h4> */}
+                <div className={ styles.column2Container }>
                   <div className="row">
-                {/* <h4 className={styles.column2Title}>LINE OF BUSINESS APPS</h4> */}
-                {LOBLinks}
-                    {/* <div className={`  ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4} ${styles.lobApps}`} style={{width:"100%"}}>
-                
-                </div> */}
-              </div>
-            </div>
-            </div>
-            </div>
-            </div>}
-
-            {/* fourteenth webpart */}
-            {this.props.wbProperties.showStaffDir && <div className="col-md-4">
-            <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Employee Analytics.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF DIRECTORY</b></div></div>
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colExtns} `}style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-              <div>
-                {/* <h4 className={styles.column2Title}>STAFF DIRECTORY</h4> */}
-                <div className={ styles.column2Container }>
-                  <div className={`ms-Grid-row ${styles.msGridRow}`}>
-                    <div className={ styles.employeeSearch }>
-                      <input type="search" name="extnSearchBox" placeholder="Search for Staff…" id={ styles.employeeSearchBox }
-                        onInputCapture={(evt) => this.setState({searchExtn: evt.target["value"].trim().toLowerCase()}) }
-                      />
-                      <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
+            
+                    <div className={`  col-md-4 `}>
+                    <div className={` ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4} ${styles.lobApps}`} style={{width:"100%"}}>
+                      <a href="https://apps.powerapps.com/play/c0e51626-6c82-48ed-8d27-4bee7713ab1f?tenantId=0b60fed4-5fc9-409d-95f2-271114f4c86f" className={`${styles.app3}`} target="_blank" ></a>
                     </div>
-                    <div className={` ${styles.extnContainer} ${styles.scrollHidden} `}>
-                      {
-                      // companyExtns
-                      employeeSearhResults
-                      }
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            </div>}
-
-             {/* thirteenth webpart */}
-             {this.props.wbProperties.showDepartmentalAnalytics && <div className="col-md-4">
-         <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Employee Analytics.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>DEPARTMENTAL ANALYTICS</b></div></div>
-         <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-              <div>
-                {/* <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>Departmental Analytics
-                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
-                </h4> */}
-                <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
-                  
-                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `} style={{height: 'calc(100% - 30px)'}}>
-                    <div style={{width: 'calc(100% - 0px)', display: "inline-block", position: "relative", right: 0}}>
-                    {analyticsBarChart2}
+                    <div className={`  col-md-4 `}>
+                    <div className={` ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4} ${styles.lobApps}`}style={{width:"100%"}}>
+                      <a href="https://apps.powerapps.com/play/c0e51626-6c82-48ed-8d27-4bee7713ab1f?tenantId=0b60fed4-5fc9-409d-95f2-271114f4c86f" className={`${styles.app3}`} target="_blank" ></a>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-        
-         </div>}
-
-         {/* fourtheenth webpart */}
-         {this.props.wbProperties.showMyAnalytics &&  <div className= "col-md-8">      
-         <div className={` col-md-8 ${styles.msSm12} ${styles.msLg8}`} style={{borderRadius:'10px',margin:'10px 0px 0px 0px',backgroundColor:'white',minWidth:'98%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/analytic.png')} width="6%" height="34px" style={{marginRight:"10px"}}/><b>MY ANALYTICS</b></div></div>
-         <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'10px',marginTop:'10px',backgroundColor:'white',minWidth:'98%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
-              <div>
-                {/* <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>MyANALYTICS
-                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
-                </h4> */}
-                <div className={` ${styles.column2Container} ${styles.scrollHidden} `} style={{overflowY: "scroll"}}>
-                  
-                  <div className={` ${styles.analyticsOverview} `}>
-                    {Object.keys(this.state.CollaborationActivityList).map(activity => {
-                      let duration = this.state.CollaborationActivityList[activity].reduce((acc, cur) => (acc + cur["parsedDuration"]), 0).toFixed(2), trackerColor = activity==="Meeting" ? "#e8c1a0" :  activity==="Focus" ? "#e8a838" :  activity==="Chats/Calls" ? "#f1e15b" :  activity==="Email" ? "#f47560" : "transparent";
-                      
-                      return (
-                      <div className={` ms-sm12 ms-md3 ${styles.msSm12} ${styles.msMd3} ${styles.analyticsCard} `} >
-                        <div>
-                        <p style={{backgroundImage: `url('${require('./images/analyticsMeeting.svg')}')`}}>{activity}</p>
-                        <p><span>{duration}</span><span>hrs</span><span className={`${styles.analyticsCardTracker}`}><span style={{width: `min(calc(100% * ${duration} / 24), 100%)`, backgroundColor: '#e8c1a0'}}></span></span></p>
-                        </div>
-                      </div>
-                      );
-                    })}
-                  </div>
-
-                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `}>
-                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", left: 0}}>
-                    {window.matchMedia("(min-width: 480px)").matches ? analyticsPieChart :  analyticsPieChartSM}
                     </div>
-                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", right: 0}}>
-                    {analyticsBarChart1}
+                    <div className={`  col-md-4`}>
+                    <div className={` ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4} ${styles.lobApps}`}style={{width:"100%"}}>
+                      <a href="https://apps.powerapps.com/play/1768dece-ac8c-4a75-b38a-e3a7f5877559?tenantId=0b60fed4-5fc9-409d-95f2-271114f4c86f" className={`${styles.app5}`} target="_blank" style={{width:"100%"}}></a>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            </div>}
-         
-
-            </div>
-            </div>
-
-              <div className={ styles.row }>
-               <div className={`${styles.column2} ms-sm12 ms-lg12 ${styles.msSm8} ${styles.msLg12} ${styles.col4} ${styles.colOpportunities}`} style={{borderRadius:'10px',margin:'10px 10px 10px 40px ',backgroundColor:'white',width:'1030px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'300px', maxHeight: '310px'}}>
-                <div>
-                {/* <Carousel
-                  buttonsLocation={CarouselButtonsLocation.bottom} buttonsDisplay={CarouselButtonsDisplay.buttonsOnly}
-                  element={this.state.currentCarouselItemElement}
-                  triggerPageEvent={this.triggerNextElement}
-                  contentContainerStyles={{}}
-                /> */}
-                </div>
-              </div> 
-              </div>
-
-          <div className={ styles.container }>
-            <div className='row'>
-              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Internal Communication</b></div></div>
-              <div className={` col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b> My Emails <span>{this.state.mailMessageCount}</span></b></div></div>
-              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 10px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Teams.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>TEAMS</b></div></div>
-              </div>
-              <div className={ styles.row }>
-              <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4}`}  style={{border:'solid 1px ',borderRadius:'10px',margin:'10px 10px 10px 40px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
-                              
-                <div className={`ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.myProfileColumn}`}>
-                  <div id="enterpriseSearch" style={{margin: '0 auto 30px'}}>
-                    {/*  <h4 className={styles.column2Title}>E-Search</h4>  */}
-                    <div className={ styles.extnSearch }>
-                      <div className={`${styles.wrap}`}>
-                        <div className={`${styles.search}`} ref={this._menuButtonElement}>
-                          {(this.state.searchText === "")?
-                          <span className={` ${styles.searchSpan}`}>
-                            <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`}></i>
-                          </span>
-                          : ""}
-                          <input  name="newregionalcordinatoremailvalue" className={` ${styles.searchTerm}`}  readOnly={false} type="text" placeholder="Search for Content…" value={this.state.searchText}
-                          onChange={(e) => {
-                            this.setState({searchText: e.target["value"]});
-                          }}
-                          onKeyUp={(e) => {
-                            if(e.keyCode===13 || e.key==="Enter"){
-                              this._searchClicked();
-                              // console.log(e.key);
-                            }
-                          }}
-                          style={this.state.searchText===""? {paddingLeft: '15px'}: {}} ></input>
-                          {(this.state.searchText == "")?
-                          ""
-                          :
-                            <div className={` ${styles.searchButtonDiv}`} >
-                              <button type="submit" className={` ${styles.searchClearButton}`} onClick={() => this._searchClearClicked()}>
-                                <i className={`ms-Icon ms-Icon--Clear` }></i>
-                              </button>  
-                              <button type="submit" className={` ${styles.searchButton}`} onClick={() => this._searchClicked()}>
-                                <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`} ></i>
-                              </button>
-                            </div>
-                          } 
-                        </div>
-
-                      </div> 
-                    </div> 
-                    { (this.state.searchstatus && this.state.isCalloutVisible) ? 
-                      <Callout
-                        style={{maxWidth: '500px', width: '75%'}}
-                        beakWidth={15}
-                        gapSpace={10}
-                        directionalHint={DirectionalHint.bottomCenter}
-                        target={this._menuButtonElement.current}
-                        onDismiss={(e) => this._onCalloutDismiss(e)}
-                      >
-                        <div className={styles.searchResult}>
-                          <div className={styles.column2Container}>
-                            <div className={styles.docTitle}>
-                            </div>
-                            <div className={styles.docContainer}>
-                              {eSearchResult}
-                            </div>
-                          </div>
-                        </div>
-                      </Callout>
-                      :
-                      <div></div>
-                    }
-                  </div>
-                </div>
-
-
-                <div className={`${styles.col1Welcome}`} style={{marginTop: '-61px',overflow:'hidden'}}>
-                  <div className={`${styles.col1ProfilePic}`} style={this.state.myProfile != null ? {backgroundImage: `url('${this.props.siteUrl}/_layouts/15/userphoto.aspx?size=L&accountname=${this.state.myProfile.mail}')`} : {}}></div>
-                  <p>WELCOME</p>
-                  <p>{this.state.myProfile != null ? this.state.myProfile.displayName : ""}</p>
-                  <p><a href={this.state.notificationCount ? "https://outlook.office.com/calendar/view/week" : ""} target="_blank">You have <span>{this.state.notificationCount}</span> notifications</a></p>
-                </div>
-                <div className={`${styles.col1Members}`}>
-                  <p>My Recent Contacts</p>
-                  <div className={`ms-Grid-row ${styles.msGridRow}`}>{myRecentUser}</div>
-                </div>
-              </div>
-              <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.zoom} ${styles.msSm12} ${styles.msLg4} ${styles.col2} ${styles.colOutlook}`} style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-                {/* <p className={`${styles.col2Notification}`}>MY EMAILS <span>{this.state.mailMessageCount}</span></p> */}
-                <div className={` ${styles.scrollHidden}`}>
-                  {myMailElArr}
-                </div>
-              </div>
-              <div className={` ${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} `} style={{border:'solid 1px',borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-              <div>
-                <h4 className={`${styles.column2Title} ${styles.teamsTitle}`} style={{paddingRight: '55px'}}>Microsoft Teams <img src={require(`./images/setting_gear.svg`)} alt="Teams Centre" title="Teams Centre" width="21px" style={{float: 'right', cursor: 'pointer'}} onClickCapture={() => window.open("https://teams.microsoft.com/_#/apps/bafc60a5-488b-49b6-bc3a-9af2db0a761b/sections/57af5aa1-fef6-43d9-9cc2-a756219cd17f", "_blank")} /></h4>
-                <div className={ styles.column2Container }>
-                  <div className={styles.colTeamsMyTeams}>
-                    {myTeamGroups}
-                  </div>
-                  <div className={styles.colTeamsConvo}>
-                    {myTeamMessages}
-                  </div>
+                    </div>
+                    </div>
+                 
                 </div>
               </div>
             </div>
             </div>
-           
-          </div>
-          <div className={ styles.container }>
-          <div className='row'>
-          {this.props.wbProperties.showCalendar && <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/calendar.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MY CALENDAR</b></div></div>}
-              {this.props.wbProperties.showTasks && <div className={` col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/MD Desk.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MY TASK</b></div></div>}
-              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 10px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/EVENT.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>EVENTS</b></div></div>
-              </div>
-            <div className={ styles.row }>
-            {this.props.wbProperties.showCalendar && <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-              height: '327px', maxHeight: '327',border:'solid 1px ',borderRadius:'10px',margin:'10px 10px 10px 40px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
-            }}>
-              {/* <h4>MY CALENDAR</h4> */}
-              <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`}>
-                {
-                // myUpcomingEvents
-                  myCalendarEvents
-                }
-              </div>
-            </div> }
-            
-            {this.props.wbProperties.showTasks && <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}  style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}> 
-                {/* <h4 className={styles.column2Title}>ANNOUNCEMENTS</h4> */}
-                <div className={ styles.column2Container }>
-                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `} style={{display: this.state.myPlannerTasks.length==0 ? "flex" : "block"}}>
-                  {plannerTasks}
-                  </div>
-                </div>
-            
-            </div>}
-            <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-              height: '327px', maxHeight: '327px',border:'solid 1px',borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
-            }}>
-                {/* <h4>EVENTS</h4> */}
-                <div className={`${styles.eventContainer} ${styles.scrollHidden}`}>
-                  {
-                  myUpcomingEvents
-                  }
-                </div>
-              </div>
-              </div> 
 
-              <div className='row'>
-              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/calendar.svg')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF BIRTHDAY'S</b></div></div>
-              <div className={` col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Annoucement.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>ANNOUNCEMENT</b></div></div>
-              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 10px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/EVENT.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF ANNIVERSARY</b></div></div>
-              </div>
-            <div className={ styles.row }>
-            <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-              height: '327px', maxHeight: '327',border:'solid 1px ',borderRadius:'10px',margin:'10px 10px 10px 40px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
-            }}>
-              {/* <h4>MY CALENDAR</h4> */}
-              <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffBirthdays.length==0 ? "flex" : "block"}}>
-                {
-                 StaffBirthdays
-                }
-              </div>
-            </div>
-            
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}  style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}> 
-                {/* <h4 className={styles.column2Title}>ANNOUNCEMENTS</h4> */}
-                <div className={ styles.column2Container }>
-                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} ${styles.announcements} `}>
-                  {spAnnouncementNews}
-                  </div>
-                </div>
-            
-            </div>
-            <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-              height: '327px', maxHeight: '327px',border:'solid 1px',borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
-            }}>
-                {/* <h4>EVENTS</h4> */}
-                <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffAnniversary.length==0 ? "flex" : "block"}}>
-                {
-                staffAnniversary
-                }
-              </div>
-              </div>
- 
-              </div> 
-
-
-              
-              <div className='row'>
-              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/MD Desk.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>MD's DESK</b></div></div>
-              <div className={` col-md-8`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'680px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/microsoft-onedrive-2019.svg')} width="7%" height="34px" style={{marginRight:"10px"}}/><b>ONE DRIVE</b></div></div>
-            
-              </div>
-              <div className={ styles.row }>
-              <div className={`${styles.column2} ms-sm12 ms-lg4  ${styles.msLg4} ${styles.col4} ${styles.colOpportunities}`} style={{
-               height: '327px', maxHeight: '327',border:'solid 1px ',borderRadius:'10px',margin:'10px 10px 10px 40px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1'
-              }}>
-                <div>
-                  {/* <h4 className={`${styles.column2Title}`}>Reliance</h4> */}
-                 <img src={require('./images/visionmission.png')} style={{
-               height : '380px',
-               width : '400px'
-              }}></img>
-    
-                </div>
-              </div>
-            <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colRecentDoc}  `}style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'680px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-              <div>
-                {/* <h4 className={`${styles.column2Title} ${styles.onedriveTitle}`}>OneDrive</h4> */}
-                <div className={ styles.column2Container }>
-                  <div className={ styles.docTitle}>
-                    <span>Name</span><span>Date Modified</span>
-                  </div>
-                  <div className={ styles.docContainer }>
-                    {myRecentDoc}
-                  </div>
-                </div>
-              </div>
-            </div>
-              </div>
-            
-            </div> 
-            
-
- 
-            <div className='row'>
-              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>LAUNCHER</b></div></div>
-              <div className={` col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>LINE OF BUSINESS APPS</b></div></div>
-              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 10px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Employee Analytics.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF DIRECTORY</b></div></div>
-              </div>
-
-              <div className={ styles.row }>
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `} style={{border:'solid 1px ',borderRadius:'10px',margin:'10px 10px 10px 40px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px',overflow:'hidden' }}>
-              <div>
-                {/* <h4 className={`${styles.column2Title} ${styles.launcherTitle}`}>Launcher</h4> */}
-                <div className={ styles.column2Container }>
-                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `}>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--office ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/office_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/word" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--word ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/word_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/excel" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--excel ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/excel_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/powerpoint" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--powerpoint ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/powerpoint_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--access ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/access_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/onenote" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onenote ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onenote_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onedrive ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onedrive_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://www.microsoft.com/en-us/microsoft-365/project/project-management-software" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--project ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/project_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.live.com/start/visio.aspx" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--visio ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/visio_96x1.png)'}}
-                      ></div>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `} style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-              <div>
-                {/* <h4 className={styles.column2Title}>LINE OF BUSINESS APPS</h4> */}
-                <div className={ styles.column2Container }>
-                  <div className={` ms-Grid-row ${styles.msGridRow} `} style={{ overflowY: "scroll" }}>
-                    {LOBLinks}
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colExtns} `}style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
+            {/* seventeenth webpart */}
+            <div className="col-md-4">
+            <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Employee Analytics.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>STAFF DIRECTORY</b></div></div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colExtns} `}style={{borderRadius:'0px',marginTop:'10px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
               <div>
                 {/* <h4 className={styles.column2Title}>STAFF DIRECTORY</h4> */}
                 <div className={ styles.column2Container }>
@@ -2011,711 +1813,57 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
             </div>
             </div>
 
-            <div className='row'>
-              <div className={`col-md-4`} style={{borderRadius:'10px',margin:'10px 0px 0px 42px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Employee Analytics.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>DEPARTMENTAL ANALYTICS</b></div></div>
-              <div className={` col-md-8`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'680px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/analytic.png')} width="6%" height="34px" style={{marginRight:"10px"}}/><b>MY ANALYTICS</b></div></div>
-            
-              </div>
-
-          
-              <div className={ styles.row }>
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'10px',margin:'10px 10px 10px 38px',backgroundColor:'white',maxWidth:'330px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
-              <div>
-                {/* <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>Departmental Analytics
-                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
-                </h4> */}
-                <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
-                  
-                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `} style={{height: 'calc(100% - 30px)'}}>
-                    <div style={{width: 'calc(100% - 0px)', display: "inline-block", position: "relative", right: 0}}>
-                    {analyticsBarChart1}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'10px',margin:'10px',backgroundColor:'white',width:'680px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
-              <div>
-                {/* <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>MyANALYTICS
-                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
-                </h4> */}
-                <div className={` ${styles.column2Container} ${styles.scrollHidden} `} style={{overflowY: "scroll"}}>
-                  
-                  <div className={` ${styles.analyticsOverview} `}>
-                    {Object.keys(this.state.CollaborationActivityList).map(activity => {
-                      let duration = this.state.CollaborationActivityList[activity].reduce((acc, cur) => (acc + cur["parsedDuration"]), 0).toFixed(2), trackerColor = activity==="Meeting" ? "#e8c1a0" :  activity==="Focus" ? "#e8a838" :  activity==="Chats/Calls" ? "#f1e15b" :  activity==="Email" ? "#f47560" : "transparent";
-                      
-                      return (
-                      <div className={` ms-sm12 ms-md3 ${styles.msSm12} ${styles.msMd3} ${styles.analyticsCard} `} >
-                        <div>
-                        <p style={{backgroundImage: `url('${require('./images/analyticsMeeting.svg')}')`}}>{activity}</p>
-                        <p><span>{duration}</span><span>hrs</span><span className={`${styles.analyticsCardTracker}`}><span style={{width: `min(calc(100% * ${duration} / 24), 100%)`, backgroundColor: '#e8c1a0'}}></span></span></p>
-                        </div>
-                      </div>
-                      );
-                    })}
-                  </div>
-
-                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `}>
-                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", left: 0}}>
-                    {window.matchMedia("(min-width: 480px)").matches ? analyticsPieChart :  analyticsPieChartSM}
-                    </div>
-                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", right: 0}}>
-                    {analyticsBarChart1}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-           </div>
-
-
-
-
-
-
-
-       {/*  
-          <div className={ styles.row }>
-               <div className={`${styles.column2} ms-sm12 ms-lg12 ${styles.msSm8} ${styles.msLg12} ${styles.col4} ${styles.colOpportunities}`} style={{borderRadius:'10px',margin:'10px 10px 10px 30px ',backgroundColor:'white',width:'1040px',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
-                <div>
-                   <Carousel
-                  buttonsLocation={CarouselButtonsLocation.bottom} buttonsDisplay={CarouselButtonsDisplay.buttonsOnly}
-                  element={this.state.currentCarouselItemElement}
-                  triggerPageEvent={this.triggerNextElement}
-                  contentContainerStyles={{}}
-                />
-                </div>
-              </div> 
-              </div> */}
-
-         {/*  <div className={ `${styles.container} ${styles.carouselContainer}` }>
-            <div className={ styles.row }>
-              <div className={`${styles.column} ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12}`} style={{
-                height: '340px', maxHeight: '340px', marginBottom: '20px'
-              }}>
-                 {/* <Carousel showThumbs={true} autoPlay={true} infiniteLoop={true} interval={5000} autoFocus={true} transitionTime={5000} >
-                  {this.state.carouselItems.map((imageList) => {
-                    return (<div style={{display:"flex", height:"100%"}}>
-                     <a href={imageList.ResourceLink} target='_blank'> <img src={imageList.FileRef} /> </a> 
-                    </div>);
-                  })}    
-                </Carousel>  */}
-              {/*   <Carousel
-                  buttonsLocation={CarouselButtonsLocation.bottom} buttonsDisplay={CarouselButtonsDisplay.buttonsOnly}
-                  element={this.state.currentCarouselItemElement}
-                  triggerPageEvent={this.triggerNextElement}
-                  contentContainerStyles={{}}
-                />
-               {/* <MyCarousel duration={5000}>
-                  {this.state.carouselItems.map((imageList) => {
-                    return (<MyCarouselItem width='100%'>
-                      <div style={{display:"flex", height:"100%"}}>
-                        <a href={imageList.ResourceLink} target='_blank'> <img src={imageList.FileRef} /> </a> 
-                      </div>
-                      </MyCarouselItem>);
-                  })}
-                </MyCarousel> */}
-               {/* <Rerousel itemRef={ref}>
-      
-                </Rerousel> */}
-
-             {/*  </div>
-            </div>
-          </div>*/}
-
-         {/*  <div className={ `${styles.container} ${styles.firstContainer}` }>
-            <div className={ styles.row }>
-
-              <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4}`}>
-                              
-                <div className={`ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.myProfileColumn}`}>
-                  <div id="enterpriseSearch" style={{margin: '0 auto 30px'}}>
-                    {/*  <h4 className={styles.column2Title}>E-Search</h4>  */}
-                   {/*  <div className={ styles.extnSearch }>
-                      <div className={`${styles.wrap}`}>
-                        <div className={`${styles.search}`} ref={this._menuButtonElement}>
-                          {(this.state.searchText === "")?
-                          <span className={` ${styles.searchSpan}`}>
-                            <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`}></i>
-                          </span>
-                          : ""}
-                          <input  name="newregionalcordinatoremailvalue" className={` ${styles.searchTerm}`}  readOnly={false} type="text" placeholder="Search for Content…" value={this.state.searchText}
-                          onChange={(e) => {
-                            this.setState({searchText: e.target["value"]});
-                          }}
-                          onKeyUp={(e) => {
-                            if(e.keyCode===13 || e.key==="Enter"){
-                              this._searchClicked();
-                              // console.log(e.key);
-                            }
-                          }}
-                          style={this.state.searchText===""? {paddingLeft: '15px'}: {}} ></input>
-                          {(this.state.searchText == "")?
-                          ""
-                          :
-                            <div className={` ${styles.searchButtonDiv}`} >
-                              <button type="submit" className={` ${styles.searchClearButton}`} onClick={() => this._searchClearClicked()}>
-                                <i className={`ms-Icon ms-Icon--Clear` }></i>
-                              </button>  
-                              <button type="submit" className={` ${styles.searchButton}`} onClick={() => this._searchClicked()}>
-                                <i className={`ms-Icon ms-Icon--Search ${styles.searchIconVerticalAlign}`} ></i>
-                              </button>
-                            </div>
-                          } 
-                        </div>
-
-                      </div> 
-                    </div> 
-                    { (this.state.searchstatus && this.state.isCalloutVisible) ? 
-                      <Callout
-                        style={{maxWidth: '500px', width: '75%'}}
-                        beakWidth={15}
-                        gapSpace={10}
-                        directionalHint={DirectionalHint.bottomCenter}
-                        target={this._menuButtonElement.current}
-                        onDismiss={(e) => this._onCalloutDismiss(e)}
-                      >
-                        <div className={styles.searchResult}>
-                          <div className={styles.column2Container}>
-                            <div className={styles.docTitle}>
-                            </div>
-                            <div className={styles.docContainer}>
-                              {eSearchResult}
-                            </div>
-                          </div>
-                        </div>
-                      </Callout>
-                      :
-                      <div></div>
-                    }
-                  </div>
-                </div>
-
-
-                <div className={`${styles.col1Welcome}`}>
-                  <div className={`${styles.col1ProfilePic}`} style={this.state.myProfile != null ? {backgroundImage: `url('${this.props.siteUrl}/_layouts/15/userphoto.aspx?size=L&accountname=${this.state.myProfile.mail}')`} : {}}></div>
-                  <p>WELCOME</p>
-                  <p>{this.state.myProfile != null ? this.state.myProfile.displayName : ""}</p>
-                  <p><a href={this.state.notificationCount ? "https://outlook.office.com/calendar/view/week" : "https://outlook.office.com/calendar/view/week"} target="_blank">You have <span>{this.state.notificationCount}</span> notifications</a></p>
-                </div>
-                <div className={`${styles.col1Members}`}>
-                  <p>My Recent Contacts</p>
-                  <div className={`ms-Grid-row ${styles.msGridRow}`}>{myRecentUser}</div>
-                </div>
-              </div>
+           {/* eighteenth webpart */}
+           <div className='col-md-4'>
+           <div className={`col-md-4 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white' ,maxWidth:'100%',height:'53px',textAlign:'center',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/collaboration.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>COLLABORATION</b></div></div>
+           <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTwitter} `} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px'}}>
               
-              <div className={`${styles.column} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col2} ${styles.colOutlook}`}>
-                <p className={`${styles.col2Notification}`}>My Emails<span>{this.state.mailMessageCount}</span></p>
-                <div className={` ${styles.outlookMailContainer} ${styles.scrollHidden}`}>
-                  {myMailElArr}
-                </div>
-              </div>
-              
-              <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} `}>
-                <div>
-                  <h4 className={`${styles.column2Title} ${styles.teamsTitle}`} style={{paddingRight: '55px'}}>Microsoft Teams <img src={require(`./images/setting_gear.svg`)} alt="Teams Centre" title="Teams Centre" width="21px" style={{float: 'right', cursor: 'pointer'}} onClickCapture={() => window.open("https://teams.microsoft.com/_#/apps/bafc60a5-488b-49b6-bc3a-9af2db0a761b/sections/57af5aa1-fef6-43d9-9cc2-a756219cd17f", "_blank")} /></h4>
+              <div>
+                  {/* <h4 className={styles.column2Title}>COLLABORATION</h4> */}
                   <div className={ styles.column2Container }>
-                    <div className={styles.colTeamsMyTeams}>
-                      {myTeamGroups}
-                    </div>
-                    <div className={styles.colTeamsConvo}>
-                      {myTeamMessages}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            
-            </div>
-          </div> */}
-
-         {/*  <div className={ styles.container }>
-          <div className={ styles.row }>
-              
-            {this.props.wbProperties.showTasks && <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}>
-              <div>
-                <h4 className={`${styles.column2Title} ${styles.taskTitle}`}>My Tasks</h4>
-                <div className={ styles.column2Container }>
-                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `} style={{display: this.state.myPlannerTasks.length==0 ? "flex" : "block"}}>
-                  {plannerTasks}
-                  </div>
-                </div>
-              </div>
-            </div>}
-
-            {this.props.wbProperties.showCalendar && <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-              height: '400px', maxHeight: '400px'
-              }}>
-              <div>
-                <h4 className={`${styles.column2Title}`}>My Calendar</h4>
-                <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.myCalendar.length==0 ? "flex" : "block"}}>
-                  {
-                  // myUpcomingEvents
-                    myCalendarEvents
-                  }
-                </div>
-              </div>
-            </div>}
-
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `}>
-              <div>
-                <h4 className={styles.column2Title}>SharePoint Business Process Requests</h4>
-                <div className={ styles.column2Container }>
-                  <div className={` ms-Grid-row ${styles.msGridRow} `} style={{ overflowY: "scroll" }}>
-                    {LOBLinks}
-                  </div>
-                </div>
-              </div>
-            </div> */}
-
-           {/*  <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-              height: '400px', maxHeight: '400px'
-            }}>
-              <div>
-              <h4 className={`${styles.column2Title}`}>Staff Birthdays</h4>
-              <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffBirthdays.length==0 ? "flex" : "block"}}>
-                {
-                 StaffBirthdays
-                }
-              </div>
-              </div>
-            </div>
-
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colPlanner} `}>
-              <div>
-                <h4 className={styles.column2Title}>Announcements</h4>
-                <div className={ styles.column2Container }>
-                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} ${styles.announcements} `}>
-                  {spAnnouncementNews}
-                  </div>
-                </div>
-              </div>
-            </div> */}
-            
-             {/*  <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-              height: '400px', maxHeight: '400px'
-            }}>
-              <div>
-              <h4 className={`${styles.column2Title}`}>Company Events</h4>
-              <div className={`${styles.eventContainer} ${styles.scrollHidden}`} style={{display: this.state.companyEvents.length==0 ? "flex" : "block"}}>
-                {
-                myUpcomingEvents
-                }
-              </div>
-              </div>
-            </div> */}
-            
-
-           {/*  <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.col4}`} style={{
-              height: '400px', maxHeight: '400px'
-            }}>
-              <div>
-              <h4 className={`${styles.column2Title}`}>Anniversary</h4>
-              <div className={`${styles.eventContainer} ${styles.calendarEvent} ${styles.scrollHidden}`} style={{display: this.state.staffAnniversary.length==0 ? "flex" : "block"}}>
-                {
-                staffAnniversary
-                }
-              </div>
-              </div>
-            </div>
-            
-
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `}>
-              <div>
-                <h4 className={`${styles.column2Title} ${styles.launcherTitle}`}>Launcher</h4>
-                <div className={ styles.column2Container }>
-                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `}>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--office ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/office_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/word" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--word ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/word_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/excel" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--excel ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/excel_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/powerpoint" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--powerpoint ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/powerpoint_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--access ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/access_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/onenote" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onenote ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onenote_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onedrive ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onedrive_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://www.microsoft.com/en-us/microsoft-365/project/project-management-software" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--project ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/project_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.live.com/start/visio.aspx" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--visio ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/visio_96x1.png)'}}
-                      ></div>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div> */}
-
-            {/* <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colRecentDoc}  `}>
-              <div>
-                <h4 className={`${styles.column2Title} ${styles.onedriveTitle}`}>OneDrive</h4>
-                <div className={ styles.column2Container }>
-                  <div className={ styles.docTitle}>
-                    <span>Name</span><span>Date Modified</span>
-                  </div>
-                  <div className={ styles.docContainer }>
-                    {myRecentDoc}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} ${styles.colExtns} `}>
-              <div>
-                <h4 className={styles.column2Title}>Staff Directory</h4>
-                <div className={ styles.column2Container }>
-                  <div className={`ms-Grid-row ${styles.msGridRow}`}>
-                    <div className={ styles.employeeSearch }>
-                      <input type="search" name="extnSearchBox" placeholder="Search for Staff…" id={ styles.employeeSearchBox }
-                        onInputCapture={(evt) => this.setState({searchExtn: evt.target["value"].trim().toLowerCase()}) }
-                      />
-                      <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
-                    </div>
-                    <div className={` ${styles.extnContainer} ${styles.scrollHidden} `}>
-                      {
-                      // companyExtns
-                      employeeSearhResults
-                      }
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-            <div className={` ${styles.column2} ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.colTeams} ${styles.colSPSites} `} style={{
-              height: '450px', maxHeight: '450px'
-            }}>
-              <div>
-                <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>MyANALYTICS
-                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
-                </h4>
-                <div className={` ${styles.column2Container} ${styles.scrollHidden} `} style={{overflowY: "scroll"}}>
-                  
-                  <div className={` ${styles.analyticsOverview} `}>
-                    {Object.keys(this.state.CollaborationActivityList).map(activity => {
-                      let duration = this.state.CollaborationActivityList[activity].reduce((acc, cur) => (acc + cur["parsedDuration"]), 0).toFixed(2), trackerColor = activity==="Meeting" ? "#e8c1a0" :  activity==="Focus" ? "#e8a838" :  activity==="Chats/Calls" ? "#f1e15b" :  activity==="Email" ? "#f47560" : "transparent";
-                      
-                      return (
-                      <div className={` ms-sm12 ms-md3 ${styles.msSm12} ${styles.msMd3} ${styles.analyticsCard} `} >
-                        <div>
-                        <p style={{backgroundImage: `url('${require('./images/analyticsMeeting.svg')}')`}}>{activity}</p>
-                        <p><span>{duration}</span><span>hrs</span><span className={`${styles.analyticsCardTracker}`}><span style={{width: `min(calc(100% * ${duration} / 24), 100%)`, backgroundColor: '#e8c1a0'}}></span></span></p>
-                        </div>
+                    <div className={` row `}>
+                      <div className="col-md-4">
+                      <div className={` ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4} ${styles.collabApps}`} style={{width:"100%"}}>
+                        <a href="https://relianceinfo.sharepoint.com/sites/Portal1/SitePages/Human-R-Portal.aspx" className={`${styles.app1}`} target="_blank"></a>
+                        <p style={{color:"grey", fontSize:"12px"}}>HR Portal</p>
                       </div>
-                      );
-                    })}
-                  </div>
-
-                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `}>
-                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", left: 0}}>
-                    {window.matchMedia("(min-width: 480px)").matches ? analyticsPieChart :  analyticsPieChartSM}
-                    </div>
-                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", right: 0}}>
-                    {analyticsBarChart1}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> */}
-
-
-            {/* 
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} `}>
-              <div>
-                <h4 className={`${styles.column2Title} ${styles.teamsTitle}`} style={{paddingRight: '55px'}}>Microsoft Teams <img src={require(`./images/setting_gear.svg`)} alt="Teams Centre" title="Teams Centre" width="21px" style={{float: 'right', cursor: 'pointer'}} onClickCapture={() => window.open("https://teams.microsoft.com/_#/apps/bafc60a5-488b-49b6-bc3a-9af2db0a761b/sections/57af5aa1-fef6-43d9-9cc2-a756219cd17f", "_blank")} /></h4>
-                <div className={ styles.column2Container }>
-                  <div className={styles.colTeamsMyTeams}>
-                    {myTeamGroups}
-                  </div>
-                  <div className={styles.colTeamsConvo}>
-                    {myTeamMessages}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={` ${styles.column2} ms-sm12 ms-lg4  ${styles.msSm12} ${styles.msLg8} ${styles.colLauncher} ${styles.colExtns} `}>
-              <div>
-              <h4 className={styles.column2Title}>ENGAGEMENT PROGRESS</h4>
-              <div className={ styles.column2Container }>
-                <div className="ms-Grid-row">
-                  <div className={ styles.engageSearch }>
-                    <input type="search" name="extnSearchBox" placeholder="Search for Engagements…" id={ styles.engageSearchBox }
-                      onInputCapture={(evt) => this.setState({searchEngage: evt.target["value"].trim().toLowerCase()}) }
-                    />
-                    <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
-                  </div>
-                  <div className={` ${styles.extnContainer} ${styles.scrollHidden} ${styles.engageProgress2}`}>
-                    {
-                      
-                    engagementsProcess1
-                  }
-                  </div>
-                </div>
-              </div>
-              </div>
-            </div>
-
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colRecentDoc} `}>
-              <div>
-                <h4 className={styles.column2Title}>Shared Documents</h4>
-                <div className={ styles.column2Container }>
-                <div className={ styles.docTitle}>
-                  <span>Name</span><span>Date Modified</span>
-                </div>
-                <div className={ styles.docContainer }>
-                  // {myRecentDoc}
-                  {mysharedDoc}
-                </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg8} ${styles.col4} ${styles.colProcessStage}`} style={{
-              height: '400px', maxHeight: '400px'
-            }}>
-              <div>
-                <h4 className={`${styles.column2Title}`}>PROCESS STAGES</h4>
-                <div className={ styles.extnSearch }>
-                  <input type="search" name="extnSearchBox" placeholder="Search for Process Stages…" id={ styles.extnSearchBox }
-                    onInputCapture={({target}) => this.setState({searchProcessStage: target["value"].trim().toLowerCase()}) }
-                  />
-                  <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
-                </div>
-                {processesStage1}
-              </div>
-            </div>
-            
-            <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colSPSites} `} style={{
-              height: '400px', maxHeight: '400px'
-            }}>
-              <div >
-                <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>Process Stage Analytics
-                </h4>
-                <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
-                  <reactIframe.default
-                    url={Data.biChartUrl[0]}
-                    width="100%" height="800px"
-                    styles={{display: "none"}}
-                  />
-                  
-                </div>
-              </div>
-            </div>
-
-            <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.colTeams} ${styles.colSPSites} `} style={{
-              height: '450px', maxHeight: '450px'
-            }}>
-              <div>
-                <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>MyANALYTICS
-                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
-                </h4>
-                <div className={` ${styles.column2Container} ${styles.scrollHidden} `} style={{overflowY: "scroll"}}>
-                  
-                  <div className={` ${styles.analyticsOverview} `}>
-                    {Object.keys(this.state.CollaborationActivityList).map(activity => {
-                      let duration = this.state.CollaborationActivityList[activity].reduce((acc, cur) => (acc + cur["parsedDuration"]), 0).toFixed(2), trackerColor = activity==="Meeting" ? "#e8c1a0" :  activity==="Focus" ? "#e8a838" :  activity==="Chats/Calls" ? "#f1e15b" :  activity==="Email" ? "#f47560" : "transparent";
-                      
-                      return (
-                      <div className={` ms-sm12 ms-md3 ${styles.msSm12} ${styles.msMd3} ${styles.analyticsCard} `} >
-                        <div>
-                        <p style={{backgroundImage: `url('${require('./images/analyticsMeeting.svg')}')`}}>{activity}</p>
-                        <p><span>{duration}</span><span>hrs</span><span className={`${styles.analyticsCardTracker}`}><span style={{width: `min(calc(100% * ${duration} / 24), 100%)`, backgroundColor: '#e8c1a0'}}></span></span></p>
-                        </div>
                       </div>
-                      );
-                    })}
-                  </div>
-
-                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `}>
-                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", left: 0}}>
-                    {window.matchMedia("(min-width: 480px)").matches ? analyticsPieChart :  analyticsPieChartSM}
-                    </div>
-                    <div className={` msSm12 msmd6  ${styles.msSm12} ${styles.msMd6}`} style={{display: "inline-block", position: "relative", right: 0}}>
-                    {analyticsBarChart1}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colSPSites} `} style={{
-              height: '450px', maxHeight: '450px'
-            }}>
-              <div>
-                <h4 className={`${styles.column2Title} ${styles.analyticsTitle}`}>Departmental Analytics
-                  <button className={styles.moreButton}><img src={require('./images/ellipsis1.svg')} width="20px" /></button>
-                </h4>
-                <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
-                  
-                  <div className={` ${styles.powerBiContainer} ${styles.analyticsContainer} `} style={{height: 'calc(100% - 30px)'}}>
-                    <div style={{width: 'calc(100% - 0px)', display: "inline-block", position: "relative", right: 0}}>
-                    {analyticsBarChart2}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colLauncher} `}>
-              <div>
-                <h4 className={`${styles.column2Title} ${styles.launcherTitle}`}>Launcher</h4>
-                <div className={ styles.column2Container }>
-                  <div className={` ms-Grid-row ${styles.msGridRow} ${styles.scrollHidden} `}>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--office ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/office_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/word" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--word ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/word_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/excel" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--excel ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/excel_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/powerpoint" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--powerpoint ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/powerpoint_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--access ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/access_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com/launch/onenote" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onenote ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onenote_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.com" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--onedrive ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/onedrive_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://www.microsoft.com/en-us/microsoft-365/project/project-management-software" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--project ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/project_96x1.png)'}}
-                      ></div>
-                    </a>
-                    <a className={`ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4}`} href="https://office.live.com/start/visio.aspx" target="_blank">
-                      <div className={`ms-BrandIcon--icon96 ms-BrandIcon--visio ${styles.msBrandIcon96} ${styles.colLauncherIcon}`}
-                        style={{backgroundImage: 'url(https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/visio_96x1.png)'}}
-                      ></div>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-            
-
-            */}
-            
-
-
-
-
-            {/* <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${ styles.colSPSites } `}>
-              <div>
-                <h4 className={`${styles.column2Title} ${styles.spTitle}`}>Employee Count</h4>
-                <div className={` ${styles.column2Container} ${styles.scrollHidden} `}>
-                  <div className={` ${styles.powerBiContainer} `}>
-                    <ChartControl
-                      type={ChartType.Bar}
-                      options={barChartOptions}
-                      data={barChartData}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTwitter} `}>
-              <div>
-                <div className={ styles.twitterEmbed } dangerouslySetInnerHTML= {{__html:
-                `<a class="twitter-timeline" data-width="100%" data-height="100%" data-tweet-limit=5 data-chrome="nofooter" href="https://twitter.com/RelianceInfoSys?ref_src=twsrc%5Etfw">Tweets</a>`
-                }}>
-                </div>
-              </div>
-            </div>
-
-           <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg8} ${styles.col4} ${styles.colProcessStage}`} style={{
-              height: '400px', maxHeight: '400px'
-            }}>
-              <div>
-              <div>
-              <h4 className={`${styles.column2Title}`}>Employee TimeSheet</h4>
-              <input id={ styles.extnSearchBox } type="text" placeholder="Search Name"></input>
-             <button>Search</button>
-              </div> 
-               
-               <table>
-                {/*<th>Created</th>
-               <th>User</th>
-               <th>Period</th>
-               <th>Period Starts</th>
-               <th>Status</th><br></br>    */}
-               {/* {this.state.items.map(function(item,key){
-                  console.log(item);
-                    return (<div  key={key}>
-      
-                      <tr> 
-                        <td>{item.Created}</td>
-                        <td>{item.Employee}</td>
-                        <td>{formatDateTime(item.Period)}</td>
-                        <td>{formatDateTime(item.Period_x002d_Starts)}</td>
-                        <td>{item.TotalHours}</td>
-                        <td>{item.Status}</td>
-                        <td><FontAwesomeIcon icon={item.Status.toString()==="Approved"?'check-circle':item.Status.toString()==="Rejected"?'window-close':'check-circle'} style={{color:item.Status.toString()==="Approved"?'Green':item.Status.toString()==="Rejected"?'Red':'Green'}} ></FontAwesomeIcon></td>
-                      </tr>    
-                    </div>);
+                      <div className="col-md-4">
+                      <div className={` ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4} ${styles.collabApps}`}style={{width:"100%"}}>
+                        <a href="https://web.yammer.com/main/relianceinfosystems.com/" className={`${styles.app2}`} target="_blank"></a>
+                        <p style={{color:"grey",fontSize:"12px"}}>Yammer</p>
+                      </div>
+                      </div>
+                      <div className="col-md-4">
+                      <div className={` ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4} ${styles.collabApps}`}style={{width:"100%"}}>
+                        <a href="https://apps.powerapps.com/play/50284590-60be-4010-be1c-2baa06b4b429?tenantId=0b60fed4-5fc9-409d-95f2-271114f4c86f&source=portal&screenColor=rgba(0%2C%20176%2C%20240%2C%201) " className={`${styles.app3}`} target="_blank"></a>
+                        <p style={{color:"grey",fontSize:"12px"}}>Market Place</p>
+                      </div>
+                      </div>
+                      <div className="col-md-4">
+                      <div className={` ms-Grid-col ms-sm6 ms-md6 ms-lg4 ${styles.msGridCol} ${styles.msSm6} ${styles.msMd6} ${styles.msLg4} ${styles.collabApps}`}style={{width:"100%"}}>
+                        <a href="https://relianceinfo.sharepoint.com/sites/BusinessEnhancement/Shared%20Documents/Forms/AllItems.aspx" className={`${styles.app4}`} target="_blank"></a>
+                        <p style={{color:"grey",fontSize:"12px"}}>Document Library</p>
+                      </div>
+                      </div>
                     
-                })}
-             
-            </table>      
-              </div>
-              </div>
-
-              <div className={`${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg8} ${styles.col4} ${styles.colProcessStage}`} style={{
-                height: '400px', maxHeight: '400px'
-              }}>
+                      {  <div className={ styles.twitterEmbed } dangerouslySetInnerHTML= {{__html:
+                  `<a class="twitter-timeline" data-width="100%" data-height="100%" data-tweet-limit=5 data-chrome="nofooter" href="https://relianceinfo.sharepoint.com/sites/Portal1/SitePages/Human-R-Portal.aspx"></a>`
+                  }}>
+                  </div> } 
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              
+           </div>
+           {/* nineteenth webpart */}
+            <div className="col-md-8">
+            <div className={` col-md-8 ${styles.msSm12} ${styles.msLg8}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',minWidth:'100%',height:'53px',textAlign:'center',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>TIME SHEET</b></div></div>
+            <div className={`${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg8} ${styles.col4} ${styles.colProcessStage}`}style={{borderRadius:'0px',marginTop:'10px',backgroundColor:'white',minWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
                 <div>
-                  <h4 className={`${styles.column2Title}`}>TIME SHEET</h4>
+                  {/* <h4 className={`${styles.column2Title}`}>TIME SHEET</h4> */}
                   <div className={ styles.extnSearch }>
                     <input type="search" name="extnSearchBox"placeholder="Search for Time Sheet…" id={ styles.extnSearchBox }
                       onInputCapture={({target}) => this.setState({searchTimeSheet: target["value"].trim().toLowerCase()}) }
@@ -2725,23 +1873,33 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
                   {timeSheet}
                 </div>
               </div>
+            </div>
 
-              <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.msSm12} ${styles.msLg4} ${styles.colTeams} ${styles.colFAQ} `}>
+
+            {/* 20th webpart */}
+
+            <div className="col-md-12">
+            <div className={` col-md-12 ${styles.msSm12} ${styles.msLg12}`} style={{maxWidth:'100%',borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/LOB.png')} width="5%" height="34px" style={{marginRight:"10px"}}/><b>OPPORTUNITIES</b></div></div>
+            <div className={`${styles.column2} ms-sm12 ms-lg12 ${styles.msSm8} ${styles.msLg12} ${styles.col4} ${styles.colOpportunities}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px ',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
                 <div>
-                  <h4 className={styles.column2Title}>FAQ</h4>
-                  <div className={ styles.column2Container }>
-                    <div className={ styles.faqHeaderImg }></div>
-                    <div className={` ${styles.faqContent} ${styles.scrollHidden} `}>
-                      {spFAQ}
-                    </div>                  
+                  {/* <h4 className={`${styles.column2Title}`}>OPPORTUNITIES</h4> */}
+                  <div className={ styles.extnSearch }>
+                    <input type="search" name="extnSearchBox"placeholder="Search for Opportunities…" id={ styles.extnSearchBox }
+                      onInputCapture={({target}) => this.setState({searchOpportunities: target["value"].trim().toLowerCase()}) }
+                    />
+                    <i className="ms-Icon ms-Icon--Search" aria-hidden="true"></i>
                   </div>
+                  {Opportunities}
                 </div>
-              </div>
-              <div className={` ${styles.column2} ms-sm12 ms-lg8 ${styles.msSm12} ${styles.msLg12} ${styles.colTeams} ${styles.colSPSites} `} style={{
-                height: '450px', maxHeight: '450px'
-              }}>
+              </div> 
+            </div>
+
+            {/* last webpart */}
+            <div className="col-md-12" >
+            <div className={` col-md-12  ${styles.msSm12} ${styles.msLg12}`} style={{borderRadius:'0px',margin:'10px 0px 0px 0px',backgroundColor:'white',height:'53px',textAlign:'center',color:'#1e90ff',maxWidth:'100%',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="5%" height="34px" style={{marginRight:"10px"}}/><b>PRODUCT CATALOGUE</b></div></div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg12 ${styles.msSm12} ${styles.msLg12} ${styles.colTeams} ${styles.colSPSites} `} style={{borderRadius:'0px',margin:'10px 0px 0px 0px ',backgroundColor:'white',maxWidth:'100%',boxShadow : '5px 4px 9px 10px #f1f1f1',height:'327px', maxHeight: '327px'}}>
                 <div>
-                  <h4 className={`${styles.column2Title}`}>Product Catalogue</h4>
+                  {/* <h4 className={`${styles.column2Title}`}>Product Catalogue</h4> */}
 
                   <div className={`${styles.listSearch} ${styles.scrollHidden}`}>
                     <div className={styles.Pcontainer}>
@@ -2848,8 +2006,79 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
                   </div>
                 </div>
               </div>
-            */}
+            </div>
+          </div>
+          
+          
+          
+          
+            {/* <div className='row'>
+              <div className={`col-md-4 col-lg-4 col-sm-12  ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 40px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>Internal Communication</b></div></div>
+              <div className={` col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 0px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/bubble-chat.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b> My Emails <span>{this.state.mailMessageCount}</span></b></div></div>
+              <div className={`col-md-4 col-lg-4 col-sm-12 ${styles.msSm12} ${styles.msLg4}`} style={{borderRadius:'10px',margin:'10px 10px 0px 20px',backgroundColor:'white',maxWidth:'330px',height:'53px',color:'#1e90ff',paddingTop:'10px',boxShadow : '5px 4px 9px 10px #f1f1f1'}}><div style={{flexDirection:"row",justifyContent:"space-between"}}><img src={require('./images/Teams.png')} width="13%" height="34px" style={{marginRight:"10px"}}/><b>TEAMS</b></div></div>
+              </div> */}
+           </div>
+      
+            
 
+          {/* NEW TAB For TESTING */}
+          {/* <div className={ styles.container }>
+            <div className={ styles.row }>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.colLauncher} ${styles.colPlanner} `}>
+              <div>
+                <h4 className={styles.column2Title}>MY TASKS</h4>
+                <div className={ styles.column2Container }>
+                  <div className={` ms-Grid-row ${styles.scrollHidden} `}>
+                  {plannerTasks}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.colLauncher} `}>
+              <div>
+                <h4 className={styles.column2Title}>LINE OF BUSINESS APPS</h4>
+                <div className={ styles.column2Container }>
+                  <div className={` ms-Grid-row ${styles.scrollHidden} `}>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            <div className={` ${styles.column2} ms-sm12 ms-lg4 ${styles.colTeams} ${styles.colFAQ} `}>
+              <div>
+                <h4 className={styles.column2Title}>FAQ</h4>
+                <div className={ styles.column2Container }>
+                  <div className={ styles.faqHeaderImg }></div>
+                  <div className={` ${styles.faqContent} ${styles.scrollHidden} `}>
+                    {spFAQ}
+                  </div>                  
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+ */}          
+          {/* <ChartControl
+            type={ChartType.Doughnut}
+            options={chartOptions}
+            data={{
+              labels: this.state.employeeCount.map(dept => dept.Department),
+              datasets: [{label: `Employee Count`, data: this.state.employeeCount.map(dept => dept.Count)}]
+            }} 
+          /> */}
+          {/* <div style={{position: "relative", width: "400px", height:"400px"}}>
+          <ChartControl
+            type={ChartType.Bar}
+            options={barChartOptions}
+            data={barChartData} 
+          />
+          </div> */}
+
+          {/* <div style={{width: "600px", height: "900px"}}>
+         
+          <iframe width="680" height="510" src="https://app.powerbi.com/view?r=eyJrIjoiMGEwZTM5ODktZjc2Ni00OGFhLTg3ZjMtZTcyYzliZjhlMDBhIiwidCI6IjVkMmU2NmRhLTU0YmEtNDg5Ny04MmVlLTYwZWViOGNlNTk5NCIsImMiOjl9" allowFullScreen={true}></iframe>
+
+          </div> */}
           </div>
       );
     }
@@ -2861,91 +2090,80 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
     }
   }
   
-  
   public componentDidMount(): void{
     // console.log(`09/07/20 07:21AM`);
-    // alert("Hi");
     this.checkConnectionState();
     if(this.props.context.sdks.microsoftTeams){
       this.setState({isOnTeams: true});
     }
+    // if(this.state.isConnected){}  
 
-    // this.carouselInterval = setInterval(() => {
-    //   this.autoplayELements();
-    // }, 3000);
-
-      /* const script = document.createElement("script");
+      const script = document.createElement("script");
       script.src = "https://platform.twitter.com/widgets.js";
-      document.getElementsByClassName(`${styles.twitterEmbed}`)[0].appendChild(script); */
+      document.getElementsByClassName(`${styles.twitterEmbed}`)[0].appendChild(script);
 
       this._getCurrentUser();
       this._getMyTeamsGroup();
 
+      this.getAllProductCatalog();
+      console.log();
+
+      // this._getMySPSites();
+      this._getFAQ4List();
+
+      this.getEngagements();
+
+      this._getLineExtnList();
+
+      this.displayDptChart();
+      this.GetMyAnalytics();
 
       this.RecurringFunction();
-      
-       
-      //Carousel.call(this.);
-      // var reactHandler = this;
+      this.getEmployeeTimeSheet();
+
+      var reactHandler = this;
   }
 
   public async RecurringFunction(){
     // this.checkConnectionState();
-    this._getMyMailsMessage();
-     this._getSPAnnouncement();
+    this.getDynamicsOpportunities();
+    this._getSPAnnouncement();
     this._getMyRecentDriveFiles();
-    this.GetMyAnalytics();
-    this.getLOBLinks();
     this._getOutlookEvents();
     this._getRecentEvent4rmList();
-    this.getBirthdays();
-    this.getAnniversary();
-
+    this._getMyMailsMessage();
+    this._getSharedDocWithMe();
     this._getTasksAssignedToMe();
 
+    this.getAllCompletedProcess();
+    this._getSPProcessStage();
+   
+    
     window.setInterval(() => this.checkConnectionState(), 20000);
 
     window.setInterval(() => {
       this._getMyMailsMessage();
-      //this._getMyTeamsGroup();
+      // this._getMyTeamsGroup();
       this._getOutlookEvents();
       this._getRecentEvent4rmList();
-      this.getBirthdays();
-      this.getAnniversary();
       this._getTasksAssignedToMe();
 
-      //console.log(staffAnniversaryThisMonth)
-
+      (() => {
+        var selectedTeam = document.querySelector(`.${styles.colTeamsMyTeams} [type=radio]:checked`).attributes;
+        
+        // console.log(selectedTeam);
+        this._getMyTeamMessages(selectedTeam["data-teamid"].value, selectedTeam["data-groupid"].value);
+      })();
     }, 60000);
 
 
     window.setInterval(() => {
       this._getMyRecentDriveFiles();
+      this._getSharedDocWithMe();
+      this._getSPProcessStage();
+      this.getAllCompletedProcess();
     }, 240000);
-
-
   }
-
-  // private triggerNextElement = (index: number) => {
-  //   if (index > this.state.carouselItemElements.length-1) { // Beyond last element? Start with 1st one
-  //     index = 0;
-  //   }
-  //   if (index < 0) { // Before 1st element? Go on with last one
-  //     index = this.state.carouselItemElements.length-1;
-  //   }
-  //   this.setState({
-  //     currentCarouselItemElement: this.state.carouselItemElements[index],
-  //     currentCarouselItemIndex: index,
-  //     carouselCanMoveNext: index < this.state.carouselItemElements.length-1,
-  //     carouselCanMovePrev: index > 0
-  //   });
-  // }
-
-  // private autoplayELements = () => {
-  //   setTimeout(() => {
-  //     this.triggerNextElement(this.state.currentCarouselItemIndex + 1);
-  //   }, 1000);
-  // }
 
   public checkConnectionState(){
     
@@ -2967,7 +2185,7 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
     this._msGraphFactory.then((clent: MSGraphClient): void => {
       clent.api('/me/').get((error: any, resp: IGraphUserProfile) =>{
         if(error){
-          //console.log("GetCurrentUser Error", error);
+          console.log("GetCurrentUser Error", error);
           // if(this.state.isConnected){}
             this._getCurrentUser();
           return;
@@ -2978,14 +2196,17 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
     });
     this._msGraphFactory.then((client: MSGraphClient):void => {
       client.api('/users?$top=999')
-      .select(["id","mail","displayName","jobTitle","mail","mobilePhone","department","userPrincipalName","businessPhones"])
-      // .filter()
+      .filter("(onPremisesSyncEnabled eq true OR userType eq 'Member') and accountEnabled eq true")
+      // .orderby("displayName")
+      .select(["id","mail","displayName","jobTitle","mail","mobilePhone","department","userPrincipalName","businessPhones", "employeeId", "userType", "accountEnabled", "onPremisesSyncEnabled"])
+      // .filter("(accountEnabled eq true) and (department ne null)")
       .get((error, resp: IGraphUserProfileItems) => {
         if(error){
-          //console.log(error);      
+          console.log(error);      
           return;
         }
-        const result = resp.value.map(user => {
+        console.log(resp);
+        const result = resp.value.filter(u => u.department).sort((a,b) => a.displayName > b.displayName ? 1 : -1).map(user => {
           const newUser = new GraphUserProfile(user);
           /* newUser.dummyBirthday = this.utilityMethod.randomDate(today, later);
           newUser.manager = reportToArr[Math.floor(Math.random() * 3)]; */
@@ -3001,7 +2222,7 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
       .version("v1.0").top(12)
       .get((error, resp: IGraphUserProfileItems) => {
         if(error){
-          //console.log("UserError", error);
+          console.log("UserError", error);
           return;
         }
         const result = resp.value.map(user => new GraphUserProfile(user));
@@ -3029,7 +2250,7 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
     this._msGraphFactory.then((clent: MSGraphClient): void => {
       clent.api(`/me/reminderView(startDateTime='${now.toISOString()}',endDateTime='${later.toISOString()}')`).get((error: any, resp: {value: any[]}) =>{
         if(error){
-          //console.log("GetNotifictionCount Error", error);
+          console.log("GetNotifictionCount Error", error);
           if(this.state.isConnected){
             window.setTimeout(()=>this.myNotificationCount(), 120000);
           }
@@ -3050,7 +2271,7 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
       .count(true)
       .get((error: any, mailMessage: IGraphMailItems) => {
         if(error){
-          //console.log("MailError", error);
+          console.log("MailError", error);
           if(this.state.isConnected){
             this._getMyMailsMessage();
           }
@@ -3073,7 +2294,7 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
       client.api('/me/joinedTeams').select(["id", "displayName"])
       .get( async (error: any, response: IGraphMyTeamItems) => {
         if(error){
-          //console.log("TeamsError", error);
+          console.log("TeamsError", error);
           // if(this.state.isConnected){}
             this._getMyTeamsGroup();
             
@@ -3086,39 +2307,14 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
     });
   }
 
-  // public _getGalleryImages(carouselItems: ICarouselImage[]): string[]{
-
-  //   var images:string[] = [];
-  //   //var resouceLinks: string [] = [];
-  //   var i: number = 0;
-  //   for(i = 0; i < carouselItems.length; i++){
-  //      // iCarouselImage.push({FileRef:this._currentWebUrl.split("/sites")[0] + carouselItems[i].FileRef, ResourceLink: this./////_currentWebUrl.split("/sites")[0] + carouselItems[i].ResourceLink });
-  //       images.push( carouselItems[i].FileRef);
-  //       //resouceLinks.push(this._currentWebUrl.split("/sites")[0] + carouselItems[i].ResourceLink);
-  //   }
-  //   return images;
-  // }
-
-  // public _getGalleryResourseLink(carouselItems: ICarouselImage[]): string[]{
-    
-  //   var resouceLinks: string [] = [];
-  //   var i: number = 0;
-  //   for(i = 0; i < carouselItems.length; i++){
-  //      // iCarouselImage.push({FileRef:this._currentWebUrl.split("/sites")[0] + carouselItems[i].FileRef, ResourceLink: this./////_currentWebUrl.split("/sites")[0] + carouselItems[i].ResourceLink });
-  //      resouceLinks.push( carouselItems[i].ResourceLink);
-  //       //resouceLinks.push(this._currentWebUrl.split("/sites")[0] + carouselItems[i].ResourceLink);
-  //   }
-  //   return resouceLinks;
-  // }
-
   public _getTopGroupIdInTeam(team: IGraphMyTeam): void{
     this._msGraphFactory.then((client: MSGraphClient) => {
       let result: GraphMyTeam;
       client.api(`/teams/${team.id}/channels`)
       .get( async (error, resp: IGraphMyTeamItems) => {
         if(error){
-          //console.log(team);
-          //console.log("TeamError", error);
+          console.log(team);
+          console.log("TeamError", error);
           // if(this.state.isConnected){}
             this._getTopGroupIdInTeam(team);
             
@@ -3144,7 +2340,7 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
       .top(50)
       .get(async (error: any, resp: IGraphTeamMessageItems) => {
         if(error){
-          //console.log("TeamsError", error);
+          console.log("TeamsError", error);
           if(this.state.isConnected){
             this._getMyTeamMessages(_teamId, _groupId);
           }
@@ -3161,7 +2357,19 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
     });
   }
 
-  
+  //PRODUCT CATALOG CALL
+  private getAllProductCatalog(){
+    const listQuery: string = `${this.props.siteUrl2}/_api/web/lists/getByTitle('${this.props.listTitle}')/items?$select=*,Author/ID,Author/Title,Author/EMail,Author/Department,Editor/ID,Editor/Title,Editor/EMail,Editor/Department,AttachmentFiles/FileName,AttachmentFiles/ServerRelativeUrl&$expand=Author,Editor,AttachmentFiles`;
+
+    SPSearchService.get(this.props.context, listQuery)
+    .then((resp) => {
+      // console.log(`ALL ProdCatalog`, resp.value);
+      let result = resp.value.map(searchRes => new PSearchResult(searchRes) );
+      
+      this.setState({PsearchResult:result, Psearchstatus:true});
+    });
+  }
+
   private _onChange(ev: React.FormEvent<HTMLElement | HTMLInputElement>, isChecked: boolean, kind?: string) {
     // console.log(`The option ${ev.currentTarget.title} has been changed to ${isChecked}.`);
     let title = ev.currentTarget.title.toLowerCase();
@@ -3184,31 +2392,31 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
     }else{
       this.searchListForContent(PsearchText);
       this.setState({PisCalloutVisible: true});
-      //console.log(this.state.PisCalloutVisible);
+      console.log(this.state.PisCalloutVisible);
     }
   
   }
 
   private searchListForContent(PsearchText: string){
     let queryText:string = escape(PsearchText);
-    //console.log(queryText);
+    console.log(queryText);
 
-    const listQuery: string = `${this.props.siteUrl}/_api/web/lists/getByTitle('${this.props.listTitle}')/items?$select=*,Author/ID,Author/Title,Author/EMail,Author/Department,Editor/ID,Editor/Title,Editor/EMail,Editor/Department,AttachmentFiles/FileName,AttachmentFiles/ServerRelativeUrl&$expand=Author,Editor,AttachmentFiles&$filter=substringof('${queryText}', TargetMarkets) or substringof('${queryText}', Title) or substringof('${queryText}', ExistingCustomers)`;
+    const listQuery: string = `${this.props.siteUrl2}/_api/web/lists/getByTitle('${this.props.listTitle}')/items?$select=*,Author/ID,Author/Title,Author/EMail,Author/Department,Editor/ID,Editor/Title,Editor/EMail,Editor/Department,AttachmentFiles/FileName,AttachmentFiles/ServerRelativeUrl&$expand=Author,Editor,AttachmentFiles&$filter=substringof('${queryText}', TargetMarkets) or substringof('${queryText}', Title) or substringof('${queryText}', ExistingCustomers)`;
     // let listQuery2:string = `${this.props.siteUrl}/_api/search/query?querytext='${searchText}*+Path:${this.props.siteUrl}/site/Lists/${this.props.listTitle}'`
     SPSearchService.get(this.props.context, listQuery)
     .then((resp) => {
       let result = resp.value.map(searchRes => new PSearchResult(searchRes) );
       
-      //console.log(this.state.PisCalloutVisible);
+      console.log(this.state.PisCalloutVisible);
       this.setState({PsearchResult:result, Psearchstatus:true, PisCalloutVisible: true});
-      //console.log(this.state.PisCalloutVisible);
+      console.log(this.state.PisCalloutVisible);
     });
   }
   
   private _onCalloutDismiss = (e): void => {
     this.setState({PisCalloutVisible: false});
     // if(e.target.className.indexOf("chartjs")<0){
-      //console.log(`DISMISS started`, e.target);
+      console.log(`DISMISS started`, e.target);
       this.setState({
         PisCalloutVisible: false,
       });
@@ -3216,6 +2424,23 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
   }
 
   private openResultDetails(reciordID: number){}
+
+  /* public _getMyRecentDriveFiles(): any{
+    
+    this._msGraphFactory.then((client: MSGraphClient) => {
+      client.api('/me/drive/recent')
+      .top(20)
+      .get((error: any, resp: IGraphDriveFileItems) => {
+        if(error){
+          if(this.state.isConnected){
+            window.setTimeout(()=>this._getMyRecentDriveFiles(), 120000);
+          }
+          return;
+        }
+        console.log()
+      });
+    });
+  } */
 
   public _getMyRecentDriveFiles(): any{
     
@@ -3238,35 +2463,58 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
     });
   }
 
-  public getLOBLinks(){
+  public _getSharedDocWithMe(): any{
+    
+    this._msGraphFactory.then((client: MSGraphClient) => {
+      client.api('/me/drive/sharedWithMe')
+      .top(20)
+      .get((error: any, resp: IGraphDriveFileItems) => {
+        if(error){
+          if(this.state.isConnected){
+            window.setTimeout(()=>this._getSharedDocWithMe(), 120000);
+          }
+          return;
+        }
+        // console.log("SharedDoc", resp);
 
-    this.props.spHttpClient.get(`${this.props.siteUrl}/_api/web/lists/getbytitle('LOB Apps')/items?$select=AttachmentFiles/ServerRelativeUrl,ApplicationLink,Title&$expand=AttachmentFiles`, SPHttpClient.configurations.v1)
-    .then((response: SPHttpClientResponse) => response.json())
-    .then((resp: ILobLinkItems) => {
-      // console.log(`LOB-Links RESPONSE`, resp.value);
-      let result = resp.value.map(link => new LobLink(link));
-      // console.log(`LOB-Links RESPONSE`, result);
-      this.setState({LOBLinkList: result});
-    })
-    .catch(error => {
-      //console.log("LOBLinks Error", error);
-      if(this.state.isConnected){
-        window.setTimeout(()=>this.getLOBLinks(), 120000);
-      }
+        var sharedDoc = resp.value.map(item => new GraphDriveFile(item));
+        this.setState({docsSharedWithMe: sharedDoc});
+      });
     });
-
   }
 
-  public _getRecentEvent4rmList(){
+ /* public _getRecentEvent4rmList(){
     var today = new Date(), later = new Date();
     later.setDate(today.getDate() + 7);
 
     this.props.spHttpClient.get(`${this.props.siteUrl}/_api/web/lists/getbytitle('Events')/items?$filter=EventDate ge datetime'${today.toISOString()}' or EndDate ge datetime'${today.toISOString()}'&$orderBy=EventDate asc&$top=15`, SPHttpClient.configurations.v1)
     .then((response: SPHttpClientResponse) => response.json())
     .then((resp: ISPEventItems) => {
-      //console.log(resp);
+      console.log(resp);
       const result = resp.value.map(event => new SPEvent(event));
-      //console.log(result);
+      console.log(result);
+      this.setState({companyEvents: result});
+    })
+    .catch(error => {
+      if(this.state.isConnected){
+        this._getRecentEvent4rmList();
+      }
+    });
+
+  }*/
+
+  public _getRecentEvent4rmList(){
+    var today = new Date(), later = new Date();
+    later.setDate(today.getDate() + 7);
+
+    // this.props.spHttpClient.get(`${this.props.siteUrl}/_api/web/lists/getbytitle('Events')/items?$filter=EventDate ge datetime'${today.toISOString()}' or EndDate ge datetime'${today.toISOString()}'&$orderBy=EventDate asc&$top=15`, SPHttpClient.configurations.v1)
+    // this.props.spHttpClient.get(`${this.props.siteUrl}/_vti_bin/listdata.svc/Events`, SPHttpClient.configurations.v1)
+    this.props.spHttpClient.get(`${this.props.siteUrl}/_api/web/lists/getbytitle('Events')/items?$filter=EventDate ge datetime'${today.toISOString()}' or EndDate ge datetime'${today.toISOString()}'&$orderBy=EventDate asc&$top=999`, SPHttpClient.configurations.v1)
+    .then((response: SPHttpClientResponse) => response.json())
+    .then((resp: ISPEventItems) => {
+      console.log("EVENT ApiResponse", resp);
+      const result = resp.value.filter(event => event.Title.indexOf("Deleted") !== 0).map(event => new SPEvent(event)).sort((a,b)=> Number(a.EventDate) - Number(b.EventDate)).filter((v,i) => i<=30);
+      console.log("EVENT parsedRESULT", result);
       this.setState({companyEvents: result});
     })
     .catch(error => {
@@ -3276,71 +2524,8 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
     });
 
   }
-  public utilityMethods = {
-    monthOfTheYear: ["January","February","March","April","May","June","July","August","September","October","November","December"],
-    mnthsOfTheYear: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"],
-  };
 
-  public getBirthdays(): void {
-    //var today = new Date(), later = new Date();
-    //later.setDate(today.getDate() + 7);
-
-    //this.props.spHttpClient.get(`${this.props.siteUrl2}/_api/web/lists/getbytitle('lst_Staff_Details')/items?$filter=Date_of_Birth ge datetime'${today.toISOString()}'&$orderBy=Date_of_Birth asc&$top=15`, SPHttpClient.configurations.v1)
-    this.props.spHttpClient.get(`${this.props.siteUrl2}/_api/web/lists/getbytitle('lst_Staff_Details')/items?$Top=500&$orderby=Date_of_Birth asc`, SPHttpClient.configurations.v1)
-    .then(resp => resp.json())
-    .then((response: ISPEventItem) => {
-      const result = response.value.map(listItems => new SPEvents(listItems));
-
-      //console.log(result);
-      //console.log(`staffBirthdays`, result);
-      this.setState({staffBirthdays: result});
-    });
-  }
-    //.then((response: SPHttpClientResponse) => response.json())
-    //.then((resp: any) => {
-     //const result = resp.value.map(bday => new SPEvent(bday));
-      //console.log("staffBirthdays: ", resp);
-      //this.setState({staffBirthdays: resp.value});
-   // })
-    //.catch(error => {
-      //if(this.state.isConnected){
-       // this.getBirthdays();
-     // }
-    //});
-
-  //}
-
-  public getAnniversary(): void {
-    //var today = new Date(), later = new Date();
-    //later.setDate(today.getDate() + 7);
-
-   // this.props.spHttpClient.get(`${this.props.siteUrl2}/_api/web/lists/getbytitle('lst_Staff_Details')/items?$filter=Resumption_Date ge datetime'${today.toISOString()}'&$orderBy=Resumption_Date asc&$top=15`, SPHttpClient.configurations.v1)
-   this.props.spHttpClient.get(`${this.props.siteUrl2}/_api/web/lists/getbytitle('lst_Staff_Details')/items?$Top=409&$orderby=Resumption_Date asc&$select=*,Staff_Name/EMail&$expand=Staff_Name`, SPHttpClient.configurations.v1)
-   .then(resp => resp.json())
-    .then((response: ISPEventItem) => {
-      const result = response.value.map(listItems => new SPEvents(listItems));
-
-      // console.log(`staffAnniversary`, result);
-      this.setState({staffAnniversary: result});
-      
-    console.log('staffAnniversaryResult', result, this.state.staffAnniversary)
-    });
-    console.log('staffAnniversary', this.state.staffAnniversary)
-  }
-    //.then((response: SPHttpClientResponse) => response.json())
-    //.then((resp: any) => {
-      // const result = resp.value.map(bday => new SPEvent(bday));
-      //console.log("staffAnniversary: ", resp);
-     // this.setState({staffAnniversary: resp.value});
-    //})
-   // .catch(error => {
-     // if(this.state.isConnected){
-     //   this.getBirthdays();
-     // }
-  //  });
-
-  //}
-
+ 
   public _getOutlookEvents(): any{
     var today = new Date(), later = new Date();
     later.setDate(today.getDate() + 7);
@@ -3369,7 +2554,7 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
       client.api(`/me/planner/tasks`)
       .get((error, tasks: {value: MicrosoftGraph.PlannerTask[]}) => {
 
-        //console.log(`TASKS`, this.state.myProfile.mail, tasks);
+        console.log(`TASKS`, tasks);
         this.setState({myPlannerTasks: tasks.value});
       });
     })
@@ -3382,21 +2567,21 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
 
   private _PonCalloutDismiss = (e): void => {
     if(e.target.className.indexOf("chartjs")<0){
-      //console.log(`DISMISS started`, e.target);
+      console.log(`DISMISS started`, e.target);
       this.setState({
         isCalloutVisible: false,
       });
     }
   }
   public updateTaskPercent(taskId: string, taskOdata: string, taskPercent: number = 100){
-    //console.log(taskId, taskOdata, taskPercent);
+    console.log(taskId, taskOdata, taskPercent);
     this._msGraphFactory.then(client =>{
       client.api(`planner/tasks/${taskId}`)
       .headers({'Content-type': 'application/json', 'If-Match': taskOdata })
       .patch({percentComplete: taskPercent})
-      //.then(res => console.log(res))
-     // .catch(err => console.log(err));
-    })
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+    });
   }
 
   private _searchClicked(): void {  
@@ -3407,7 +2592,7 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
     }else{
       this._getEnterpriseSearchWithFilterLimit(this.state.searchText.toString(),10);
       this.setState({isCalloutVisible: true});
-      //console.log(this.state.isCalloutVisible);
+      console.log(this.state.isCalloutVisible);
     }
   
    // debugger;
@@ -3427,14 +2612,14 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
 
   public _getEnterpriseSearchWithFilterLimit(searchphrase: string ,limit : number){
     var baseUrl = this._getBaseUrl(this.props.siteUrl,this.props.subSitePath);
-    //console.log(baseUrl);
+    console.log(baseUrl);
     //debugger;
     //${baseUrl}&rowlimit=${limit.toString()}
     this.props.spHttpClient.get(`${this.props.siteUrl}/_api/search/query?querytext='${searchphrase.toString()}'&amp;rowlimit=${limit.toString()}`, SPHttpClient.configurations.v1,
     { headers: {'odata-version': '3.0'}})
     .then((response: SPHttpClientResponse) => response.json())
     .then((resp) => {
-      //console.log(resp);
+      console.log(resp);
       //const result = resp.value.map(event => new SPEvent(event));      
       //console.log(result);
       let searchResp: ISPSearchResult[] = [];  
@@ -3454,17 +2639,17 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
         if (typeof resp.PrimaryQueryResult.RelevantResults.Table !== 'undefined') {  
           if (typeof resp.PrimaryQueryResult.RelevantResults.Table.Rows !== 'undefined') {                
             searchResp = this._setSearchResults(resp.PrimaryQueryResult.RelevantResults.Table.Rows, fields); 
-            //console.log(searchResp);
+            console.log(searchResp);
           }  
         }  
       }  
 
-      //console.log(this.state.isCalloutVisible);
+      console.log(this.state.isCalloutVisible);
       this.setState({item:searchResp,searchstatus:true, isCalloutVisible: true});
-      //console.log(this.state.isCalloutVisible);
+      console.log(this.state.isCalloutVisible);
     })
     .catch(error => {
-      //console.log(error);
+      console.log(error);
       // if(this.state.isConnected){}
       //this._getRecentEvent4rmList();
     });
@@ -3507,9 +2692,82 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
     return baseUrl;
   }
 
+  public _getMySPSites(){
+    this.props.spHttpClient.get(`${this.props.siteUrl}/_api/social.following/my/followed(types=15)`, SPHttpClient.configurations.v1)
+    .then((response: SPHttpClientResponse) => response.json())
+    .then((resp: ISPSiteItems) => {
+      const result = resp.value.map(site => new SPSite(site));
+
+      console.log(resp);
+      this.setState({mySPSites: result});
+    })
+    .catch(error => {
+      // if(this.state.isConnected){}
+        this._getMySPSites();
+        
+    });
+  }
+
+  public getAllCompletedProcess(){
+    this.props.spHttpClient.get(`${this.props.siteUrl2}/_api/web/lists/GetByTitle('Process Stage')/items?$top=3000`, SPHttpClient.configurations.v1)
+    .then((response: SPHttpClientResponse) => response.json())
+    .then((resp: {value: ICompletedProcess[]}) => {
+      const processes = resp.value.map(process => new completedProcess(process));
+      this.setState({completedProcesses: processes});
+      // console.log(`Completed PROCESSES`, processes);
+
+      var aggProcessArr: aggProcess[] = [];
+      processes.map(process => {
+        var check = aggProcessArr.filter(pro => pro.Process === process.Process);
+        if(check.length===0){
+          aggProcessArr.push({Process: process.Process, Duration: process.durationSec, DurationCount: 0});
+        } else{
+          check[0].Duration+=process.durationSec;
+          check[0].DurationCount += 1;
+        }
+      });
+      
+      
+      this.setState({aggregratedProcesses: aggProcessArr.map(process => ({Process: process["Process"], Duration: process["Duration"], "Avg. Duration": process["Duration"]/process["DurationCount"]}))});
+
+    });
+  }
+
+  public _getFAQ4List(){
+    
+    this.props.spHttpClient.get(`${this.props.siteUrl}/_api/web/lists/getbytitle('FAQ')/items`, SPHttpClient.configurations.v1)
+    .then((response: SPHttpClientResponse) => response.json())
+    .then((resp: ISPFaqItems) => {
+      const faqs = resp.value.map(faq => new SPFaq(faq));
+      console.log(faqs);
+      this.setState({spFAQ: faqs});
+    })
+    .catch(error => {
+      if(this.state.isConnected){
+        console.log(error);
+        this._getFAQ4List();
+      }
+    });
+  }
+
+  public _getLineExtnList(){
+    this.props.spHttpClient.get(`${this.props.siteUrl}/_api/lists/getbytitle('LineExtensions')/items`, SPHttpClient.configurations.v1)
+    .then((response: SPHttpClientResponse) => response.json())
+    .then((resp: ISPLineExtnItems) => {
+      const respLineExtn = resp.value.map(extn => new SPLineExtn(extn));
+      
+      this.setState({lineExtn: respLineExtn});
+    })
+    .catch(error => {
+      // if(this.state.isConnected){
+        this._getLineExtnList();
+        
+    });
+  }
 
   public _getSPAnnouncement(){
-    this.props.spHttpClient.get(`${this.props.siteUrl}/_api/web/lists/getbytitle('Announcement')/items?$select=Id,Title,Description,AuthorId,AttachmentFiles/ServerRelativeUrl,Created,Author/Title&$orderby=Created desc&$expand=AttachmentFiles,Author`, SPHttpClient.configurations.v1)
+    
+    this.props.spHttpClient.get(`${this.props.siteUrl}/_api/web/lists/getbytitle('Announcement')/items?$select=Id,Title,Description,AuthorId`, SPHttpClient.configurations.v1)
     .then((response: SPHttpClientResponse) => response.json())
     .then((resp: ISPAnnouncementItems) => {
       const result = resp.value.map(extn => new SPAnnouncement(extn));
@@ -3524,18 +2782,150 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
   }
 
   public async getMySPId(): Promise<string>{
-    const currentuser = await this.props.spHttpClient.get(`${this.props.siteUrl}/_api/web/currentuser?$select=Id`, SPHttpClient.configurations.v1)
+    const currentuser = await this.props.spHttpClient.get(`${this.props.siteUrl2}/_api/web/currentuser?$select=Id`, SPHttpClient.configurations.v1)
     .then((response: SPHttpClientResponse) => response.json());
-    //console.log("USER!!!", currentuser);
+    console.log("USER!!!", currentuser);
     return currentuser["Id"];
   }
 
+  public async _getSPProcessStage(){
+    let allStages: [LeaveRequest | LoanRequest | PettyCash | SalaryAdv];
+    const mySPId: string = await this.getMySPId();
+    console.log("UserID in Process",mySPId);
+    this.setState({allProcessStages: []});
+    
+    // this.props.spHttpClient.get(`https://relianceinfo.sharepoint.com/sites/RelianceIntranetPortal2/_api/web/lists/getbytitle('Leave Application')/items?$filter=(UnitHead_x0020_Approval eq 'Pending') or (HR_x0020_Approval eq 'Pending') or (MD_x0020_Approval eq 'Pending')&$orderby=Created desc&$top=5`, SPHttpClient.configurations.v1)
+    this.props.spHttpClient.get(`${this.props.siteUrl2}/_api/web/lists/getbytitle('Leave Application')/items?$top=5&$orderby=Modified desc&$filter=(AuthorId eq '${mySPId}') or (UnitHeadId eq '${mySPId}')`, SPHttpClient.configurations.v1)
+    .then((response: SPHttpClientResponse) => response.json())
+    .then((resp: ILeaveRequestItems) => {
+      // console.log(resp);
+      const result = resp.value.map(extn => new LeaveRequest(extn));
+      
+      // console.log(`Leave Process`, result);
+      // this.setState({myLeaveRequest: result});
+
+      let oldStages = this.state.allProcessStages;
+      this.setState({allProcessStages: [...oldStages, ...result]});
+    })
+    .catch(error => {
+      if(this.state.isConnected){
+        // this._getSPAnnouncement();
+      }
+    });
+    
+    // this.props.spHttpClient.get(`https://relianceinfo.sharepoint.com/sites/RelianceIntranetPortal2/_api/web/lists/getbytitle('Salary Advance Application')/items?$filter=(HrApproval eq 'Pending') or (FinanceApproval eq 'Pending')&$orderby=Created desc&$top=5`, SPHttpClient.configurations.v1)
+    this.props.spHttpClient.get(`${this.props.siteUrl2}/_api/web/lists/getbytitle('Salary Advance Application')/items?$filter=(AuthorId eq '${mySPId}')&$top=5&$orderby=Modified desc`, SPHttpClient.configurations.v1)
+    .then((response: SPHttpClientResponse) => response.json())
+    .then((resp: ISalaryAdvItems) => {
+      // console.log(resp);
+      const result = resp.value.map(extn => new SalaryAdv(extn));
+      
+      // console.log(`SalaryAdv Process`, result);
+      // this.setState({salaryAdvApp: result});
+      
+      let oldStages = this.state.allProcessStages;
+      this.setState({allProcessStages: [...oldStages, ...result]});
+
+    })
+    .catch(error => {
+      if(this.state.isConnected){
+        // this._getSPAnnouncement();
+      }
+    });
+    
+    // this.props.spHttpClient.get(`https://relianceinfo.sharepoint.com/sites/RelianceIntranetPortal2/_api/web/lists/getbytitle('LoanApplication')/items?$filter=(UnitHeadApproval eq 'Pending') or (HrApproval eq 'Pending') or (MdApproval eq 'Pending') or (FinanceApproval eq 'Pending')&$orderby=Created desc&$top=5`, SPHttpClient.configurations.v1)
+    this.props.spHttpClient.get(`${this.props.siteUrl2}/_api/web/lists/getbytitle('LoanApplication')/items?$filter=(AuthorId eq '${mySPId}') or (SupervisorId eq '${mySPId}')&$top=5&$orderby=Modified desc`, SPHttpClient.configurations.v1)
+    .then((response: SPHttpClientResponse) => response.json())
+    .then((resp: ILoanRequestItems) => {
+      // console.log(resp);
+      const result = resp.value.map(extn => new LoanRequest(extn));
+      
+      // console.log(`Loan Process`, result);
+      // this.setState({loanRequests: result});
+      
+      let oldStages = this.state.allProcessStages;
+      this.setState({allProcessStages: [...oldStages, ...result]});
+
+    })
+    .catch(error => {
+      if(this.state.isConnected){
+        // this._getSPAnnouncement();
+      }
+    });
+    
+    // this.props.spHttpClient.get(`https://relianceinfo.sharepoint.com/sites/RelianceIntranetPortal2/_api/web/lists/getbytitle('PettyCash')/items?$select=*,Author/Title&$expand=Author&$filter=(UnitHeadApproval eq 'Pending') or (HrApproval eq 'Pending') or (MdApproval eq 'Pending')&$orderby=Created desc&$top=5`, SPHttpClient.configurations.v1)
+    this.props.spHttpClient.get(`${this.props.siteUrl2}/_api/web/lists/getbytitle('PettyCash')/items?$select=*,Author/Title&$expand=Author&$filter=(AuthorId eq '${mySPId}') or (UnitHeadId eq '${mySPId}')&$top=5&$orderby=Modified desc`, SPHttpClient.configurations.v1)
+    .then((response: SPHttpClientResponse) => response.json())
+    .then((resp: IPettyCashItems) => {
+      // console.log(resp);
+      const result = resp.value.map(extn => new PettyCash(extn));
+      
+      // console.log(`Leave Process`, result);
+      // this.setState({pettyCashApp: result});
+      
+      let oldStages = this.state.allProcessStages;
+      this.setState({allProcessStages: [...oldStages, ...result]});
+
+    })
+    .catch(error => {
+      if(this.state.isConnected){
+        // this._getSPAnnouncement();
+      }
+    });
+  }
   
+  public getEngagements():void{
+    this.props.spHttpClient.get(`${this.props.siteUrl}/_api/web/Lists/GetByTitle('Engagement Progress')/items?$select=ID,Title,Project_x0020_Title,Project_x0020_Description,Engagement_x0020_Stage,Client_x0020_Name,EngagementStages,Created,Modified,Author/EMail,Author/Title,Author/Department&$expand=Author&$orderby=Created desc`, SPHttpClient.configurations.v1)
+    .then((response: SPHttpClientResponse) => response.json())
+    .then((resp: IEngageProgressItem) => {
+      const result = resp.value.map(item => new EngageProgress(item));
+      this.setState({allEngagements: result});
+
+      // console.log(`ENGAGEMENT`, resp, result);
+    });
+  }
+
+  public getEmployeeTimeSheet():void{
+    // this.props.spHttpClient.get(`https://microdev.sharepoint.com/sites/RelianceDev/_api/web/Lists/GetByTitle('TimeSheet')/items?$select=ID,Title,Week,Period,PeriodStarts,Status,Total_x0020_Hours,Created,Project,Employee,Author/EMail&$expand=Author&$orderby=Modified desc`, SPHttpClient.configurations.v1)
+    this.props.spHttpClient.get(`${this.props.siteUrl}/_api/web/Lists/GetByTitle('TimeSheet')/items?$select=ID,Title,Week,Period,PeriodStarts,Status,Total_x0020_Hours,Created,Project,Employee,Author/EMail&$expand=Author&$orderby=Modified desc`, SPHttpClient.configurations.v1)
+    .then((response: SPHttpClientResponse) => response.json())
+    .then((resp: ITimeSheetItem) => {
+      const result = resp.value.map(item => new TimeSheet(item));
+      this.setState({allTimeSheet: result});
+
+       console.log(`TIMESHEET`, resp, result); 
+    }); 
+  }
+
+
+  public getDynamicsOpportunities(): void{
+    let todaysxDate=new Date();
+    let filtxDate=todaysxDate.getFullYear()+'-'+(todaysxDate.getMonth()+1)+'-'+todaysxDate.getDate();
+
+    this._aadClientFactory.then((client: AadHttpClient): void => {
+      client.get(`${this.props.dynamicsUri}/api/data/v9.1/opportunities?$select=totalamount,budgetamount,totalamountlessfreight,name,estimatedclosedate,currentsituation,customerneed,_ownerid_value&$expand=owninguser($select=fullname,title,mobilephone)&$filter=estimatedclosedate ge ${filtxDate}`, AadHttpClient.configurations.v1)
+      .then((rawResp: HttpClientResponse) => {
+        const response = rawResp.json();
+        console.log(response);
+        return response;
+      }).then((apiResult: {value: IDynamicsOpportunities[]}) => {
+        console.log(`DYNAMICS DATA`, apiResult);
+        var result = apiResult.value.map(item => new DynamicsOpp(item));
+        this.setState({
+          DynamicOpportunities : result,
+          // barChartByPerson: this.sortDataByResourcePerson(result),
+          // barChartByCompany: this.sortDataByCustomer(result),
+          // barChartByUnit: this.sortDataByUnit(result),
+          // dynamicsTasksByResDept: this.sortDataByResourcePersonDept(result),
+        });
+      });
+    });
+  }
   public GetMyAnalytics(){
     this._msGraphFactory.then(client => {
       client.api('/me/analytics/activitystatistics')
       .version('beta').get((error, resp) => {
-        //console.log("MyANALYTICS", resp.value);
+        console.log("MyANALYTICS", resp.value);
 
         var Activities = new Array<Activity>(), groupActivities = {},colActy={}, aggActivities = [];
 
@@ -3607,10 +2997,64 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
       Object.keys(day).forEach(dayKey => collabVal = (dayKey==="Focus" || isNaN(day[dayKey])) ? collabVal + 0 : collabVal + day[dayKey] );
       return {...day, Collab: collabVal};
     });
-    //console.log( fullBarChartData );
+    console.log( fullBarChartData );
     return fullBarChartData;
   }
-  
+
+  public formatLineChartData(fullData: GroupedActivity){
+    const dataKey = Object.keys(fullData);
+    let result = {};
+    let LineData : LineGraphData[] = [];
+
+    dataKey.forEach(acty=> {
+      var linedata = new LineGraphData;
+      linedata.id = acty;
+      linedata.color = "hsl(183, 70%, 50%)";
+      var dataxyarray : LineGraphInData[] = [];
+     
+      fullData[acty].forEach(dayActy =>{ 
+        var dataxy = new LineGraphInData;
+       if(result[dayActy["startDate"]]){
+          dataxy.y=dayActy["parsedDuration"];
+        } else{
+          dataxy.x = this.utilityMethod.daysOfWeek[(new Date(dayActy["startDate"])).getDay()];
+          dataxy.y=dayActy["parsedDuration"];
+        }
+       
+       dataxyarray.push(dataxy);
+      });
+
+      linedata.data = dataxyarray;  
+      console.log(linedata);  
+
+      LineData.push(linedata);
+    });
+    console.log(result);
+    console.log(LineData);
+    return LineData;
+  }
+
+  public formatPieChartData(fullData: GroupedActivity){
+    const dataKey = Object.keys(fullData);
+    var datalist: PieGraphData[] = [];
+
+    dataKey.forEach(acty=> {
+      var data: PieGraphData = new PieGraphData;
+      var sum = 0;
+      data.id = acty;
+
+      fullData[acty].forEach(dayActy =>{
+         sum += parseInt(dayActy["parsedDuration"]);
+      });
+      data.value =  sum;
+
+      datalist.push(data);
+    });
+
+    console.log(datalist);
+    return datalist;
+  }
+
   public formatPieChartData2(fullData: GroupedActivity){
     // const Data = this.state.CollaborationActivityList;
     const Data1 = fullData;
@@ -3622,6 +3066,92 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
     });
 
     return pieData;
+  }
+
+  public formatPieTumData(fullData: GroupedActivity){
+    const dataKey = Object.keys(fullData);
+    var datalist: PieData[] = [];
+
+    let result = {};
+    var totalsum = 0;
+    dataKey.forEach(acty=> {
+      var data: PieData = new PieData;
+      var sum = 0;
+      fullData[acty].forEach(dayActy =>{
+         sum += parseInt(dayActy["parsedDuration"]);
+      });
+      totalsum +=  sum;  
+    });
+  
+    dataKey.forEach(acty=> {
+      var data: PieData = new PieData;
+      var sum = 0;
+      data.id = acty;
+      fullData[acty].forEach(dayActy =>{
+         sum += parseInt(dayActy["parsedDuration"]);
+      });
+      var datavalue = Math.round((sum/totalsum)*100);
+      data.value = datavalue;
+      data.id =(acty +" "+ datavalue.toString()+"%");
+      datalist.push(data);
+    });
+  
+    console.log(datalist);
+    return datalist;
+  }
+
+  public _getSPEmployeeCount(): Promise<any> {
+
+    return this.props.spHttpClient.get(`${this.props.siteUrl}/_api/web/lists/getByTitle('EmployeeCount')/items?$select=Department,Count`, SPHttpClient.configurations.v1)
+    .then((response: SPHttpClientResponse) => response.json())
+    .then((resp) => {
+      const result = resp["value"].map(el => {
+        return{Department: el["Department"], Count: el["Count"]};
+      });
+      
+      this.setState({employeeCount: result});
+      return result;
+    })
+    .catch(error => {
+      // if(this.state.isConnected){}
+        this._getSPEmployeeCount();
+        
+    });
+
+    }
+  public async displayDptChart(): Promise<JSX.Element>{
+    var myChart = await this._getSPEmployeeCount().then((val) => {
+      const dept: [string] = val.map(el => el["Department"]),  deptCount: [number] = val.map(el => el["Count"]);
+      // console.log(val);
+      // console.log(dept);
+      // console.log(deptCount);
+      const chartData: Chart.ChartData = {
+        labels: dept,
+        datasets: [
+          {
+            label: `Employee Count`,
+            data: deptCount
+          }
+        ]
+      };
+      const chartOptions: Chart.ChartOptions = {
+        legend: {display: true, position: "right"},
+        title: {display: true, text: "EMPLOYEE COUNT"}
+      };
+      const chartOptions1: Chart.ChartOptions = {
+        legend: {display: true, position: "right"},
+        title: {display: true, text: "EMPLOYEE COUNT"},
+        maintainAspectRatio: true,
+        rotation : 90
+      };
+      chartOptions.spanGaps = true;
+
+      const chartDisplay = <ChartControl type={ChartType.Doughnut} data={chartData} options={chartOptions} />;
+
+      return chartDisplay;
+    });
+
+    return myChart;
   }
 
   public _teamSelectedListener(event): any {
@@ -3639,13 +3169,13 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
       client.api(`/me/messages/${mailId}`)
       .update({isRead: true})
       .then(result => {
-        //console.log(`Mark email as READ`, result);
+        console.log(`Mark email as READ`, result);
         this._getMyMailsMessage();
       });
     });
   }
   public _outlookHeaderListener(evnt: Event){
-    //console.log(evnt.type);
+    console.log(evnt.type);
   }
 
   public utilityMethod = {
@@ -3695,4 +3225,5 @@ const staffAnniversary: JSX.Element[] = staffAnniversaryThisMonth ?
       return date;
     }
   };
+
 }

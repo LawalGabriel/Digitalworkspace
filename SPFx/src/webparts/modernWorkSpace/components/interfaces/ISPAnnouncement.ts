@@ -4,10 +4,7 @@ export interface ISPAnnouncement{
     Title: string;
     Description: string;
     AuthorId?: string;
-    Created: string;
     AuthorLookupId?: string;
-    Author?: {Title: string};
-    AttachmentFiles?: {ServerRelativeUrl: string}[];
 }
 
 export interface ISPAnnouncementItems{
@@ -16,21 +13,19 @@ export interface ISPAnnouncementItems{
 }
 
 export class SPAnnouncement{
+  Created(Created: any) {
+    throw new Error('Method not implemented.');
+  }
     public Id: string;
     public Title: string;
     public Description: string;
     public AuthorId: string;
-    public AuthorTitle: string;
-    public AttachmentServerURL: string;
-    public Created: Date;
+  AttachmentServerURL: string;
 
     constructor(item: ISPAnnouncement){
-        this.Id = item.Id ? item.Id : item.id;
+        this.Id = item.Id || item.id;
         this.Title = item.Title;
         this.Description = item.Description;
-        this.AuthorId = item.AuthorId ? item.AuthorId : item.AuthorLookupId;
-        this.AuthorTitle = item.Author ? item.Author.Title : "";
-        this.AttachmentServerURL = item.AttachmentFiles[0] ? item.AttachmentFiles[0].ServerRelativeUrl : "";
-        this.Created = new Date(item.Created);
+        this.AuthorId = item.AuthorId || item.AuthorLookupId;
     }
 }

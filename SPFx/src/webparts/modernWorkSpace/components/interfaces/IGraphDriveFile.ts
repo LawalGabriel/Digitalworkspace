@@ -3,7 +3,6 @@ export interface IGraphDriveFile{
     createdDateTime: string;
     lastModifiedDateTime: string;
     name: string;
-    ResourceLink: string;
     webUrl: string;
     createdBy: {
         user: {email: string, displayName: string;}
@@ -19,12 +18,11 @@ export interface IGraphDriveFileItems{
     value: IGraphDriveFile[];
 }
 
-export class GraphDriveFile{ 
+export class GraphDriveFile{
     public id: string;
     public createdDateTime: Date;
     public lastModifiedDateTime: Date;
     public name: string;
-    public ResourceLink: string;
     public webUrl: string;
     public createdBy: {
         user: {email: string, displayName: string;}
@@ -39,23 +37,9 @@ export class GraphDriveFile{
         this.createdDateTime = new Date(item.createdDateTime);
         this.lastModifiedDateTime = new Date(item.lastModifiedDateTime);
         this.name = item.name;
-        this.ResourceLink = item.ResourceLink;
         this.webUrl = item.webUrl;
         this.createdBy = item.createdBy;
         this.lastModifiedBy = item.lastModifiedBy;
         this.fileType = item.file.mimeType;
     }
-}
-
-export interface ICarouselImage {    
-    FileRef: string;
-    ResourceLink: string;
-}
-
-export interface ICarouselImageFile {    
-    FileRef: string;
-}
-
-export interface ICarouselImageRLink {  
-    ResourceLink: string;
 }
